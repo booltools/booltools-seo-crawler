@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booltools SEO Crawler — Free Open-Source SEO & GEO Auditor</title>
+  <meta name="description" content="Analyze any website for 130+ SEO checks including generative engine optimization (GEO). Free, open-source, built with Go and Astro." />
+  <meta property="og:title" content="Booltools SEO Crawler" />
+  <meta property="og:description" content="Free open-source website auditor for SEO and AI search readiness. 130+ audit rules, real-time analysis, CI/CD SDK." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🔍</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <nav class="nav container">
+      <a href="#" class="logo">
+        <span class="logo-icon">🔍</span>
+        <span class="logo-text">Booltools SEO Crawler</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#categories">Categories</a>
+        <a href="#sdk">CI/CD SDK</a>
+        <a href="https://github.com/booltools/booltools-seo-crawler" class="btn btn-outline" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge">Open Source &bull; MIT License</div>
+        <h1>Audit any website for<br /><span class="gradient-text">SEO & AI Search Readiness</span></h1>
+        <p class="hero-subtitle">
+          130+ checks across technical SEO, performance, security, structured data, and
+          <strong>generative engine optimization (GEO)</strong>. Get actionable reports, export for your team,
+          or feed them directly to AI agents.
+        </p>
+        <div class="hero-actions">
+          <a href="https://github.com/booltools/booltools-seo-crawler#quick-start" class="btn btn-primary" target="_blank" rel="noopener">Get Started</a>
+          <a href="https://github.com/booltools/booltools-seo-crawler/releases" class="btn btn-secondary" target="_blank" rel="noopener">Download SDK</a>
+        </div>
+        <div class="hero-tech">
+          <span>Built with</span>
+          <span class="tech-badge">Go</span>
+          <span class="tech-badge">Astro</span>
+          <span class="tech-badge">SQLite</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="container">
+        <h2 class="section-title">Everything you need to audit a website</h2>
+        <p class="section-subtitle">From classic SEO to cutting-edge AI optimization</p>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Real-time Progress</h3>
+            <p>Watch issues appear live as pages are crawled via Server-Sent Events. No more waiting for the full scan.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤖</div>
+            <h3>GEO Analysis</h3>
+            <p>24 dedicated rules for AI search readiness: crawler access, llms.txt, content citability, entity authority.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Rule Presets</h3>
+            <p>Full Scan, Essential, Blog, E-Commerce, Video, Landing Page, Technical-only, or GEO-only presets.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Export Reports</h3>
+            <p>Export as CSV for spreadsheets or Markdown for AI agents. Select only the rules that matter to you.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔧</div>
+            <h3>CI/CD SDK</h3>
+            <p>Standalone CLI binary for deployment pipelines. Catch SEO regressions before they reach production.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🏠</div>
+            <h3>Localhost Crawling</h3>
+            <p>Test your dev server before deploying. Audit local builds, staging environments, or any running server.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🗺️</div>
+            <h3>Sitemap Analysis</h3>
+            <p>Validates all URLs in your sitemap, detects orphan pages, broken links, and redirect chains.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🐳</div>
+            <h3>Docker Ready</h3>
+            <p>Multi-stage Docker build included. Deploy with a single command on any infrastructure.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="categories" id="categories">
+      <div class="container">
+        <h2 class="section-title">15 Audit Categories, 130+ Rules</h2>
+        <p class="section-subtitle">Comprehensive coverage from basics to advanced AI optimization</p>
+        <div class="categories-grid">
+          <div class="category-card">
+            <span class="category-count">15</span>
+            <h4>On-Page SEO</h4>
+            <p>Title, meta description, headings, images, alt text</p>
+          </div>
+          <div class="category-card">
+            <span class="category-count">24</span>
+            <h4>Technical SEO</h4>
+            <p>Canonical, robots.txt, sitemap, redirects, HTTP status</p>
+          </div>
+          <div class="category-card highlight">
+            <span class="category-count">24</span>
+            <h4>GEO</h4>
+            <p>AI crawler access, llms.txt, citability, entity authority</p>
+          </div>
+          <div class="category-card">
+            <span class="category-count">9</span>
+            <h4>Performance</h4>
+            <p>Page size, TTFB, compression, render blocking</p>
+          </div>
+          <div class="category-card">
+            <span class="category-count">9</span>
+            <h4>Security</h4>
+            <p>HTTPS, HSTS, CSP, XFO, security headers</p>
+          </div>
+          <div class="category-card">
+            <span class="category-count">12</span>
+            <h4>Social / Open Graph</h4>
+            <p>OG tags, Twitter cards, social metadata</p>
+          </div>
+          <div class="category-card">
+            <span class="category-count">6</span>
+            <h4>Links</h4>
+            <p>Internal/external links, broken links, anchor text</p>
+          </div>
+          <div class="category-card">
+            <span class="category-count">6</span>
+            <h4>E-E-A-T</h4>
+            <p>Author, about, contact, privacy pages</p>
+          </div>
+          <div class="category-card">
+            <span class="category-count">6</span>
+            <h4>URL Structure</h4>
+            <p>Lowercase, length, special characters</p>
+          </div>
+          <div class="category-card">
+            <span class="category-count">5</span>
+            <h4>Accessibility</h4>
+            <p>Language, viewport, ARIA labels</p>
+          </div>
+          <div class="category-card">
+            <span class="category-count">3</span>
+            <h4>Structured Data</h4>
+            <p>JSON-LD, breadcrumbs, schema validation</p>
+          </div>
+          <div class="category-card">
+            <span class="category-count">3</span>
+            <h4>Duplicate Content</h4>
+            <p>Duplicate titles, descriptions, body</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sdk-section" id="sdk">
+      <div class="container">
+        <h2 class="section-title">CI/CD SDK</h2>
+        <p class="section-subtitle">Catch SEO regressions in your deployment pipeline</p>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-dot red"></span>
+            <span class="code-dot yellow"></span>
+            <span class="code-dot green"></span>
+            <span class="code-title">terminal</span>
+          </div>
+          <pre><code><span class="comment"># Scan a running server</span>
+seo-crawler --mode=full --url=http://localhost:3000
+
+<span class="comment"># Auto-start server, scan, then stop</span>
+seo-crawler \
+  --mode=full \
+  --start-cmd="npm run dev" \
+  --wait-for=http://localhost:3000 \
+  --url=http://localhost:3000 \
+  --fail-on=high
+
+<span class="comment"># Scan static HTML files</span>
+seo-crawler --mode=static --dir=./dist</code></pre>
+        </div>
+        <div class="sdk-features">
+          <div class="sdk-feature">
+            <strong>GitHub Actions ready</strong>
+            <p>Download the binary and run in any CI pipeline</p>
+          </div>
+          <div class="sdk-feature">
+            <strong>Multi-platform</strong>
+            <p>Linux, macOS, and Windows binaries available</p>
+          </div>
+          <div class="sdk-feature">
+            <strong>Configurable thresholds</strong>
+            <p>Fail builds on critical, high, medium, or low issues</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Ready to audit your website?</h2>
+        <p>Get started in under a minute. Clone, run, analyze.</p>
+        <div class="cta-actions">
+          <a href="https://github.com/booltools/booltools-seo-crawler" class="btn btn-primary" target="_blank" rel="noopener">View on GitHub</a>
+        </div>
+        <div class="cta-install">
+          <code>git clone https://github.com/booltools/booltools-seo-crawler.git</code>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>MIT License &bull; Made by <a href="https://github.com/booltools" target="_blank" rel="noopener">Booltools</a></p>
+    </div>
+  </footer>
+</body>
+</html>

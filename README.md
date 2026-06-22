@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/booltools/booltools-seo-crawler/actions/workflows/ci.yml"><img src="https://github.com/booltools/booltools-seo-crawler/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://github.com/booltools/booltools-seo-crawler/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MarceloBD/booltools-seo-crawler" alt="License" /></a>
-  <a href="https://github.com/booltools/booltools-seo-crawler/releases"><img src="https://img.shields.io/github/v/release/MarceloBD/booltools-seo-crawler?include_prereleases" alt="Release" /></a>
+  <a href="https://github.com/booltools/booltools-seo-crawler/actions/workflows/ci.yml"><img src="https://github.com/booltools/booltools-seo-crawler/actions/workflows/ci.yml/badge.svg?branch=master" alt="CI" /></a>
+  <a href="https://github.com/booltools/booltools-seo-crawler/blob/master/LICENSE"><img src="https://img.shields.io/github/license/booltools/booltools-seo-crawler" alt="License" /></a>
+  <a href="https://github.com/booltools/booltools-seo-crawler/releases"><img src="https://img.shields.io/github/v/release/booltools/booltools-seo-crawler?include_prereleases" alt="Release" /></a>
   <img src="https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go" alt="Go" />
   <img src="https://img.shields.io/badge/Astro-4+-BC52EE?logo=astro" alt="Astro" />
 </p>
