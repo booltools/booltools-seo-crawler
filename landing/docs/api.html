@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference — Booltools SEO Crawler</title>
+  <meta name="description" content="REST API endpoints for the Booltools SEO Crawler." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../">🔍 Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <aside class="docs-sidebar">
+      <nav>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="sdk.html">CI/CD SDK</a></li>
+          <li><a href="api.html" class="active">API Reference</a></li>
+          <li><a href="rules.html">Rules Reference</a></li>
+          <li><a href="presets.html">Rule Presets</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="docs-content">
+      <h1>API Reference</h1>
+      <p>The backend exposes a REST API on port <code>8080</code> by default.</p>
+
+      <h2>Endpoints</h2>
+      <table>
+        <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>POST</code></td><td><code>/api/crawl</code></td><td>Start a new crawl</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/crawl/:id/progress</code></td><td>SSE progress stream</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/report/:id</code></td><td>Full audit report</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/report/:id/export/csv</code></td><td>Export as CSV</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/report/:id/export/md</code></td><td>Export as Markdown</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/rules</code></td><td>List rules and presets</td></tr>
+          <tr><td><code>GET</code></td><td><code>/api/health</code></td><td>Health check</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Start a Crawl</h2>
+      <pre><code>POST /api/crawl
+Content-Type: application/json
+
+{
+  "domain": "example.com",
+  "maxPages": 100,
+  "selectedRules": ["title_exists", "meta_description_exists"]
+}</code></pre>
+
+      <p>Response:</p>
+      <pre><code>{
+  "id": "uuid-here",
+  "domain": "example.com",
+  "status": "pending",
+  "maxPages": 100,
+  "pagesCrawled": 0,
+  "issuesFound": 0,
+  "createdAt": "2026-06-22T12:00:00Z"
+}</code></pre>
+
+      <h2>Progress Stream (SSE)</h2>
+      <pre><code>GET /api/crawl/:id/progress
+Accept: text/event-stream</code></pre>
+      <p>Returns a Server-Sent Events stream with real-time updates:</p>
+      <pre><code>data: {"jobId":"...","status":"crawling","pagesCrawled":5,"totalDiscovered":12,"currentUrl":"...","pageIssues":[...]}</code></pre>
+
+      <h2>Get Report</h2>
+      <pre><code>GET /api/report/:id</code></pre>
+      <p>Returns the full audit report with SEO score, GEO score, issues grouped by severity, page-by-page breakdown, and links to change.</p>
+
+      <h2>Export Report</h2>
+      <pre><code># CSV format
+GET /api/report/:id/export/csv
+
+# Markdown format (AI-agent-friendly)
+GET /api/report/:id/export/md</code></pre>
+
+      <h2>List Rules</h2>
+      <pre><code>GET /api/rules</code></pre>
+      <p>Returns all available audit rules grouped by category, including severity and description for each rule. Also returns preset definitions.</p>
+
+      <h2>Health Check</h2>
+      <pre><code>GET /api/health</code></pre>
+      <p>Response: <code>{"status":"ok"}</code></p>
+
+      <h2>Example: cURL</h2>
+      <pre><code># Start a crawl
+curl -X POST http://localhost:8080/api/crawl \
+  -H "Content-Type: application/json" \
+  -d '{"domain": "example.com"}'
+
+# Get the report
+curl http://localhost:8080/api/report/YOUR_JOB_ID
+
+# Export as markdown
+curl http://localhost:8080/api/report/YOUR_JOB_ID/export/md -o report.md</code></pre>
+    </article>
+  </div>
+</body>
+</html>

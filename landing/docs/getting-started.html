@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started — Booltools SEO Crawler</title>
+  <meta name="description" content="Install and run the Booltools SEO Crawler locally in a few minutes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../">🔍 Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <aside class="docs-sidebar">
+      <nav>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="getting-started.html" class="active">Getting Started</a></li>
+          <li><a href="sdk.html">CI/CD SDK</a></li>
+          <li><a href="api.html">API Reference</a></li>
+          <li><a href="rules.html">Rules Reference</a></li>
+          <li><a href="presets.html">Rule Presets</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="docs-content">
+      <h1>Getting Started</h1>
+      <p>Set up and run the Booltools SEO Crawler locally in a few minutes.</p>
+
+      <h2>Prerequisites</h2>
+      <ul>
+        <li><strong>Go</strong> 1.21 or later</li>
+        <li><strong>Node.js</strong> 22 or later (for the frontend)</li>
+        <li><strong>npm</strong> (comes with Node.js)</li>
+      </ul>
+
+      <h2>Installation</h2>
+
+      <h3>1. Clone the repository</h3>
+      <pre><code>git clone https://github.com/booltools/booltools-seo-crawler.git
+cd booltools-seo-crawler</code></pre>
+
+      <h3>2. Install Go dependencies</h3>
+      <pre><code>go mod tidy</code></pre>
+
+      <h3>3. Install frontend dependencies</h3>
+      <pre><code>cd web
+npm install
+cd ..</code></pre>
+
+      <h2>Running in Development</h2>
+
+      <h3>Start the backend</h3>
+      <pre><code>make dev
+# or: go run ./cmd/server</code></pre>
+      <p>The API server starts at <code>http://localhost:8080</code>.</p>
+
+      <h3>Start the frontend</h3>
+      <pre><code>cd web
+npm run dev</code></pre>
+      <p>The web interface is available at <code>http://localhost:4321</code>.</p>
+
+      <h2>Building for Production</h2>
+
+      <h3>Build the backend</h3>
+      <pre><code>make build
+# Binary output: bin/booltools-seo-crawler</code></pre>
+
+      <h3>Build the SDK CLI</h3>
+      <pre><code>make build-sdk
+# Binary output: bin/seo-crawler</code></pre>
+
+      <h3>Build the frontend</h3>
+      <pre><code>cd web
+npm run build</code></pre>
+
+      <h2>Docker Deployment</h2>
+      <pre><code>docker compose up --build</code></pre>
+      <p>The app will be available at <code>http://localhost:4321</code> with the API at <code>http://localhost:8080</code>.</p>
+
+      <h2>Running Tests</h2>
+      <pre><code>make test
+# or: go test ./... -v -count=1</code></pre>
+
+      <h2>Development Commands</h2>
+      <table>
+        <thead><tr><th>Command</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>make build</code></td><td>Build backend binary</td></tr>
+          <tr><td><code>make build-sdk</code></td><td>Build SDK CLI</td></tr>
+          <tr><td><code>make build-all</code></td><td>Build both</td></tr>
+          <tr><td><code>make dev</code></td><td>Run backend (dev mode)</td></tr>
+          <tr><td><code>make test</code></td><td>Run all tests</td></tr>
+          <tr><td><code>make lint</code></td><td>Run go vet</td></tr>
+          <tr><td><code>make tidy</code></td><td>Run go mod tidy</td></tr>
+          <tr><td><code>make web-dev</code></td><td>Start frontend dev server</td></tr>
+          <tr><td><code>make web-build</code></td><td>Build frontend for production</td></tr>
+          <tr><td><code>make clean</code></td><td>Remove build artifacts</td></tr>
+        </tbody>
+      </table>
+
+      <blockquote>
+        <p><strong>Windows:</strong> install Make with <code>winget install GnuWin32.Make</code></p>
+      </blockquote>
+    </article>
+  </div>
+</body>
+</html>

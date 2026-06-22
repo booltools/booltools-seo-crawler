@@ -17,6 +17,7 @@
 </p>
 
 <p align="center">
+  <a href="https://booltools.github.io/booltools-seo-crawler/">Website</a> •
   <a href="#quick-start">Quick Start</a> •
   <a href="#features">Features</a> •
   <a href="#screenshots">Screenshots</a> •

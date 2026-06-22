@@ -9,23 +9,9 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    name: Build SDK binaries
+  release:
+    name: Build and Release
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - goos: linux
-            goarch: amd64
-          - goos: linux
-            goarch: arm64
-          - goos: darwin
-            goarch: amd64
-          - goos: darwin
-            goarch: arm64
-          - goos: windows
-            goarch: amd64
-
     steps:
       - uses: actions/checkout@v4
 
@@ -34,38 +20,38 @@ jobs:
           go-version-file: go.mod
           cache: true
 
-      - name: Build
-        env:
-          GOOS: ${{ matrix.goos }}
-          GOARCH: ${{ matrix.goarch }}
+      - name: Build all platforms
         run: |
-          EXT=""
-          if [ "${{ matrix.goos }}" = "windows" ]; then EXT=".exe"; fi
-          go build -ldflags="-s -w -X main.version=${{ github.ref_name }}" \
-            -o seo-crawler-${{ matrix.goos }}-${{ matrix.goarch }}${EXT} \
-            ./cmd/seo-crawler
+          mkdir -p dist
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: seo-crawler-${{ matrix.goos }}-${{ matrix.goarch }}
-          path: seo-crawler-*
+          platforms=(
+            "linux/amd64"
+            "linux/arm64"
+            "darwin/amd64"
+            "darwin/arm64"
+            "windows/amd64"
+          )
 
-  release:
-    name: Create Release
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+          for platform in "${platforms[@]}"; do
+            GOOS="${platform%/*}"
+            GOARCH="${platform#*/}"
+            output="dist/seo-crawler-${GOOS}-${GOARCH}"
+            if [ "$GOOS" = "windows" ]; then output="${output}.exe"; fi
 
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-          merge-multiple: true
+            echo "Building ${GOOS}/${GOARCH}..."
+            GOOS=$GOOS GOARCH=$GOARCH go build \
+              -ldflags="-s -w -X main.version=${{ github.ref_name }}" \
+              -o "$output" \
+              ./cmd/seo-crawler
+          done
 
-      - name: Create release
-        uses: softprops/action-gh-release@v2
-        with:
-          generate_release_notes: true
-          files: artifacts/*
+          ls -la dist/
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create ${{ github.ref_name }} \
+            --title "${{ github.ref_name }}" \
+            --generate-notes \
+            dist/*

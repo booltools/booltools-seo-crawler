@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CI/CD SDK — Booltools SEO Crawler</title>
+  <meta name="description" content="Standalone CLI binary to catch SEO regressions in your deployment pipeline." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../">🔍 Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <aside class="docs-sidebar">
+      <nav>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="sdk.html" class="active">CI/CD SDK</a></li>
+          <li><a href="api.html">API Reference</a></li>
+          <li><a href="rules.html">Rules Reference</a></li>
+          <li><a href="presets.html">Rule Presets</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="docs-content">
+      <h1>CI/CD SDK</h1>
+      <p>The SEO Crawler SDK is a standalone CLI binary that runs SEO/GEO checks in your CI/CD pipeline. Catch SEO regressions before they reach production.</p>
+
+      <h2>Installation</h2>
+
+      <h3>Build from source</h3>
+      <pre><code>git clone https://github.com/booltools/booltools-seo-crawler.git
+cd booltools-seo-crawler
+make build-sdk
+# Binary: bin/seo-crawler</code></pre>
+
+      <h3>Download release binary</h3>
+      <pre><code># Linux (amd64)
+curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-amd64 -o seo-crawler
+chmod +x seo-crawler
+
+# macOS (Apple Silicon)
+curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-darwin-arm64 -o seo-crawler
+chmod +x seo-crawler
+
+# macOS (Intel)
+curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-darwin-amd64 -o seo-crawler
+chmod +x seo-crawler</code></pre>
+
+      <h2>Scan Modes</h2>
+
+      <h3>Full mode (live crawl)</h3>
+      <p>Crawls a running server, following links and checking all pages.</p>
+      <pre><code>seo-crawler --mode=full --url=http://localhost:3000</code></pre>
+
+      <h3>Static mode (local HTML files)</h3>
+      <p>Analyzes built HTML files directly — no server needed.</p>
+      <pre><code>seo-crawler --mode=static --dir=./dist</code></pre>
+
+      <h2>Auto-starting a Dev Server</h2>
+      <p>The SDK can start your dev/preview server before crawling and stop it after:</p>
+      <pre><code>seo-crawler \
+  --mode=full \
+  --start-cmd="npm run dev" \
+  --wait-for=http://localhost:3000 \
+  --url=http://localhost:3000 \
+  --fail-on=high</code></pre>
+
+      <h2>Multiple Servers</h2>
+      <p>When your app depends on both a frontend and a backend:</p>
+      <pre><code>seo-crawler \
+  --mode=full \
+  --start-cmd="go run ./cmd/server,npm run dev" \
+  --wait-for="http://localhost:8080/api/health,http://localhost:3000" \
+  --url=http://localhost:3000</code></pre>
+
+      <h2>Configuration File</h2>
+      <p>Create <code>.seo-crawler.yml</code> in your project root:</p>
+      <pre><code>mode: full
+url: http://localhost:3000
+start_cmd:
+  - "go run ./cmd/server"
+  - "cd web && npm run dev"
+wait_for:
+  - http://localhost:8080/api/health
+  - http://localhost:3000
+wait_timeout: 90s
+fail_on: high
+max_pages: 100
+format: text
+ignore:
+  - uses_https
+  - hsts_header</code></pre>
+
+      <h2>GitHub Actions Example</h2>
+      <pre><code>name: SEO Audit
+on: [pull_request]
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+
+      - name: Download SEO Crawler SDK
+        run: |
+          curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-amd64 -o seo-crawler
+          chmod +x seo-crawler
+
+      - name: Run SEO audit
+        run: |
+          ./seo-crawler \
+            --mode=full \
+            --start-cmd="npm run dev" \
+            --wait-for=http://localhost:3000 \
+            --url=http://localhost:3000 \
+            --fail-on=high</code></pre>
+
+      <h2>CLI Flags</h2>
+      <table>
+        <thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead>
+        <tbody>
+          <tr><td><code>--mode</code></td><td><code>static</code> or <code>full</code></td><td>—</td></tr>
+          <tr><td><code>--dir</code></td><td>HTML directory (static mode)</td><td>—</td></tr>
+          <tr><td><code>--url</code></td><td>Server URL (full mode)</td><td>—</td></tr>
+          <tr><td><code>--fail-on</code></td><td>Severity threshold</td><td><code>high</code></td></tr>
+          <tr><td><code>--ignore</code></td><td>Comma-separated rule keys to skip</td><td>—</td></tr>
+          <tr><td><code>--only</code></td><td>Comma-separated rule keys to run</td><td>—</td></tr>
+          <tr><td><code>--start-cmd</code></td><td>Commands to start servers</td><td>—</td></tr>
+          <tr><td><code>--wait-for</code></td><td>URLs to poll until ready</td><td>—</td></tr>
+          <tr><td><code>--wait-timeout</code></td><td>Max wait time per URL</td><td><code>30s</code></td></tr>
+          <tr><td><code>--format</code></td><td><code>text</code> or <code>json</code></td><td><code>text</code></td></tr>
+          <tr><td><code>--output</code></td><td>Write JSON report to file</td><td>—</td></tr>
+          <tr><td><code>--max-pages</code></td><td>Max pages to crawl</td><td><code>1000</code></td></tr>
+        </tbody>
+      </table>
+
+      <h2>Exit Codes</h2>
+      <table>
+        <thead><tr><th>Code</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>0</code></td><td>All checks pass</td></tr>
+          <tr><td><code>1</code></td><td>Issues at or above <code>--fail-on</code> severity</td></tr>
+          <tr><td><code>2</code></td><td>Configuration error</td></tr>
+        </tbody>
+      </table>
+    </article>
+  </div>
+</body>
+</html>

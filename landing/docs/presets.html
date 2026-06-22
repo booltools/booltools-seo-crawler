@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rule Presets — Booltools SEO Crawler</title>
+  <meta name="description" content="Pre-configured rule sets for different site types and audit goals." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../">🔍 Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <aside class="docs-sidebar">
+      <nav>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="sdk.html">CI/CD SDK</a></li>
+          <li><a href="api.html">API Reference</a></li>
+          <li><a href="rules.html">Rules Reference</a></li>
+          <li><a href="presets.html" class="active">Rule Presets</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="docs-content">
+      <h1>Rule Presets</h1>
+      <p>Presets are pre-configured sets of rules optimized for specific site types. Select a preset before running an analysis to focus on the most relevant checks.</p>
+
+      <h2>Available Presets</h2>
+      <table>
+        <thead><tr><th>Preset</th><th>Description</th><th>Focus</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Full Scan</strong></td><td>All 130+ rules</td><td>Comprehensive audit of everything</td></tr>
+          <tr><td><strong>Essential</strong></td><td>Core SEO checks</td><td>Must-have rules every site needs</td></tr>
+          <tr><td><strong>Blog / Article</strong></td><td>Content-heavy sites</td><td>Headings, content quality, structured data</td></tr>
+          <tr><td><strong>E-Commerce</strong></td><td>Product pages</td><td>Schema, performance, canonical URLs</td></tr>
+          <tr><td><strong>Video Platform</strong></td><td>Video-centric sites</td><td>Video schema, thumbnails, accessibility</td></tr>
+          <tr><td><strong>Landing Page</strong></td><td>Marketing pages</td><td>OG tags, performance, mobile</td></tr>
+          <tr><td><strong>Technical SEO</strong></td><td>Infrastructure only</td><td>Redirects, sitemaps, robots, status codes</td></tr>
+          <tr><td><strong>GEO / AI Readiness</strong></td><td>AI optimization</td><td>All 24 GEO rules for AI search</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Using Presets</h2>
+
+      <h3>In the Web UI</h3>
+      <p>Before clicking "Analyze", select a preset from the dropdown. You can further customize by toggling individual rules on or off.</p>
+
+      <h3>In the SDK (CLI)</h3>
+      <p>Use the <code>--only</code> flag with the rule keys included in a preset:</p>
+      <pre><code># Run only essential checks
+seo-crawler --mode=full --url=http://localhost:3000 \
+  --only="title_exists,meta_description_exists,h1_exists,canonical_exists,robots_txt_exists,sitemap_exists,uses_https,http_status_ok"</code></pre>
+
+      <h3>In the config file</h3>
+      <pre><code># .seo-crawler.yml
+mode: full
+url: http://localhost:3000
+only:
+  - title_exists
+  - meta_description_exists
+  - h1_exists
+  - canonical_exists
+  - http_status_ok
+  - uses_https</code></pre>
+
+      <h2>Preset Details</h2>
+
+      <h3>Full Scan</h3>
+      <p>Runs all rules across all categories. Use this for a complete picture of your site's health. Best for initial audits or periodic comprehensive checks.</p>
+
+      <h3>Essential</h3>
+      <p>The minimum set of rules every website should pass. Covers basic on-page SEO, critical technical issues, and security basics.</p>
+
+      <h3>Blog / Article</h3>
+      <p>Optimized for content-heavy sites. Emphasizes heading structure, content quality metrics, author signals (E-E-A-T), structured data for articles, and social sharing metadata.</p>
+
+      <h3>E-Commerce</h3>
+      <p>Tailored for product pages and transactional sites. Focuses on product schema, canonical URLs (to handle pagination/filters), performance, security, and mobile usability.</p>
+
+      <h3>GEO / AI Readiness</h3>
+      <p>All 24 GEO rules to ensure your content is optimized for AI search engines. Checks AI crawler access, llms.txt, content citability, entity authority, and AI-friendly content structure.</p>
+    </article>
+  </div>
+</body>
+</html>

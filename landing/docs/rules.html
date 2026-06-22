@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rules Reference — Booltools SEO Crawler</title>
+  <meta name="description" content="Complete reference for all 130+ audit rules in the Booltools SEO Crawler." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../">🔍 Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <aside class="docs-sidebar">
+      <nav>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="sdk.html">CI/CD SDK</a></li>
+          <li><a href="api.html">API Reference</a></li>
+          <li><a href="rules.html" class="active">Rules Reference</a></li>
+          <li><a href="presets.html">Rule Presets</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="docs-content">
+      <h1>Rules Reference</h1>
+      <p>Complete reference for all <strong>130+</strong> audit rules grouped by category.</p>
+
+      <h2>Severity Levels</h2>
+      <table>
+        <thead><tr><th>Severity</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Critical</strong></td><td>Must fix — blocks indexing or causes major SEO damage</td></tr>
+          <tr><td><strong>High</strong></td><td>Should fix — significant negative impact on SEO</td></tr>
+          <tr><td><strong>Medium</strong></td><td>Recommended — moderate impact, improves rankings</td></tr>
+          <tr><td><strong>Low</strong></td><td>Nice to have — minor improvements</td></tr>
+          <tr><td><strong>Info</strong></td><td>Informational — no direct SEO impact</td></tr>
+        </tbody>
+      </table>
+
+      <h2>On-Page SEO (15 rules)</h2>
+      <p>Title tags, meta descriptions, heading hierarchy, image alt text, and content optimization.</p>
+      <ul>
+        <li><code>title_exists</code> — Page has a title tag</li>
+        <li><code>title_length</code> — Title length is between 30-60 characters</li>
+        <li><code>title_unique</code> — Title is unique across the site</li>
+        <li><code>meta_description_exists</code> — Page has a meta description</li>
+        <li><code>meta_description_length</code> — Meta description is 120-160 characters</li>
+        <li><code>h1_exists</code> — Page has an H1 heading</li>
+        <li><code>h1_single</code> — Only one H1 per page</li>
+        <li><code>heading_hierarchy</code> — Headings follow logical order</li>
+        <li><code>img_alt_text</code> — Images have alt attributes</li>
+        <li><code>img_dimensions</code> — Images specify width/height</li>
+        <li><code>img_lazy_loading</code> — Below-fold images use lazy loading</li>
+      </ul>
+
+      <h2>Technical SEO (24 rules)</h2>
+      <p>Canonical URLs, robots directives, sitemaps, redirects, and HTTP status codes.</p>
+      <ul>
+        <li><code>canonical_exists</code> — Page has a canonical URL</li>
+        <li><code>canonical_valid</code> — Canonical URL is valid and accessible</li>
+        <li><code>robots_txt_exists</code> — Site has a robots.txt</li>
+        <li><code>robots_txt_valid</code> — robots.txt is properly formatted</li>
+        <li><code>sitemap_exists</code> — Site has a sitemap.xml</li>
+        <li><code>sitemap_valid</code> — Sitemap is valid XML</li>
+        <li><code>http_status_ok</code> — Page returns 200 status</li>
+        <li><code>no_redirect_chains</code> — No long redirect chains</li>
+        <li><code>meta_robots_index</code> — Page allows indexing</li>
+      </ul>
+
+      <h2>GEO — AI Search Readiness (24 rules)</h2>
+      <p>Generative Engine Optimization checks for AI crawler access, content citability, and entity authority.</p>
+      <ul>
+        <li><code>ai_crawler_not_blocked</code> — AI crawlers are not blocked in robots.txt</li>
+        <li><code>llms_txt_exists</code> — Site has llms.txt</li>
+        <li><code>llms_txt_valid</code> — llms.txt is properly formatted</li>
+        <li><code>content_citability</code> — Content is structured for citation</li>
+        <li><code>entity_authority</code> — Clear entity ownership signals</li>
+        <li><code>ai_friendly_headings</code> — Headings are descriptive for AI parsing</li>
+        <li><code>ai_friendly_structure</code> — Content uses AI-parseable structure</li>
+        <li><code>factual_claims_sourced</code> — Claims have supporting sources</li>
+      </ul>
+
+      <h2>Performance (9 rules)</h2>
+      <p>Page size, response time, compression, and resource optimization.</p>
+      <ul>
+        <li><code>page_size</code> — Total page size under threshold</li>
+        <li><code>ttfb</code> — Time to first byte under 600ms</li>
+        <li><code>compression</code> — Response uses gzip/brotli</li>
+        <li><code>render_blocking_resources</code> — No render-blocking scripts in head</li>
+        <li><code>http_requests</code> — Reasonable number of HTTP requests</li>
+      </ul>
+
+      <h2>Security (9 rules)</h2>
+      <p>HTTPS, security headers, and secure configuration.</p>
+      <ul>
+        <li><code>uses_https</code> — Site uses HTTPS</li>
+        <li><code>hsts_header</code> — HSTS header present</li>
+        <li><code>security_csp</code> — Content-Security-Policy header</li>
+        <li><code>security_xfo</code> — X-Frame-Options header</li>
+        <li><code>security_xcto</code> — X-Content-Type-Options header</li>
+      </ul>
+
+      <h2>Links (6 rules)</h2>
+      <p>Internal linking, external links, and broken link detection.</p>
+      <ul>
+        <li><code>internal_links_exist</code> — Page has internal links</li>
+        <li><code>no_broken_links</code> — No broken internal links</li>
+        <li><code>external_links_nofollow</code> — External links use appropriate rel</li>
+      </ul>
+
+      <h2>Structured Data (3 rules)</h2>
+      <p>JSON-LD, breadcrumbs, and schema.org validation.</p>
+      <ul>
+        <li><code>jsonld_exists</code> — Page has JSON-LD structured data</li>
+        <li><code>jsonld_valid</code> — JSON-LD is valid</li>
+        <li><code>breadcrumb_schema</code> — Breadcrumb structured data present</li>
+      </ul>
+
+      <h2>Social / Open Graph (12 rules)</h2>
+      <p>Open Graph tags and Twitter Card metadata.</p>
+      <ul>
+        <li><code>og_title</code> — og:title present</li>
+        <li><code>og_description</code> — og:description present</li>
+        <li><code>og_image</code> — og:image present</li>
+        <li><code>twitter_card</code> — Twitter card meta tag</li>
+      </ul>
+
+      <h2>Other Categories</h2>
+      <ul>
+        <li><strong>Content</strong> (2 rules) — Word count, text-to-HTML ratio</li>
+        <li><strong>Accessibility</strong> (5 rules) — Language, viewport, ARIA</li>
+        <li><strong>Mobile</strong> (2 rules) — Viewport, touch targets</li>
+        <li><strong>URL Structure</strong> (6 rules) — Lowercase, length, special characters</li>
+        <li><strong>Internationalization</strong> (2 rules) — Hreflang validation</li>
+        <li><strong>E-E-A-T</strong> (6 rules) — Author, about, contact, privacy pages</li>
+        <li><strong>Duplicate Content</strong> (3 rules) — Duplicate titles, descriptions, body</li>
+      </ul>
+
+      <blockquote>
+        <p>For detailed rule documentation with examples and fix instructions, run the app locally and visit <code>/docs/rules</code>.</p>
+      </blockquote>
+    </article>
+  </div>
+</body>
+</html>

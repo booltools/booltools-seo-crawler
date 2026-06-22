@@ -93,3 +93,26 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  seo-audit:
+    name: Landing Page SEO Audit
+    runs-on: ubuntu-latest
+    needs: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Build SDK
+        run: go build -o seo-crawler ./cmd/seo-crawler
+
+      - name: Run SEO audit on landing page
+        run: |
+          ./seo-crawler \
+            --mode=static \
+            --dir=./landing \
+            --fail-on=high \
+            --ignore=uses_https,hsts_header,http_status_ok,ttfb,compression,page_size,crawl_depth

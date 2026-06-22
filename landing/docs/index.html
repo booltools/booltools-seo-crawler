@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentation — Booltools SEO Crawler</title>
+  <meta name="description" content="Documentation for the Booltools SEO Crawler — getting started, SDK usage, API reference, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../">🔍 Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <aside class="docs-sidebar">
+      <nav>
+        <ul>
+          <li><a href="./" class="active">Overview</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="sdk.html">CI/CD SDK</a></li>
+          <li><a href="api.html">API Reference</a></li>
+          <li><a href="rules.html">Rules Reference</a></li>
+          <li><a href="presets.html">Rule Presets</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="docs-content">
+      <h1>Documentation</h1>
+      <p>Welcome to the Booltools SEO Crawler documentation. This tool analyzes websites for 130+ SEO and GEO checks, providing actionable reports with fix instructions.</p>
+
+      <h2>What is Booltools SEO Crawler?</h2>
+      <p>A free, open-source website auditor built with Go and Astro. It covers:</p>
+      <ul>
+        <li><strong>15 audit categories</strong> — from technical SEO to AI search readiness</li>
+        <li><strong>130+ individual rules</strong> — each with severity levels and fix instructions</li>
+        <li><strong>Real-time analysis</strong> — see issues appear live as pages are crawled</li>
+        <li><strong>CI/CD integration</strong> — catch regressions before production</li>
+      </ul>
+
+      <h2>Architecture</h2>
+      <table>
+        <thead><tr><th>Layer</th><th>Technology</th></tr></thead>
+        <tbody>
+          <tr><td>Backend</td><td>Go, Chi router, Colly crawler, Goquery</td></tr>
+          <tr><td>Database</td><td>SQLite (WAL mode)</td></tr>
+          <tr><td>Frontend</td><td>Astro SSR</td></tr>
+          <tr><td>Concurrency</td><td>Goroutines, worker pool, SSE streaming</td></tr>
+          <tr><td>SDK</td><td>Standalone Go CLI binary</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Quick Links</h2>
+      <ul>
+        <li><a href="getting-started.html">Getting Started</a> — install and run locally</li>
+        <li><a href="sdk.html">CI/CD SDK</a> — integrate into your deployment pipeline</li>
+        <li><a href="api.html">API Reference</a> — REST API endpoints</li>
+        <li><a href="rules.html">Rules Reference</a> — all 130+ audit rules</li>
+        <li><a href="presets.html">Rule Presets</a> — pre-configured rule sets</li>
+      </ul>
+    </article>
+  </div>
+</body>
+</html>
