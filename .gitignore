@@ -4,8 +4,8 @@ bin/
 *.exe~
 *.test
 *.out
-server
-seo-crawler
+/server
+/seo-crawler
 
 # SQLite database
 data.db
