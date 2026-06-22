@@ -21,6 +21,7 @@ interface GroupedIssue {
   severity: string;
   recommendation: string;
   affected: AffectedEntry[];
+  siteDetails: string;
 }
 
 interface Props {
@@ -55,6 +56,8 @@ for (const issue of issues) {
       if (!alreadyAdded) {
         existing.affected.push({ url: issue.affectedUrl, details: issue.details || '' });
       }
+    } else if (issue.details && !existing.siteDetails) {
+      existing.siteDetails = issue.details;
     }
   } else {
     const affected: AffectedEntry[] = [];
@@ -66,6 +69,7 @@ for (const issue of issues) {
       severity: issue.severity,
       recommendation: issue.recommendation,
       affected,
+      siteDetails: !issue.affectedUrl && issue.details ? issue.details : '',
     });
   }
 }
@@ -161,6 +165,37 @@ const groupedEntries = Array.from(groupedMap.entries())
             </ul>
           </details>
         )}
+        {group.affected.length === 0 && group.siteDetails && (() => {
+          const detailLines = group.siteDetails.split('\n').filter((line: string) => line.trim());
+          const visibleDetailLines = detailLines.slice(0, 10);
+          const hiddenDetailLines = detailLines.slice(10);
+          return (
+            <details class="url-list" open>
+              <summary class="url-toggle">
+                <svg class="url-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                Affected resources ({detailLines.length})
+              </summary>
+              <div class="asset-list">
+                {visibleDetailLines.map((line: string) => (
+                  <div class="asset-line">{line}</div>
+                ))}
+                {hiddenDetailLines.length > 0 && (
+                  <div class="asset-hidden" style="display:none;">
+                    {hiddenDetailLines.map((line: string) => (
+                      <div class="asset-line">{line}</div>
+                    ))}
+                  </div>
+                )}
+                {hiddenDetailLines.length > 0 && (
+                  <button class="show-more-btn" type="button"
+                    data-remaining={hiddenDetailLines.length}>
+                    Show {hiddenDetailLines.length} more
+                  </button>
+                )}
+              </div>
+            </details>
+          );
+        })()}
       </div>
     ))}
   </div>

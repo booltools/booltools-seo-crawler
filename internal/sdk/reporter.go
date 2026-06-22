@@ -116,17 +116,17 @@ func (reporter *Reporter) reportText(result *ScanResult, grouped []groupedRule, 
 			if issue.affectedCount > 0 {
 				fmt.Fprintf(writer, "    %s→ %d page%s affected%s\n", colorGray, issue.affectedCount, pluralize(issue.affectedCount), colorReset)
 			}
-			if issue.details != "" && issue.affectedCount == 0 {
+			if issue.details != "" {
 				lines := strings.Split(issue.details, "\n")
-				limit := 5
+				limit := 10
 				if len(lines) < limit {
 					limit = len(lines)
 				}
 				for _, line := range lines[:limit] {
 					fmt.Fprintf(writer, "    %s• %s%s\n", colorGray, line, colorReset)
 				}
-				if len(lines) > 5 {
-					fmt.Fprintf(writer, "    %s... and %d more%s\n", colorGray, len(lines)-5, colorReset)
+				if len(lines) > 10 {
+					fmt.Fprintf(writer, "    %s... and %d more%s\n", colorGray, len(lines)-10, colorReset)
 				}
 			}
 		}

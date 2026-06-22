@@ -43,9 +43,9 @@ func (c *BrokenAssetChecker) Check(result crawler.CrawlResult) []valueobject.Aud
 
 	cache := result.URLStatusCache
 
-	scriptResults := cache.CheckConcurrent(uniqueScripts, 30, 8)
-	cssResults := cache.CheckConcurrent(uniqueStylesheets, 20, 8)
-	imageResults := cache.CheckConcurrent(uniqueImages, 40, 8)
+	scriptResults := cache.CheckConcurrent(uniqueScripts, 30, 3)
+	cssResults := cache.CheckConcurrent(uniqueStylesheets, 20, 3)
+	imageResults := cache.CheckConcurrent(uniqueImages, 40, 3)
 
 	brokenScripts, brokenScriptDetails := countBrokenAssets(scriptResults, uniqueScripts)
 	brokenCSS, brokenCSSDetails := countBrokenAssets(cssResults, uniqueStylesheets)

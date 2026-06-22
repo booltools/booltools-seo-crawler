@@ -23,6 +23,9 @@ func (c *BrokenLinkChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 			}
 		}
 		for _, link := range page.ExternalLinks {
+			if isNonHTTPScheme(link.URL) {
+				continue
+			}
 			if _, exists := uniqueExternalLinks[link.URL]; !exists {
 				uniqueExternalLinks[link.URL] = page.URL
 			}
@@ -30,8 +33,8 @@ func (c *BrokenLinkChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 	}
 
 	cache := result.URLStatusCache
-	brokenInternal, brokenInternalDetails := checkLinksWithCache(cache, uniqueInternalLinks, 50, 5)
-	brokenExternal, brokenExternalDetails := checkLinksWithCache(cache, uniqueExternalLinks, 30, 5)
+	brokenInternal, brokenInternalDetails := checkLinksWithCache(cache, uniqueInternalLinks, 50, 3)
+	brokenExternal, brokenExternalDetails := checkLinksWithCache(cache, uniqueExternalLinks, 30, 3)
 
 	internalRule := valueobject.NewAuditRule("broken_internal_links", valueobject.CategoryLinks, valueobject.SeverityHigh)
 	if brokenInternal > 0 {
@@ -40,7 +43,7 @@ func (c *BrokenLinkChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 			"Fix or remove broken internal links. They waste crawl budget and create poor user experience.",
 		)
 		if len(brokenInternalDetails) > 0 {
-			internalRule.WithDetails(strings.Join(brokenInternalDetails, "; "))
+			internalRule.WithDetails(strings.Join(brokenInternalDetails, "\n"))
 		}
 	} else {
 		internalRule.Pass("No broken internal links detected")
@@ -54,7 +57,7 @@ func (c *BrokenLinkChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 			"Fix or remove broken external links. They negatively impact user trust and may harm SEO.",
 		)
 		if len(brokenExternalDetails) > 0 {
-			externalRule.WithDetails(strings.Join(brokenExternalDetails, "; "))
+			externalRule.WithDetails(strings.Join(brokenExternalDetails, "\n"))
 		}
 	} else {
 		externalRule.Pass("No broken external links detected")
@@ -82,4 +85,14 @@ func checkLinksWithCache(cache *crawler.URLStatusCache, links map[string]string,
 	}
 
 	return brokenCount, details
+}
+
+func isNonHTTPScheme(targetURL string) bool {
+	nonHTTPPrefixes := []string{"mailto:", "tel:", "javascript:", "data:", "ftp:", "file:"}
+	for _, prefix := range nonHTTPPrefixes {
+		if strings.HasPrefix(targetURL, prefix) {
+			return true
+		}
+	}
+	return false
 }

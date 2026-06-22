@@ -55,3 +55,9 @@ jobs:
             --title "${{ github.ref_name }}" \
             --generate-notes \
             dist/*
+
+      - name: Update major version tag for Marketplace
+        run: |
+          MAJOR_VERSION=$(echo "${{ github.ref_name }}" | grep -oP '^v\d+')
+          git tag -f "$MAJOR_VERSION"
+          git push origin "$MAJOR_VERSION" --force
