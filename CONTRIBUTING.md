@@ -1,4 +1,4 @@
-# Contributing to Free SEO Crawler
+# Contributing to Booltools Seo Crawler
 
 Thank you for your interest in contributing! This guide will help you get started.
 
@@ -14,8 +14,8 @@ Thank you for your interest in contributing! This guide will help you get starte
 
 ```bash
 # Clone the repository
-git clone https://github.com/MarceloBD/free-seo-crawler.git
-cd free-seo-crawler
+git clone https://github.com/booltools/booltools-seo-crawler.git
+cd booltools-seo-crawler
 
 # Install Go dependencies
 go mod download
@@ -124,6 +124,7 @@ go tool cover -html=coverage.out
 ## Reporting Issues
 
 Use the issue templates provided:
+
 - **Bug Report** — for bugs and unexpected behavior
 - **Feature Request** — for new features or improvements
 - **New Rule** — for proposing new SEO/GEO audit rules

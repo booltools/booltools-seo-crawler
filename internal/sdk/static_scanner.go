@@ -8,9 +8,9 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/analyzer"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/crawler"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/analyzer"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/crawler"
 )
 
 type StaticScanner struct {

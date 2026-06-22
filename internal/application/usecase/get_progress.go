@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/queue"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/queue"
 )
 
 type GetProgressUseCase struct {

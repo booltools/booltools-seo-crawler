@@ -1,4 +1,4 @@
-module github.com/MarceloBD/free-seo-crawler
+module github.com/booltools/booltools-seo-crawler
 
 go 1.26.2
 

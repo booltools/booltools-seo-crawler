@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/application/dto"
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/entity"
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/repository"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/queue"
+	"github.com/booltools/booltools-seo-crawler/internal/application/dto"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/entity"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/repository"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/queue"
 )
 
 type StartCrawlUseCase struct {

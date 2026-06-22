@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/analyzer"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/analyzer"
 )
 
 type RulesHandler struct{}

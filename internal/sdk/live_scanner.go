@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/analyzer"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/crawler"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/analyzer"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/crawler"
 )
 
 type LiveScanner struct {

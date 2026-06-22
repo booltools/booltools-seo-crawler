@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/application/dto"
-	"github.com/MarceloBD/free-seo-crawler/internal/application/usecase"
+	"github.com/booltools/booltools-seo-crawler/internal/application/dto"
+	"github.com/booltools/booltools-seo-crawler/internal/application/usecase"
 )
 
 type CrawlHandler struct {

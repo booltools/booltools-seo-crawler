@@ -1,6 +1,6 @@
 package sdk
 
-import "github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
+import "github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 
 func FilterRules(rules []valueobject.AuditRule, ignore []string, only []string) []valueobject.AuditRule {
 	if len(ignore) == 0 && len(only) == 0 {

@@ -3,7 +3,7 @@ package domain_test
 import (
 	"testing"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 )
 
 func TestSeverity_IsValid(t *testing.T) {

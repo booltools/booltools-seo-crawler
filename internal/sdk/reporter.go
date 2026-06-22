@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 )
 
 const (

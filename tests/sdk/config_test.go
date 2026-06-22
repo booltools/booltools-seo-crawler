@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/sdk"
+	"github.com/booltools/booltools-seo-crawler/internal/sdk"
 )
 
 func TestDefaultConfig(t *testing.T) {

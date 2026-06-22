@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/entity"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/entity"
 )
 
 type PageAuditRepository interface {

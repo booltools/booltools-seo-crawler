@@ -3,8 +3,8 @@ package analyzer_test
 import (
 	"testing"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/analyzer/rules/internationalization"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/analyzer/rules/internationalization"
 )
 
 func TestHreflangChecker_NoHreflang(t *testing.T) {

@@ -1,5 +1,5 @@
 {
-  "name": "free-seo-crawler-web",
+  "name": "booltools-seo-crawler-web",
   "type": "module",
   "scripts": {
     "dev": "astro dev",

@@ -4,8 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/analyzer/rules/content"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/analyzer/rules/content"
 )
 
 func TestContentQualityChecker_ThinContent(t *testing.T) {

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="web/public/screenshots/home.png" alt="Free SEO Crawler — Home" width="700" />
+  <img src="web/public/screenshots/home.png" alt="Booltools Seo Crawler — Home" width="700" />
 </p>
 
 <h1 align="center">Free SEO & GEO Crawler</h1>
@@ -9,9 +9,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/MarceloBD/free-seo-crawler/actions/workflows/ci.yml"><img src="https://github.com/MarceloBD/free-seo-crawler/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <a href="https://github.com/MarceloBD/free-seo-crawler/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MarceloBD/free-seo-crawler" alt="License" /></a>
-  <a href="https://github.com/MarceloBD/free-seo-crawler/releases"><img src="https://img.shields.io/github/v/release/MarceloBD/free-seo-crawler?include_prereleases" alt="Release" /></a>
+  <a href="https://github.com/booltools/booltools-seo-crawler/actions/workflows/ci.yml"><img src="https://github.com/booltools/booltools-seo-crawler/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/booltools/booltools-seo-crawler/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MarceloBD/booltools-seo-crawler" alt="License" /></a>
+  <a href="https://github.com/booltools/booltools-seo-crawler/releases"><img src="https://img.shields.io/github/v/release/MarceloBD/booltools-seo-crawler?include_prereleases" alt="Release" /></a>
   <img src="https://img.shields.io/badge/Go-1.21+-00ADD8?logo=go" alt="Go" />
   <img src="https://img.shields.io/badge/Astro-4+-BC52EE?logo=astro" alt="Astro" />
 </p>
@@ -69,8 +69,8 @@ Built with **Go** (backend) and **Astro** (frontend). Includes a **CI/CD SDK** t
 ### Install and run
 
 ```bash
-git clone https://github.com/MarceloBD/free-seo-crawler.git
-cd free-seo-crawler
+git clone https://github.com/booltools/booltools-seo-crawler.git
+cd booltools-seo-crawler
 
 # Install dependencies
 go mod tidy
@@ -102,7 +102,7 @@ docker compose up --build
 ## Architecture
 
 ```
-free-seo-crawler/
+booltools-seo-crawler/
 ├── cmd/
 │   ├── server/              # Web server entry point
 │   └── seo-crawler/         # CLI/SDK binary
@@ -122,46 +122,46 @@ free-seo-crawler/
 └── Makefile
 ```
 
-| Layer | Technology |
-|-------|-----------|
-| Backend | Go, Chi router, Colly crawler, Goquery |
-| Database | SQLite (modernc.org/sqlite, WAL mode) |
-| Frontend | Astro SSR with @astrojs/node |
+| Layer       | Technology                             |
+| ----------- | -------------------------------------- |
+| Backend     | Go, Chi router, Colly crawler, Goquery |
+| Database    | SQLite (modernc.org/sqlite, WAL mode)  |
+| Frontend    | Astro SSR with @astrojs/node           |
 | Concurrency | Goroutines, worker pool, SSE streaming |
-| SDK | Standalone Go CLI binary |
+| SDK         | Standalone Go CLI binary               |
 
 ## Audit Categories
 
-| Category | Rules | Checks |
-|----------|:-----:|--------|
-| On-Page SEO | 15 | Title, meta description, headings, images, alt text |
-| Content | 2 | Word count, text-to-HTML ratio |
-| Technical SEO | 24 | Canonical, robots.txt, sitemap, redirects, HTTP status |
-| Links | 6 | Internal/external links, broken links, anchor text |
-| Performance | 9 | Page size, TTFB, compression, render blocking, HTTP requests |
-| Structured Data | 3 | JSON-LD, breadcrumbs, schema validation |
-| Security | 9 | HTTPS, HSTS, CSP, XFO, security headers |
-| Accessibility | 5 | Language, viewport, ARIA labels |
-| Social / Open Graph | 12 | OG tags, Twitter cards |
-| Mobile | 2 | Viewport, touch targets |
-| URL Structure | 6 | Lowercase, length, special characters |
-| Internationalization | 2 | Hreflang validation |
-| E-E-A-T | 6 | Author, about, contact, privacy pages |
-| Duplicate Content | 3 | Duplicate titles, descriptions, body |
-| **GEO** | **24** | AI crawler access, llms.txt, citability, entity authority, AI-friendly structure |
+| Category             | Rules  | Checks                                                                           |
+| -------------------- | :----: | -------------------------------------------------------------------------------- |
+| On-Page SEO          |   15   | Title, meta description, headings, images, alt text                              |
+| Content              |   2    | Word count, text-to-HTML ratio                                                   |
+| Technical SEO        |   24   | Canonical, robots.txt, sitemap, redirects, HTTP status                           |
+| Links                |   6    | Internal/external links, broken links, anchor text                               |
+| Performance          |   9    | Page size, TTFB, compression, render blocking, HTTP requests                     |
+| Structured Data      |   3    | JSON-LD, breadcrumbs, schema validation                                          |
+| Security             |   9    | HTTPS, HSTS, CSP, XFO, security headers                                          |
+| Accessibility        |   5    | Language, viewport, ARIA labels                                                  |
+| Social / Open Graph  |   12   | OG tags, Twitter cards                                                           |
+| Mobile               |   2    | Viewport, touch targets                                                          |
+| URL Structure        |   6    | Lowercase, length, special characters                                            |
+| Internationalization |   2    | Hreflang validation                                                              |
+| E-E-A-T              |   6    | Author, about, contact, privacy pages                                            |
+| Duplicate Content    |   3    | Duplicate titles, descriptions, body                                             |
+| **GEO**              | **24** | AI crawler access, llms.txt, citability, entity authority, AI-friendly structure |
 
 ## Rule Presets
 
-| Preset | Description |
-|--------|------------|
-| Full Scan | All 130+ rules |
-| Essential | Core SEO checks every site needs |
-| Blog / Article | Content-heavy sites and blogs |
-| E-Commerce | Product pages and transactional sites |
-| Video Platform | Video-centric sites |
-| Landing Page | Single-page marketing sites |
-| Technical SEO | Infrastructure and crawlability only |
-| GEO / AI Readiness | AI search optimization only |
+| Preset             | Description                           |
+| ------------------ | ------------------------------------- |
+| Full Scan          | All 130+ rules                        |
+| Essential          | Core SEO checks every site needs      |
+| Blog / Article     | Content-heavy sites and blogs         |
+| E-Commerce         | Product pages and transactional sites |
+| Video Platform     | Video-centric sites                   |
+| Landing Page       | Single-page marketing sites           |
+| Technical SEO      | Infrastructure and crawlability only  |
+| GEO / AI Readiness | AI search optimization only           |
 
 ## CI/CD SDK
 
@@ -248,7 +248,7 @@ jobs:
 
       - name: Download SEO Crawler SDK
         run: |
-          curl -sL https://github.com/MarceloBD/free-seo-crawler/releases/latest/download/seo-crawler-linux-amd64 -o seo-crawler
+          curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-amd64 -o seo-crawler
           chmod +x seo-crawler
 
       - name: Run SEO audit
@@ -263,40 +263,40 @@ jobs:
 
 ### CLI Flags
 
-| Flag | Description | Default |
-|------|------------|---------|
-| `--mode` | `static` or `full` | — |
-| `--dir` | HTML directory (static mode) | — |
-| `--url` | Server URL (full mode) | — |
-| `--fail-on` | Severity threshold (`critical`, `high`, `medium`, `low`) | `high` |
-| `--ignore` | Comma-separated rule keys to skip | — |
-| `--only` | Comma-separated rule keys to run | — |
-| `--start-cmd` | Commands to start servers (comma-separated for multiple) | — |
-| `--wait-for` | URLs to poll until ready (comma-separated for multiple) | — |
-| `--wait-timeout` | Max wait time per URL (e.g. `30s`, `1m`) | `30s` |
-| `--format` | `text` or `json` | `text` |
-| `--output` | Write JSON report to file | — |
-| `--max-pages` | Max pages to crawl | `1000` |
+| Flag             | Description                                              | Default |
+| ---------------- | -------------------------------------------------------- | ------- |
+| `--mode`         | `static` or `full`                                       | —       |
+| `--dir`          | HTML directory (static mode)                             | —       |
+| `--url`          | Server URL (full mode)                                   | —       |
+| `--fail-on`      | Severity threshold (`critical`, `high`, `medium`, `low`) | `high`  |
+| `--ignore`       | Comma-separated rule keys to skip                        | —       |
+| `--only`         | Comma-separated rule keys to run                         | —       |
+| `--start-cmd`    | Commands to start servers (comma-separated for multiple) | —       |
+| `--wait-for`     | URLs to poll until ready (comma-separated for multiple)  | —       |
+| `--wait-timeout` | Max wait time per URL (e.g. `30s`, `1m`)                 | `30s`   |
+| `--format`       | `text` or `json`                                         | `text`  |
+| `--output`       | Write JSON report to file                                | —       |
+| `--max-pages`    | Max pages to crawl                                       | `1000`  |
 
 ### Exit Codes
 
-| Code | Meaning |
-|------|---------|
-| `0` | All checks pass |
-| `1` | Issues at or above `--fail-on` severity |
-| `2` | Configuration error |
+| Code | Meaning                                 |
+| ---- | --------------------------------------- |
+| `0`  | All checks pass                         |
+| `1`  | Issues at or above `--fail-on` severity |
+| `2`  | Configuration error                     |
 
 ## API Reference
 
-| Method | Endpoint | Description |
-|--------|---------|------------|
-| `POST` | `/api/crawl` | Start a new crawl |
-| `GET` | `/api/crawl/:id/progress` | SSE progress stream |
-| `GET` | `/api/report/:id` | Full audit report |
-| `GET` | `/api/report/:id/export/csv` | Export as CSV |
-| `GET` | `/api/report/:id/export/md` | Export as Markdown |
-| `GET` | `/api/rules` | List rules and presets |
-| `GET` | `/api/health` | Health check |
+| Method | Endpoint                     | Description            |
+| ------ | ---------------------------- | ---------------------- |
+| `POST` | `/api/crawl`                 | Start a new crawl      |
+| `GET`  | `/api/crawl/:id/progress`    | SSE progress stream    |
+| `GET`  | `/api/report/:id`            | Full audit report      |
+| `GET`  | `/api/report/:id/export/csv` | Export as CSV          |
+| `GET`  | `/api/report/:id/export/md`  | Export as Markdown     |
+| `GET`  | `/api/rules`                 | List rules and presets |
+| `GET`  | `/api/health`                | Health check           |
 
 **Start a crawl:**
 

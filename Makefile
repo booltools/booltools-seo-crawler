@@ -1,6 +1,6 @@
 .PHONY: build build-sdk build-all run dev test clean lint tidy web-dev web-build
 
-BINARY_NAME=free-seo-crawler
+BINARY_NAME=booltools-seo-crawler
 SDK_BINARY=seo-crawler
 
 build:

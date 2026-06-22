@@ -8,8 +8,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
-	"github.com/MarceloBD/free-seo-crawler/internal/application/usecase"
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/entity"
+	"github.com/booltools/booltools-seo-crawler/internal/application/usecase"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/entity"
 )
 
 type SSEHandler struct {

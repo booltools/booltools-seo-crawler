@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/entity"
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/entity"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 )
 
 type CrawlJobRepository struct {

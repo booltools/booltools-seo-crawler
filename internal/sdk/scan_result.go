@@ -1,6 +1,6 @@
 package sdk
 
-import "github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
+import "github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 
 type ScanResult struct {
 	Mode       string

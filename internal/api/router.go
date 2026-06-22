@@ -6,9 +6,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
-	"github.com/MarceloBD/free-seo-crawler/internal/api/handler"
-	"github.com/MarceloBD/free-seo-crawler/internal/api/middleware"
-	"github.com/MarceloBD/free-seo-crawler/internal/application/usecase"
+	"github.com/booltools/booltools-seo-crawler/internal/api/handler"
+	"github.com/booltools/booltools-seo-crawler/internal/api/middleware"
+	"github.com/booltools/booltools-seo-crawler/internal/application/usecase"
 )
 
 func NewRouter(

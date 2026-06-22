@@ -8,18 +8,18 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
 
   <h2>Installation</h2>
   <h3>Build from source</h3>
-  <pre><code>git clone https://github.com/MarceloBD/free-seo-crawler.git
-cd free-seo-crawler
+  <pre><code>git clone https://github.com/booltools/booltools-seo-crawler.git
+cd booltools-seo-crawler
 make build-sdk
 # Binary: bin/seo-crawler</code></pre>
 
   <h3>Download release binary</h3>
   <pre><code># Linux
-curl -sL https://github.com/MarceloBD/free-seo-crawler/releases/latest/download/seo-crawler-linux-amd64 -o seo-crawler
+curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-amd64 -o seo-crawler
 chmod +x seo-crawler
 
 # macOS
-curl -sL https://github.com/MarceloBD/free-seo-crawler/releases/latest/download/seo-crawler-darwin-amd64 -o seo-crawler
+curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-darwin-amd64 -o seo-crawler
 chmod +x seo-crawler</code></pre>
 
   <h2>Scan Modes</h2>
@@ -136,7 +136,7 @@ jobs:
 
       - name: Download SEO Crawler SDK
         run: |
-          curl -sL https://github.com/MarceloBD/free-seo-crawler/releases/latest/download/seo-crawler-linux-amd64 -o seo-crawler
+          curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-amd64 -o seo-crawler
           chmod +x seo-crawler
 
       - name: Run SEO audit

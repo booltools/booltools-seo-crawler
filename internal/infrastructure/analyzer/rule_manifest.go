@@ -1,6 +1,6 @@
 package analyzer
 
-import "github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
+import "github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 
 type RuleInfo struct {
 	Key      string              `json:"key"`

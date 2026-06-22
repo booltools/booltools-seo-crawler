@@ -3,8 +3,8 @@ package domain_test
 import (
 	"testing"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/entity"
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/entity"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 )
 
 func TestNewCrawlJob_ValidDomain(t *testing.T) {

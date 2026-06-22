@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/analyzer"
-	"github.com/MarceloBD/free-seo-crawler/internal/sdk"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/analyzer"
+	"github.com/booltools/booltools-seo-crawler/internal/sdk"
 )
 
 func TestStaticScanner_ValidDirectory(t *testing.T) {

@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/application/dto"
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/repository"
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/application/dto"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/repository"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 )
 
 type GetReportUseCase struct {

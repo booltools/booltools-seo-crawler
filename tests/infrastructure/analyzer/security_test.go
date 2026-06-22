@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/analyzer/rules/security"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/crawler"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/analyzer/rules/security"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/crawler"
 )
 
 func TestHTTPSChecker_PassHTTPS(t *testing.T) {

@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/MarceloBD/free-seo-crawler/internal/domain/valueobject"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/analyzer/rules/performance"
-	"github.com/MarceloBD/free-seo-crawler/internal/infrastructure/crawler"
+	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/analyzer/rules/performance"
+	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/crawler"
 )
 
 func TestResourceChecker_FewScripts(t *testing.T) {
