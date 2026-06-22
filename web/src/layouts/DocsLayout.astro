@@ -37,9 +37,39 @@ const sections = [
 
 const isRulesSection = activeSection?.startsWith('rules');
 const activeCategoryKey = activeSection?.replace('rules-', '') || '';
+
+const siteUrl = import.meta.env.SITE || 'https://seo-crawler.example.com';
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+const breadcrumbItems = [
+  { name: "Home", url: new URL(import.meta.env.BASE_URL || '/', siteUrl).href },
+  { name: "Docs", url: new URL(`${import.meta.env.BASE_URL || '/'}docs/`, siteUrl).href },
+];
+if (activeSection && activeSection !== 'overview') {
+  breadcrumbItems.push({ name: title, url: pageUrl });
+}
 ---
 
 <Layout title={`${title} — SEO Crawler Docs`} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify([
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": title,
+      "url": pageUrl,
+      "dateModified": "2026-06-22",
+      "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": new URL(import.meta.env.BASE_URL || '/', siteUrl).href }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": breadcrumbItems.map((item, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "name": item.name,
+        "item": item.url
+      }))
+    }
+  ])} />
   <div class="docs-container">
     <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

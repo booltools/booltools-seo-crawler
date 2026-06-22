@@ -1,0 +1,36 @@
+# Booltools SEO Crawler
+
+> Free, open-source website auditor for SEO and AI search readiness. Analyzes websites for 130+ checks across technical SEO, on-page optimization, performance, security, structured data, and generative engine optimization (GEO).
+
+## Documentation
+
+- [Getting Started](https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html): Installation and setup guide
+- [Web UI Guide](https://booltools.github.io/booltools-seo-crawler/docs/web-ui.html): Using the web interface
+- [CI/CD SDK](https://booltools.github.io/booltools-seo-crawler/docs/sdk.html): Integrate SEO checks into deployment pipelines
+- [Rules Reference](https://booltools.github.io/booltools-seo-crawler/docs/rules.html): All 130+ audit rules with examples
+- [Rule Presets](https://booltools.github.io/booltools-seo-crawler/docs/presets.html): Pre-configured rule sets for different site types
+- [API Reference](https://booltools.github.io/booltools-seo-crawler/docs/api.html): REST API endpoints
+- [Localhost Crawling](https://booltools.github.io/booltools-seo-crawler/docs/localhost.html): Testing local development servers
+
+## Key Features
+
+- 130+ audit rules across 15 categories
+- GEO (Generative Engine Optimization) — AI crawler access, llms.txt, content citability
+- Real-time progress via Server-Sent Events
+- CI/CD SDK for catching SEO regressions in pull requests
+- GitHub Action available on the Marketplace
+- Export reports as CSV or Markdown
+- Docker deployment support
+
+## Technology
+
+- Backend: Go, Chi router, Colly crawler, Goquery
+- Frontend: Astro SSR
+- Database: SQLite (WAL mode)
+- SDK: Standalone Go CLI binary
+
+## Links
+
+- Source Code: https://github.com/booltools/booltools-seo-crawler
+- GitHub Action: https://github.com/marketplace/actions/booltools-seo-crawler
+- License: MIT

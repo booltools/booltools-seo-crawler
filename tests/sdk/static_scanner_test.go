@@ -3,6 +3,7 @@ package sdk_test
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/analyzer"
@@ -174,5 +175,343 @@ func TestStaticScanner_MultiplePages(t *testing.T) {
 
 	if len(result.AllRules) == 0 {
 		t.Error("expected rules to be populated from both pages")
+	}
+}
+
+func TestStaticScanner_DetectsRobotsTxt(t *testing.T) {
+	tempDir := t.TempDir()
+
+	html := `<!DOCTYPE html><html lang="en"><head><title>Page</title></head><body><h1>Hello</h1></body></html>`
+	os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(html), 0644)
+
+	robotsTxt := `User-agent: *
+Allow: /
+
+Sitemap: https://example.com/sitemap.xml`
+	os.WriteFile(filepath.Join(tempDir, "robots.txt"), []byte(robotsTxt), 0644)
+
+	siteAnalyzer := analyzer.NewSiteAnalyzer()
+	scanner := sdk.NewStaticScanner(siteAnalyzer)
+
+	result, err := scanner.Scan(tempDir)
+	if err != nil {
+		t.Fatalf("scan failed: %v", err)
+	}
+
+	foundRobotsTxtExists := false
+	robotsTxtPassed := false
+	for _, rule := range result.AllRules {
+		if rule.Key == "robots_txt_exists" {
+			foundRobotsTxtExists = true
+			if rule.Result == "pass" {
+				robotsTxtPassed = true
+			}
+		}
+	}
+
+	if !foundRobotsTxtExists {
+		t.Error("expected robots_txt_exists rule to be evaluated in static mode")
+	}
+	if !robotsTxtPassed {
+		t.Error("expected robots_txt_exists to pass when robots.txt file is present")
+	}
+}
+
+func TestStaticScanner_DetectsMissingRobotsTxt(t *testing.T) {
+	tempDir := t.TempDir()
+
+	html := `<!DOCTYPE html><html lang="en"><head><title>Page</title></head><body><h1>Hello</h1></body></html>`
+	os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(html), 0644)
+
+	siteAnalyzer := analyzer.NewSiteAnalyzer()
+	scanner := sdk.NewStaticScanner(siteAnalyzer)
+
+	result, err := scanner.Scan(tempDir)
+	if err != nil {
+		t.Fatalf("scan failed: %v", err)
+	}
+
+	foundRobotsTxtExists := false
+	robotsTxtFailed := false
+	for _, rule := range result.AllRules {
+		if rule.Key == "robots_txt_exists" {
+			foundRobotsTxtExists = true
+			if rule.Result == "fail" {
+				robotsTxtFailed = true
+			}
+		}
+	}
+
+	if !foundRobotsTxtExists {
+		t.Error("expected robots_txt_exists rule to be evaluated in static mode")
+	}
+	if !robotsTxtFailed {
+		t.Error("expected robots_txt_exists to fail when robots.txt is missing")
+	}
+}
+
+func TestStaticScanner_DetectsSitemapXml(t *testing.T) {
+	tempDir := t.TempDir()
+
+	html := `<!DOCTYPE html><html lang="en"><head><title>Page</title></head><body><h1>Hello</h1></body></html>`
+	os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(html), 0644)
+
+	sitemapXml := `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://example.com/</loc>
+    <lastmod>2026-06-22</lastmod>
+  </url>
+</urlset>`
+	os.WriteFile(filepath.Join(tempDir, "sitemap.xml"), []byte(sitemapXml), 0644)
+
+	siteAnalyzer := analyzer.NewSiteAnalyzer()
+	scanner := sdk.NewStaticScanner(siteAnalyzer)
+
+	result, err := scanner.Scan(tempDir)
+	if err != nil {
+		t.Fatalf("scan failed: %v", err)
+	}
+
+	foundSitemapExists := false
+	sitemapPassed := false
+	for _, rule := range result.AllRules {
+		if rule.Key == "sitemap_exists" {
+			foundSitemapExists = true
+			if rule.Result == "pass" {
+				sitemapPassed = true
+			}
+		}
+	}
+
+	if !foundSitemapExists {
+		t.Error("expected sitemap_exists rule to be evaluated in static mode")
+	}
+	if !sitemapPassed {
+		t.Error("expected sitemap_exists to pass when sitemap.xml file is present")
+	}
+}
+
+func TestStaticScanner_DetectsLlmsTxt(t *testing.T) {
+	tempDir := t.TempDir()
+
+	html := `<!DOCTYPE html><html lang="en"><head><title>Page</title></head><body><h1>Hello</h1></body></html>`
+	os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(html), 0644)
+
+	llmsTxt := `# My Site
+
+> A brief description of the site.
+
+## Docs
+
+- [Getting Started](https://example.com/docs/getting-started): Setup guide
+`
+	os.WriteFile(filepath.Join(tempDir, "llms.txt"), []byte(llmsTxt), 0644)
+
+	siteAnalyzer := analyzer.NewSiteAnalyzer()
+	scanner := sdk.NewStaticScanner(siteAnalyzer)
+
+	result, err := scanner.Scan(tempDir)
+	if err != nil {
+		t.Fatalf("scan failed: %v", err)
+	}
+
+	foundLlmsTxtExists := false
+	llmsTxtPassed := false
+	for _, rule := range result.AllRules {
+		if rule.Key == "geo_llms_txt_exists" {
+			foundLlmsTxtExists = true
+			if rule.Result == "pass" {
+				llmsTxtPassed = true
+			}
+		}
+	}
+
+	if !foundLlmsTxtExists {
+		t.Error("expected geo_llms_txt_exists rule to be evaluated in static mode")
+	}
+	if !llmsTxtPassed {
+		t.Error("expected geo_llms_txt_exists to pass when llms.txt file is present")
+	}
+}
+
+func TestStaticScanner_DetectsMissingLlmsTxt(t *testing.T) {
+	tempDir := t.TempDir()
+
+	html := `<!DOCTYPE html><html lang="en"><head><title>Page</title></head><body><h1>Hello</h1></body></html>`
+	os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(html), 0644)
+
+	siteAnalyzer := analyzer.NewSiteAnalyzer()
+	scanner := sdk.NewStaticScanner(siteAnalyzer)
+
+	result, err := scanner.Scan(tempDir)
+	if err != nil {
+		t.Fatalf("scan failed: %v", err)
+	}
+
+	foundLlmsTxtExists := false
+	llmsTxtFailed := false
+	for _, rule := range result.AllRules {
+		if rule.Key == "geo_llms_txt_exists" {
+			foundLlmsTxtExists = true
+			if rule.Result == "fail" {
+				llmsTxtFailed = true
+			}
+		}
+	}
+
+	if !foundLlmsTxtExists {
+		t.Error("expected geo_llms_txt_exists rule to be evaluated in static mode")
+	}
+	if !llmsTxtFailed {
+		t.Error("expected geo_llms_txt_exists to fail when llms.txt is missing")
+	}
+}
+
+func TestStaticScanner_AICrawlerAccessChecked(t *testing.T) {
+	tempDir := t.TempDir()
+
+	html := `<!DOCTYPE html><html lang="en"><head><title>Page</title></head><body><h1>Hello</h1></body></html>`
+	os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(html), 0644)
+
+	robotsTxt := `User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+Sitemap: https://example.com/sitemap.xml`
+	os.WriteFile(filepath.Join(tempDir, "robots.txt"), []byte(robotsTxt), 0644)
+
+	siteAnalyzer := analyzer.NewSiteAnalyzer()
+	scanner := sdk.NewStaticScanner(siteAnalyzer)
+
+	result, err := scanner.Scan(tempDir)
+	if err != nil {
+		t.Fatalf("scan failed: %v", err)
+	}
+
+	foundAICrawlerRule := false
+	for _, rule := range result.AllRules {
+		if strings.HasPrefix(rule.Key, "geo_crawler_") {
+			foundAICrawlerRule = true
+			break
+		}
+	}
+
+	if !foundAICrawlerRule {
+		t.Error("expected AI crawler access rules (geo_crawler_*) to be evaluated in static mode when robots.txt is present")
+	}
+}
+
+func TestStaticScanner_NetworkRulesExcluded(t *testing.T) {
+	tempDir := t.TempDir()
+
+	html := `<!DOCTYPE html><html lang="en"><head><title>Page</title></head><body><h1>Hello</h1></body></html>`
+	os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(html), 0644)
+
+	siteAnalyzer := analyzer.NewSiteAnalyzer()
+	scanner := sdk.NewStaticScanner(siteAnalyzer)
+
+	result, err := scanner.Scan(tempDir)
+	if err != nil {
+		t.Fatalf("scan failed: %v", err)
+	}
+
+	networkRules := map[string]bool{
+		"broken_external_links": true,
+		"broken_internal_links": true,
+		"broken_scripts":        true,
+		"broken_stylesheets":    true,
+		"broken_images":         true,
+		"http_status_ok":        true,
+		"uses_https":            true,
+		"ttfb":                  true,
+		"compression":           true,
+		"sitemap_broken_urls":   true,
+	}
+
+	for _, rule := range result.AllRules {
+		if networkRules[rule.Key] {
+			t.Errorf("network-dependent rule %q should be excluded in static mode", rule.Key)
+		}
+	}
+}
+
+func TestStaticScanner_RobotsTxtSyntaxChecked(t *testing.T) {
+	tempDir := t.TempDir()
+
+	html := `<!DOCTYPE html><html lang="en"><head><title>Page</title></head><body><h1>Hello</h1></body></html>`
+	os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(html), 0644)
+
+	robotsTxt := `User-agent: *
+Allow: /
+InvalidDirective: something
+Sitemap: https://example.com/sitemap.xml`
+	os.WriteFile(filepath.Join(tempDir, "robots.txt"), []byte(robotsTxt), 0644)
+
+	siteAnalyzer := analyzer.NewSiteAnalyzer()
+	scanner := sdk.NewStaticScanner(siteAnalyzer)
+
+	result, err := scanner.Scan(tempDir)
+	if err != nil {
+		t.Fatalf("scan failed: %v", err)
+	}
+
+	foundSyntaxRule := false
+	syntaxFailed := false
+	for _, rule := range result.AllRules {
+		if rule.Key == "robots_txt_syntax" {
+			foundSyntaxRule = true
+			if rule.Result == "fail" {
+				syntaxFailed = true
+			}
+		}
+	}
+
+	if !foundSyntaxRule {
+		t.Error("expected robots_txt_syntax rule to be evaluated")
+	}
+	if !syntaxFailed {
+		t.Error("expected robots_txt_syntax to fail when robots.txt has invalid directives")
+	}
+}
+
+func TestStaticScanner_SitemapValidXml(t *testing.T) {
+	tempDir := t.TempDir()
+
+	html := `<!DOCTYPE html><html lang="en"><head><title>Page</title></head><body><h1>Hello</h1></body></html>`
+	os.WriteFile(filepath.Join(tempDir, "index.html"), []byte(html), 0644)
+
+	invalidSitemap := `not valid xml at all`
+	os.WriteFile(filepath.Join(tempDir, "sitemap.xml"), []byte(invalidSitemap), 0644)
+
+	siteAnalyzer := analyzer.NewSiteAnalyzer()
+	scanner := sdk.NewStaticScanner(siteAnalyzer)
+
+	result, err := scanner.Scan(tempDir)
+	if err != nil {
+		t.Fatalf("scan failed: %v", err)
+	}
+
+	foundValidXml := false
+	validXmlFailed := false
+	for _, rule := range result.AllRules {
+		if rule.Key == "sitemap_valid_xml" {
+			foundValidXml = true
+			if rule.Result == "fail" {
+				validXmlFailed = true
+			}
+		}
+	}
+
+	if !foundValidXml {
+		t.Error("expected sitemap_valid_xml rule to be evaluated")
+	}
+	if !validXmlFailed {
+		t.Error("expected sitemap_valid_xml to fail for invalid XML content")
 	}
 }

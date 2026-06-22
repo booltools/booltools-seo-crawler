@@ -40,17 +40,13 @@ func (c *JsonLdChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 			return
 		}
 
-		var parsed map[string]interface{}
-		if err := json.Unmarshal([]byte(content), &parsed); err != nil {
+		var raw interface{}
+		if err := json.Unmarshal([]byte(content), &raw); err != nil {
 			return
 		}
 		validJSONCount++
 
-		if schemaType, exists := parsed["@type"]; exists {
-			if typeStr, ok := schemaType.(string); ok {
-				schemaTypes = append(schemaTypes, typeStr)
-			}
-		}
+		extractTypes(raw, &schemaTypes)
 	})
 
 	validRule := valueobject.NewAuditRule("jsonld_valid", valueobject.CategoryStructuredData, valueobject.SeverityHigh)
@@ -79,6 +75,21 @@ func (c *JsonLdChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 	rules = append(rules, breadcrumbRule)
 
 	return rules
+}
+
+func extractTypes(raw interface{}, schemaTypes *[]string) {
+	switch value := raw.(type) {
+	case map[string]interface{}:
+		if schemaType, exists := value["@type"]; exists {
+			if typeStr, ok := schemaType.(string); ok {
+				*schemaTypes = append(*schemaTypes, typeStr)
+			}
+		}
+	case []interface{}:
+		for _, item := range value {
+			extractTypes(item, schemaTypes)
+		}
+	}
 }
 
 func containsType(types []string, target string) bool {

@@ -1,0 +1,140 @@
+# Booltools SEO Crawler
+
+> Free, open-source website auditor for SEO and AI search readiness. Analyzes websites for 130+ checks across technical SEO, on-page optimization, performance, security, structured data, and generative engine optimization (GEO). Built with Go (backend) and Astro (frontend).
+
+## Overview
+
+Booltools SEO Crawler is a comprehensive SEO analysis tool that crawls websites and evaluates them against 130+ rules across 15 categories. It provides actionable reports with fix instructions, real-time progress visualization, and can be integrated into CI/CD pipelines to catch SEO regressions before production deployment.
+
+## Audit Categories
+
+| Category | Rules | What It Checks |
+|----------|-------|----------------|
+| On-Page SEO | 15 | Title, meta description, headings, images, alt text |
+| Content Quality | 2 | Word count, text-to-HTML ratio |
+| Technical SEO | 24 | Canonical, robots.txt, sitemap, redirects, HTTP status |
+| Links | 6 | Internal/external links, broken links, anchor text |
+| Performance | 9 | Page size, TTFB, compression, render blocking |
+| Structured Data | 3 | JSON-LD, breadcrumbs, schema validation |
+| Security | 9 | HTTPS, HSTS, CSP, XFO, security headers |
+| Accessibility | 5 | Language, viewport, ARIA labels |
+| Social / Open Graph | 12 | OG tags, Twitter cards |
+| Mobile | 2 | Viewport, touch targets |
+| URL Structure | 6 | Lowercase, length, special characters |
+| Internationalization | 2 | Hreflang validation |
+| E-E-A-T | 6 | Author, about, contact, privacy pages |
+| Duplicate Content | 3 | Duplicate titles, descriptions, body |
+| GEO (AI Search) | 24 | AI crawler access, llms.txt, citability, entity authority |
+
+## Rule Presets
+
+- **Full Scan**: All 130+ rules
+- **Essential**: Core SEO checks every site needs
+- **Blog / Article**: Content-heavy sites
+- **E-Commerce**: Product pages and transactional sites
+- **Video Platform**: Video-centric sites
+- **Landing Page**: Single-page marketing sites
+- **Technical SEO**: Infrastructure and crawlability only
+- **GEO / AI Readiness**: AI search optimization only
+
+## CI/CD SDK Usage
+
+The SDK is a standalone Go CLI binary that runs SEO checks in deployment pipelines.
+
+### Basic Commands
+
+```bash
+# Scan a running server
+seo-crawler --mode=full --url=http://localhost:3000
+
+# Scan static HTML files
+seo-crawler --mode=static --dir=./dist
+
+# Auto-start server, scan, then stop
+seo-crawler --mode=full --start-cmd="npm run dev" --wait-for=http://localhost:3000 --url=http://localhost:3000 --fail-on=high
+```
+
+### GitHub Action
+
+```yaml
+- name: Run SEO audit
+  uses: booltools/booltools-seo-crawler@v0
+  with:
+    mode: full
+    url: http://localhost:3000
+    fail-on: high
+```
+
+### Configuration File (.seo-crawler.yml)
+
+```yaml
+mode: full
+url: http://localhost:3000
+start_cmd: "npm run dev"
+wait_for: http://localhost:3000
+wait_timeout: 60s
+fail_on: high
+max_pages: 100
+ignore:
+  - uses_https
+  - hsts_header
+```
+
+### Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| 0 | All checks pass |
+| 1 | Issues at or above --fail-on severity |
+| 2 | Configuration error |
+
+## REST API
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/crawl | Start a new crawl |
+| GET | /api/crawl/:id/progress | SSE progress stream |
+| GET | /api/report/:id | Full audit report |
+| GET | /api/report/:id/export/csv | Export as CSV |
+| GET | /api/report/:id/export/md | Export as Markdown |
+| GET | /api/rules | List rules and presets |
+| GET | /api/health | Health check |
+
+### Start a Crawl
+
+```json
+POST /api/crawl
+{
+  "domain": "example.com",
+  "maxPages": 100,
+  "selectedRules": ["title_exists", "meta_description_exists"]
+}
+```
+
+## Installation
+
+```bash
+git clone https://github.com/booltools/booltools-seo-crawler.git
+cd booltools-seo-crawler
+go mod tidy
+cd web && npm install && cd ..
+make dev        # Backend on port 8080
+make web-dev    # Frontend on port 4321
+```
+
+## Technology Stack
+
+- **Backend**: Go, Chi router, Colly crawler, Goquery
+- **Database**: SQLite (modernc.org/sqlite, WAL mode)
+- **Frontend**: Astro SSR with @astrojs/node
+- **Concurrency**: Goroutines, worker pool, SSE streaming
+- **SDK**: Standalone Go CLI binary
+- **CI/CD**: GitHub Actions (composite action)
+
+## Links
+
+- Website: https://booltools.github.io/booltools-seo-crawler/
+- Source Code: https://github.com/booltools/booltools-seo-crawler
+- GitHub Action: https://github.com/marketplace/actions/booltools-seo-crawler
+- License: MIT
+- Author: Booltools (https://github.com/booltools)

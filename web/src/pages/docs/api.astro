@@ -75,12 +75,35 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   <pre><code>curl -o report.md http://localhost:8080/api/report/&lt;job-id&gt;/export/md</code></pre>
   <p><strong>Query params:</strong> <code>?exclude=rule_key1,rule_key2</code> to omit specific rules.</p>
 
+  <h3>GET /api/health</h3>
+  <p>Health check endpoint.</p>
+  <pre><code>curl http://localhost:8080/api/health</code></pre>
+  <p><strong>Response:</strong> <code>{'{"status":"ok"}'}</code></p>
+
+  <h2>Authentication</h2>
+  <p>The API does not require authentication when running locally. All endpoints are accessible without tokens or API keys. If you deploy the server publicly, consider adding authentication middleware or placing it behind a reverse proxy with access controls.</p>
+
   <h2>Rate Limiting</h2>
-  <p>The API applies rate limiting of 30 requests per minute per IP address on all <code>/api/*</code> endpoints.</p>
+  <p>There are no built-in rate limits on the API. The worker pool processes one crawl job at a time per worker (default: 2 workers). Additional crawl requests are queued and processed in order. The SSE progress stream is lightweight and suitable for long-polling clients.</p>
 
   <h2>Error Responses</h2>
-  <p>Errors return JSON with a message field:</p>
+  <p>All error responses follow this format:</p>
   <pre><code>{'{'}
-  "error": "domain is required"
+  "error": "Human-readable error message"
 {'}'}</code></pre>
+  <p>Common HTTP status codes: <code>400</code> for invalid input, <code>404</code> for unknown job IDs, <code>500</code> for internal server errors.</p>
+
+  <h2>Example: cURL</h2>
+  <pre><code># Start a crawl
+curl -X POST http://localhost:8080/api/crawl \
+  -H "Content-Type: application/json" \
+  -d '{'{'}
+    "domain": "example.com"
+  {'}'}'
+
+# Get the report
+curl http://localhost:8080/api/report/YOUR_JOB_ID
+
+# Export as markdown
+curl http://localhost:8080/api/report/YOUR_JOB_ID/export/md -o report.md</code></pre>
 </DocsLayout>

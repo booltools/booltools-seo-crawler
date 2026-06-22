@@ -1,0 +1,30 @@
+# Booltools SEO Crawler - robots.txt
+# https://booltools.github.io/booltools-seo-crawler/
+
+User-agent: *
+Allow: /
+
+# AI Search Bots - explicitly allowed
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# Training-only bots - blocked
+User-agent: GPTBot
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+Sitemap: https://booltools.github.io/booltools-seo-crawler/sitemap.xml

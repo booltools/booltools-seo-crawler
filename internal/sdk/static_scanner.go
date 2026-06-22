@@ -50,6 +50,8 @@ func (scanner *StaticScanner) Scan(directory string) (*ScanResult, error) {
 		Pages:      make([]PageScanResult, 0, len(htmlFiles)),
 	}
 
+	var allPages []crawler.PageData
+
 	totalFiles := len(htmlFiles)
 	for index, htmlFile := range htmlFiles {
 		relativePath, _ := filepath.Rel(absDirectory, htmlFile)
@@ -66,10 +68,39 @@ func (scanner *StaticScanner) Scan(directory string) (*ScanResult, error) {
 		pageResult := buildPageScanResult(pageData.URL, rules)
 		result.Pages = append(result.Pages, pageResult)
 		result.AllRules = append(result.AllRules, rules...)
+		allPages = append(allPages, pageData)
 	}
 	fmt.Fprintln(os.Stderr)
 
+	crawlResult := buildStaticCrawlResult(absDirectory, allPages)
+	siteRules := scanner.analyzer.AnalyzeSite(crawlResult)
+	siteRules = filterNetworkDependentSiteRules(siteRules)
+	result.AllRules = append(result.AllRules, siteRules...)
+
 	return result, nil
+}
+
+func buildStaticCrawlResult(directory string, pages []crawler.PageData) crawler.CrawlResult {
+	crawlResult := crawler.CrawlResult{
+		Pages:          pages,
+		Domain:         "file:///" + filepath.ToSlash(directory),
+		URLStatusCache: crawler.NewURLStatusCache(),
+	}
+
+	crawlResult.RobotsTxt = readFileIfExists(filepath.Join(directory, "robots.txt"))
+	crawlResult.SitemapXML = readFileIfExists(filepath.Join(directory, "sitemap.xml"))
+	crawlResult.LlmsTxt = readFileIfExists(filepath.Join(directory, "llms.txt"))
+	crawlResult.LlmsFullTxt = readFileIfExists(filepath.Join(directory, "llms-full.txt"))
+
+	return crawlResult
+}
+
+func readFileIfExists(path string) string {
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return ""
+	}
+	return string(content)
 }
 
 func findHTMLFiles(directory string) ([]string, error) {
@@ -128,28 +159,53 @@ func parseHTMLFile(filePath string, baseDirectory string) (crawler.PageData, err
 }
 
 var networkDependentRules = map[string]struct{}{
-	"http_status_ok":              {},
-	"uses_https":                  {},
-	"mixed_content":               {},
-	"hsts_header":                 {},
-	"security_xcto":               {},
-	"security_xfo":                {},
-	"security_csp":                {},
-	"security_referrer":           {},
-	"security_permissions":        {},
-	"security_server_disclosure":  {},
-	"cache_headers":               {},
-	"ttfb":                        {},
-	"compression":                 {},
-	"page_size":                   {},
-	"crawl_depth":                 {},
-	"canonical_self_ref":          {},
+	"http_status_ok":             {},
+	"uses_https":                 {},
+	"mixed_content":              {},
+	"hsts_header":                {},
+	"security_xcto":              {},
+	"security_xfo":               {},
+	"security_csp":               {},
+	"security_referrer":          {},
+	"security_permissions":       {},
+	"security_server_disclosure": {},
+	"cache_headers":              {},
+	"ttfb":                       {},
+	"compression":                {},
+	"page_size":                  {},
+	"crawl_depth":                {},
+	"canonical_self_ref":         {},
+}
+
+var networkDependentSiteRules = map[string]struct{}{
+	"broken_external_links": {},
+	"broken_internal_links": {},
+	"broken_scripts":        {},
+	"broken_stylesheets":    {},
+	"broken_images":         {},
+	"redirect_chains":       {},
+	"temporary_redirects":   {},
+	"sitemap_broken_urls":   {},
+	"sitemap_redirect_urls": {},
+	"sitemap_coverage":      {},
+	"sitemap_orphan_urls":   {},
 }
 
 func filterNetworkDependentRules(rules []valueobject.AuditRule) []valueobject.AuditRule {
 	filtered := make([]valueobject.AuditRule, 0, len(rules))
 	for _, rule := range rules {
 		if _, isNetworkRule := networkDependentRules[rule.Key]; isNetworkRule {
+			continue
+		}
+		filtered = append(filtered, rule)
+	}
+	return filtered
+}
+
+func filterNetworkDependentSiteRules(rules []valueobject.AuditRule) []valueobject.AuditRule {
+	filtered := make([]valueobject.AuditRule, 0, len(rules))
+	for _, rule := range rules {
+		if _, isNetworkRule := networkDependentSiteRules[rule.Key]; isNetworkRule {
 			continue
 		}
 		filtered = append(filtered, rule)

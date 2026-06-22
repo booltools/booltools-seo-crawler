@@ -231,7 +231,9 @@ ignore:
   - hsts_header
 ```
 
-### GitHub Actions
+### GitHub Actions (Marketplace Action)
+
+The easiest way — use the official [Marketplace action](https://github.com/marketplace/actions/booltools-seo-crawler):
 
 ```yaml
 name: SEO Audit
@@ -244,7 +246,46 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
+      - run: npm ci
+
+      - name: Run SEO audit
+        uses: booltools/booltools-seo-crawler@v0
+        with:
+          mode: full
+          url: http://localhost:3000
+          start-cmd: "npm run dev"
+          wait-for: http://localhost:3000
+          fail-on: high
+```
+
+For static HTML sites (no server needed):
+
+```yaml
+      - name: Run SEO audit
+        uses: booltools/booltools-seo-crawler@v0
+        with:
+          mode: static
+          dir: ./dist
+          fail-on: high
+```
+
+### GitHub Actions (Manual Binary)
+
+If you prefer downloading the binary directly:
+
+```yaml
+name: SEO Audit
+on: [pull_request]
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - run: npm ci
 
       - name: Download SEO Crawler SDK

@@ -15,6 +15,7 @@
   <meta property="og:site_name" content="Booltools SEO Crawler" />
   <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@booltools" />
   <meta name="twitter:title" content="Getting Started — Booltools SEO Crawler" />
   <meta name="twitter:description" content="Install and run the Booltools SEO Crawler locally in a few minutes." />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
@@ -23,15 +24,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="docs.css" />
   <script type="application/ld+json">
-  {
+  [{
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Getting Started — Booltools SEO Crawler",
     "url": "https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html",
     "description": "Install and run the Booltools SEO Crawler locally in a few minutes.",
+    "dateModified": "2026-06-22",
     "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": "https://booltools.github.io/booltools-seo-crawler/" },
     "author": { "@type": "Organization", "name": "Booltools", "url": "https://github.com/booltools" }
-  }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://booltools.github.io/booltools-seo-crawler/" },
+      { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://booltools.github.io/booltools-seo-crawler/docs/" },
+      { "@type": "ListItem", "position": 3, "name": "Getting Started", "item": "https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html" }
+    ]
+  }]
   </script>
 </head>
 <body>
@@ -135,6 +146,19 @@ npm run build</code></pre>
       <blockquote>
         <p><strong>Windows:</strong> install Make with <code>winget install GnuWin32.Make</code></p>
       </blockquote>
+
+      <h2>Troubleshooting</h2>
+      <dl>
+        <dt>Port 8080 already in use</dt>
+        <dd>Another process is using port 8080. Stop it or set the <code>PORT</code> environment variable to use a different port.</dd>
+        <dt>Node.js version error during frontend build</dt>
+        <dd>Astro requires Node.js 22 or later. Run <code>node --version</code> to check and update if needed using <code>nvm install 22</code>.</dd>
+        <dt>Go module download fails</dt>
+        <dd>Ensure you have internet access and Go 1.21+ installed. Run <code>go version</code> to verify. If behind a proxy, set <code>GOPROXY</code> appropriately.</dd>
+      </dl>
+
+      <h2>Next Steps</h2>
+      <p>Once running, try analyzing <code>localhost:4321</code> from the web interface to audit the crawler's own frontend. Then explore the <a href="sdk.html">CI/CD SDK documentation</a> to integrate SEO checks into your deployment pipeline, or browse the <a href="rules.html">Rules Reference</a> to understand what each of the 130+ rules checks.</p>
     </article>
   </div>
   <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">

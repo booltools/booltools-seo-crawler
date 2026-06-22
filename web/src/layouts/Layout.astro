@@ -12,7 +12,7 @@ const siteUrl = import.meta.env.SITE || 'https://seo-crawler.example.com';
 const defaultDescription = 'Free open-source SEO and GEO audit tool. Analyze any domain for 200+ checks including AI search readiness, technical SEO, performance, and more.';
 const metaDescription = description || defaultDescription;
 const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).href;
-const ogImg = ogImage || `${siteUrl}/og-image.png`;
+const ogImg = ogImage || `https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png`;
 ---
 
 <!doctype html>
@@ -34,9 +34,13 @@ const ogImg = ogImage || `${siteUrl}/og-image.png`;
     <meta property="og:locale" content="en_US" />
 
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@booltools" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={ogImg} />
+
+    <meta name="author" content="Booltools" />
+    <link rel="copyright" href="https://github.com/booltools/booltools-seo-crawler/blob/master/LICENSE" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

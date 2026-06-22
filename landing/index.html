@@ -15,6 +15,7 @@
   <meta property="og:site_name" content="Booltools SEO Crawler" />
   <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@booltools" />
   <meta name="twitter:title" content="Booltools SEO Crawler — Free Open-Source SEO & GEO Auditor" />
   <meta name="twitter:description" content="Analyze any website for 130+ SEO checks including generative engine optimization (GEO). Free, open-source, built with Go and Astro." />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
@@ -24,19 +25,44 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
   <script type="application/ld+json">
-  {
+  [{
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Booltools SEO Crawler",
     "url": "https://booltools.github.io/booltools-seo-crawler/",
     "description": "Free open-source website auditor for SEO and AI search readiness. 130+ audit rules across 15 categories.",
+    "dateModified": "2026-06-22",
     "author": {
       "@type": "Organization",
       "name": "Booltools",
       "url": "https://github.com/booltools"
     },
     "license": "https://opensource.org/licenses/MIT"
-  }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Booltools",
+    "url": "https://github.com/booltools",
+    "logo": "https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png",
+    "description": "Open-source developer tools for SEO automation and AI search readiness.",
+    "sameAs": [
+      "https://github.com/booltools",
+      "https://github.com/marketplace/actions/booltools-seo-crawler"
+    ],
+    "foundingDate": "2026",
+    "email": "booltools@github.com"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [{
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://booltools.github.io/booltools-seo-crawler/"
+    }]
+  }]
   </script>
 </head>
 <body>
@@ -53,8 +79,29 @@
         <a href="docs/">Docs</a>
         <a href="https://github.com/booltools/booltools-seo-crawler" class="btn btn-outline" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
+      <button class="menu-toggle" aria-label="Open navigation menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
     </nav>
   </header>
+
+  <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
+    <div class="drawer-backdrop" id="drawer-backdrop"></div>
+    <div class="drawer-panel">
+      <button class="drawer-close" aria-label="Close navigation menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <nav class="drawer-nav">
+        <a href="#features">Features</a>
+        <a href="#categories">Categories</a>
+        <a href="#sdk">CI/CD SDK</a>
+        <a href="docs/">Documentation</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="https://github.com/booltools/booltools-seo-crawler" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://github.com/marketplace/actions/booltools-seo-crawler" target="_blank" rel="noopener noreferrer">GitHub Marketplace</a>
+      </nav>
+    </div>
+  </div>
 
   <main>
     <section class="hero">
@@ -258,5 +305,38 @@ seo-crawler --mode=static --dir=./dist</code></pre>
       <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer">Booltools</a> &bull; MIT License</p>
     </div>
   </footer>
+
+  <script>
+  (function() {
+    const toggle = document.querySelector('.menu-toggle');
+    const drawer = document.getElementById('mobile-drawer');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const closeBtn = drawer.querySelector('.drawer-close');
+    const links = drawer.querySelectorAll('.drawer-nav a');
+
+    function openDrawer() {
+      drawer.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    toggle.addEventListener('click', openDrawer);
+    closeBtn.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+    links.forEach(function(link) { link.addEventListener('click', closeDrawer); });
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+    });
+  })();
+  </script>
 </body>
 </html>

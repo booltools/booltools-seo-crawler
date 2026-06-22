@@ -32,20 +32,39 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   </div>
 
   <h2>Architecture</h2>
-  <ul>
-    <li><strong>Backend:</strong> Go (Golang) with Chi router, Colly crawler, Goquery parser, SQLite storage</li>
-    <li><strong>Frontend:</strong> Astro with SSR (Node.js adapter)</li>
-    <li><strong>SDK:</strong> Standalone Go CLI binary for CI/CD pipelines</li>
-  </ul>
+  <table>
+    <thead><tr><th>Layer</th><th>Technology</th></tr></thead>
+    <tbody>
+      <tr><td>Backend</td><td>Go, Chi router, Colly crawler, Goquery</td></tr>
+      <tr><td>Database</td><td>SQLite (WAL mode)</td></tr>
+      <tr><td>Frontend</td><td>Astro SSR</td></tr>
+      <tr><td>Concurrency</td><td>Goroutines, worker pool, SSE streaming</td></tr>
+      <tr><td>SDK</td><td>Standalone Go CLI binary</td></tr>
+    </tbody>
+  </table>
 
   <h2>Quick Links</h2>
   <ul>
-    <li><a href="/docs/getting-started">Getting Started</a> — installation and setup</li>
+    <li><a href="/docs/getting-started">Getting Started</a> — install and run locally</li>
     <li><a href="/docs/web-ui">Web UI Guide</a> — using the web interface</li>
-    <li><a href="/docs/sdk">CI/CD SDK</a> — integrate SEO checks in your pipeline</li>
-    <li><a href="/docs/rules">Rules Reference</a> — all 130+ rules explained</li>
+    <li><a href="/docs/sdk">CI/CD SDK</a> — integrate into your deployment pipeline</li>
+    <li><a href="/docs/rules">Rules Reference</a> — all 130+ audit rules</li>
+    <li><a href="/docs/presets">Rule Presets</a> — pre-configured rule sets</li>
+    <li><a href="/docs/localhost">Localhost Crawling</a> — test before deploying</li>
     <li><a href="/docs/api">API Reference</a> — REST API endpoints</li>
   </ul>
+
+  <h2>Frequently Asked Questions</h2>
+  <dl>
+    <dt>What makes this different from other SEO tools?</dt>
+    <dd>Booltools SEO Crawler is 100% free, open-source, and includes 24 GEO (Generative Engine Optimization) rules for AI search readiness that most paid tools don't cover. It also runs locally — your data never leaves your machine.</dd>
+    <dt>Can I use it in my CI/CD pipeline?</dt>
+    <dd>Yes. The SDK is a standalone binary that exits with code 1 when issues are found above your configured threshold. It's available as a <a href="https://github.com/marketplace/actions/booltools-seo-crawler">GitHub Action</a> on the Marketplace.</dd>
+    <dt>Does it support JavaScript-rendered pages?</dt>
+    <dd>The crawler fetches server-rendered HTML. For SPAs that rely on client-side rendering, use the static mode with your pre-built output directory, or crawl against a running dev server.</dd>
+    <dt>How many pages can it crawl?</dt>
+    <dd>By default up to 1,000 pages per domain. You can increase this with the <code>--max-pages</code> flag or the web UI settings. The crawler respects robots.txt and rate-limits itself to avoid overloading target servers.</dd>
+  </dl>
 
   <style>
     .docs-screenshot {

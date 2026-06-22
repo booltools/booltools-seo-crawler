@@ -106,4 +106,4 @@ jobs:
           mode: static
           dir: ./landing
           fail-on: high
-          ignore: uses_https,hsts_header,http_status_ok,ttfb,compression,page_size,crawl_depth
+          ignore: uses_https,hsts_header,http_status_ok,ttfb,compression,page_size,crawl_depth,security_xcto,security_xfo,security_csp,security_referrer,security_permissions,security_server_disclosure

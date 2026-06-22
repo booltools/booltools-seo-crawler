@@ -15,6 +15,7 @@
   <meta property="og:site_name" content="Booltools SEO Crawler" />
   <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@booltools" />
   <meta name="twitter:title" content="Documentation — Booltools SEO Crawler" />
   <meta name="twitter:description" content="Documentation for the Booltools SEO Crawler. Learn how to install, configure, and use the free open-source website auditor." />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
@@ -23,15 +24,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="docs.css" />
   <script type="application/ld+json">
-  {
+  [{
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Documentation — Booltools SEO Crawler",
     "url": "https://booltools.github.io/booltools-seo-crawler/docs/",
     "description": "Documentation for the Booltools SEO Crawler — getting started, SDK usage, API reference, and more.",
+    "dateModified": "2026-06-22",
     "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": "https://booltools.github.io/booltools-seo-crawler/" },
     "author": { "@type": "Organization", "name": "Booltools", "url": "https://github.com/booltools" }
-  }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://booltools.github.io/booltools-seo-crawler/" },
+      { "@type": "ListItem", "position": 2, "name": "Documentation", "item": "https://booltools.github.io/booltools-seo-crawler/docs/" }
+    ]
+  }]
   </script>
 </head>
 <body>
@@ -91,6 +101,18 @@
         <li><a href="localhost.html">Localhost Crawling</a> — test before deploying</li>
         <li><a href="api.html">API Reference</a> — REST API endpoints</li>
       </ul>
+
+      <h2>Frequently Asked Questions</h2>
+      <dl>
+        <dt>What makes this different from other SEO tools?</dt>
+        <dd>Booltools SEO Crawler is 100% free, open-source, and includes 24 GEO (Generative Engine Optimization) rules for AI search readiness that most paid tools don't cover. It also runs locally — your data never leaves your machine.</dd>
+        <dt>Can I use it in my CI/CD pipeline?</dt>
+        <dd>Yes. The SDK is a standalone binary that exits with code 1 when issues are found above your configured threshold. It's available as a <a href="https://github.com/marketplace/actions/booltools-seo-crawler">GitHub Action</a> on the Marketplace.</dd>
+        <dt>Does it support JavaScript-rendered pages?</dt>
+        <dd>The crawler fetches server-rendered HTML. For SPAs that rely on client-side rendering, use the static mode with your pre-built output directory, or crawl against a running dev server.</dd>
+        <dt>How many pages can it crawl?</dt>
+        <dd>By default up to 1,000 pages per domain. You can increase this with the <code>--max-pages</code> flag or the web UI settings. The crawler respects robots.txt and rate-limits itself to avoid overloading target servers.</dd>
+      </dl>
     </article>
   </div>
   <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">

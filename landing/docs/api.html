@@ -15,6 +15,7 @@
   <meta property="og:site_name" content="Booltools SEO Crawler" />
   <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@booltools" />
   <meta name="twitter:title" content="API Reference — Booltools SEO Crawler" />
   <meta name="twitter:description" content="REST API endpoints for the Booltools SEO Crawler." />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
@@ -23,15 +24,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="docs.css" />
   <script type="application/ld+json">
-  {
+  [{
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "API Reference — Booltools SEO Crawler",
     "url": "https://booltools.github.io/booltools-seo-crawler/docs/api.html",
     "description": "REST API endpoints for the Booltools SEO Crawler.",
+    "dateModified": "2026-06-22",
     "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": "https://booltools.github.io/booltools-seo-crawler/" },
     "author": { "@type": "Organization", "name": "Booltools", "url": "https://github.com/booltools" }
-  }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://booltools.github.io/booltools-seo-crawler/" },
+      { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://booltools.github.io/booltools-seo-crawler/docs/" },
+      { "@type": "ListItem", "position": 3, "name": "API Reference", "item": "https://booltools.github.io/booltools-seo-crawler/docs/api.html" }
+    ]
+  }]
   </script>
 </head>
 <body>
@@ -119,6 +130,19 @@ GET /api/report/:id/export/md</code></pre>
       <h2>Health Check</h2>
       <pre><code>GET /api/health</code></pre>
       <p>Response: <code>{"status":"ok"}</code></p>
+
+      <h2>Authentication</h2>
+      <p>The API does not require authentication when running locally. All endpoints are accessible without tokens or API keys. If you deploy the server publicly, consider adding authentication middleware or placing it behind a reverse proxy with access controls.</p>
+
+      <h2>Rate Limiting</h2>
+      <p>There are no built-in rate limits on the API. The worker pool processes one crawl job at a time per worker (default: 2 workers). Additional crawl requests are queued and processed in order. The SSE progress stream is lightweight and suitable for long-polling clients.</p>
+
+      <h2>Error Responses</h2>
+      <p>All error responses follow this format:</p>
+      <pre><code>{
+  "error": "Human-readable error message"
+}</code></pre>
+      <p>Common HTTP status codes: <code>400</code> for invalid input, <code>404</code> for unknown job IDs, <code>500</code> for internal server errors.</p>
 
       <h2>Example: cURL</h2>
       <pre><code># Start a crawl

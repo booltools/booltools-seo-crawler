@@ -188,7 +188,7 @@ jobs:
       - run: npm ci
 
       - name: SEO Audit
-        uses: booltools/booltools-seo-crawler@v1
+        uses: booltools/booltools-seo-crawler@v0
         with:
           mode: full
           start-cmd: "npm run dev"
@@ -200,7 +200,7 @@ jobs:
   <pre><code>      - run: npm run build
 
       - name: SEO Audit
-        uses: booltools/booltools-seo-crawler@v1
+        uses: booltools/booltools-seo-crawler@v0
         with:
           mode: static
           dir: ./dist
