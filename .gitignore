@@ -1,0 +1,43 @@
+# Go binaries
+bin/
+*.exe
+*.exe~
+*.test
+*.out
+server
+seo-crawler
+
+# SQLite database
+data.db
+data.db-wal
+data.db-shm
+*.db-journal
+
+# Node / Astro
+web/node_modules/
+web/dist/
+web/.astro/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Temp / test artifacts
+tmp/
+temp/
+*.tmp
+*.log
+coverage/

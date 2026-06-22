@@ -1,0 +1,440 @@
+---
+interface Issue {
+  ruleKey: string;
+  category: string;
+  categoryLabel: string;
+  severity: string;
+  result: string;
+  message: string;
+  recommendation: string;
+  affectedUrl?: string;
+  details?: string;
+}
+
+interface AffectedEntry {
+  url: string;
+  details: string;
+}
+
+interface GroupedIssue {
+  message: string;
+  severity: string;
+  recommendation: string;
+  affected: AffectedEntry[];
+}
+
+interface Props {
+  category: string;
+  label: string;
+  score?: number;
+  issues: Issue[];
+}
+
+const { label, score, issues } = Astro.props;
+
+const criticalCount = issues.filter((issue) => issue.severity === 'critical' && issue.result !== 'pass').length;
+const highCount = issues.filter((issue) => issue.severity === 'high' && issue.result !== 'pass').length;
+const mediumCount = issues.filter((issue) => issue.severity === 'medium' && issue.result !== 'pass').length;
+const lowCount = issues.filter((issue) => issue.severity === 'low' && issue.result !== 'pass').length;
+
+const severityOrder: Record<string, number> = {
+  critical: 0,
+  high: 1,
+  medium: 2,
+  low: 3,
+  info: 4,
+};
+
+const groupedMap = new Map<string, GroupedIssue>();
+for (const issue of issues) {
+  const key = issue.ruleKey;
+  const existing = groupedMap.get(key);
+  if (existing) {
+    if (issue.affectedUrl) {
+      const alreadyAdded = existing.affected.some((entry) => entry.url === issue.affectedUrl);
+      if (!alreadyAdded) {
+        existing.affected.push({ url: issue.affectedUrl, details: issue.details || '' });
+      }
+    }
+  } else {
+    const affected: AffectedEntry[] = [];
+    if (issue.affectedUrl) {
+      affected.push({ url: issue.affectedUrl, details: issue.details || '' });
+    }
+    groupedMap.set(key, {
+      message: issue.message,
+      severity: issue.severity,
+      recommendation: issue.recommendation,
+      affected,
+    });
+  }
+}
+
+const groupedEntries = Array.from(groupedMap.entries())
+  .sort(([, a], [, b]) => (severityOrder[a.severity] ?? 5) - (severityOrder[b.severity] ?? 5));
+---
+
+<details class="category" open={criticalCount > 0 || highCount > 0}>
+  <summary>
+    <div class="cat-row">
+      <span class="cat-name">{label}</span>
+      <div class="cat-meta">
+        {criticalCount > 0 && (
+          <span class="pill pill-critical">{criticalCount}</span>
+        )}
+        {highCount > 0 && (
+          <span class="pill pill-high">{highCount}</span>
+        )}
+        {mediumCount > 0 && (
+          <span class="pill pill-medium">{mediumCount}</span>
+        )}
+        {lowCount > 0 && (
+          <span class="pill pill-low">{lowCount}</span>
+        )}
+        {score !== undefined && (
+          <span class="pill pill-score">{Math.round(score)}%</span>
+        )}
+        <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+  </summary>
+
+  <div class="issues">
+    {groupedEntries.map(([ruleKey, group]) => (
+      <div class="issue" data-rule-key={ruleKey}>
+        <div class="issue-top">
+          <input type="checkbox" class="rule-exclude-checkbox" checked
+            data-rule-key={ruleKey}
+            title="Include in export" />
+          <span class={`dot dot-${group.severity}`} />
+          <span class="issue-msg">{group.message}</span>
+          {group.affected.length > 0 && (
+            <span class="url-count">{group.affected.length} URL{group.affected.length > 1 ? 's' : ''}</span>
+          )}
+          <span class={`sev sev-${group.severity}`}>{group.severity}</span>
+        </div>
+        {group.recommendation && (
+          <p class="issue-rec">{group.recommendation}</p>
+        )}
+        {group.affected.length > 0 && (
+          <details class="url-list">
+            <summary class="url-toggle">
+              <svg class="url-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+              Affected URLs ({group.affected.length})
+            </summary>
+            <ul class="url-items">
+              {group.affected.map((entry) => {
+                const lines = entry.details ? entry.details.split('\n').filter((line: string) => line.trim()) : [];
+                const visibleLines = lines.slice(0, 5);
+                const hiddenLines = lines.slice(5);
+                return (
+                  <li>
+                    <a href={entry.url} target="_blank" rel="noopener noreferrer">{entry.url}</a>
+                    {lines.length > 0 && (
+                      <details class="asset-details">
+                        <summary class="asset-toggle">
+                          {lines.length} detail{lines.length > 1 ? 's' : ''}
+                        </summary>
+                        <div class="asset-list">
+                          {visibleLines.map((line: string) => (
+                            <div class="asset-line">{line}</div>
+                          ))}
+                          {hiddenLines.length > 0 && (
+                            <div class="asset-hidden" style="display:none;">
+                              {hiddenLines.map((line: string) => (
+                                <div class="asset-line">{line}</div>
+                              ))}
+                            </div>
+                          )}
+                          {hiddenLines.length > 0 && (
+                            <button class="show-more-btn" type="button"
+                              data-remaining={hiddenLines.length}>
+                              Show {hiddenLines.length} more
+                            </button>
+                          )}
+                        </div>
+                      </details>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </details>
+        )}
+      </div>
+    ))}
+  </div>
+</details>
+
+<script>
+  document.querySelectorAll('.show-more-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const container = button.parentElement;
+      if (!container) return;
+      const hidden = container.querySelector('.asset-hidden') as HTMLElement;
+      if (!hidden) return;
+      hidden.style.display = 'block';
+      button.remove();
+    });
+  });
+
+  document.querySelectorAll<HTMLInputElement>('.rule-exclude-checkbox').forEach((checkbox) => {
+    checkbox.addEventListener('change', () => {
+      const issueElement = checkbox.closest('.issue');
+      if (!issueElement) return;
+      issueElement.classList.toggle('excluded', !checkbox.checked);
+    });
+  });
+</script>
+
+<style>
+  .category {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  summary {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  summary::-webkit-details-marker { display: none; }
+
+  .cat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cat-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .cat-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .chevron {
+    color: var(--text-muted);
+    transition: transform 0.2s;
+    margin-left: 0.25rem;
+  }
+
+  details[open] > summary .chevron {
+    transform: rotate(180deg);
+  }
+
+  .pill {
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    font-family: var(--mono);
+  }
+
+  .pill-critical { background: var(--red-bg); color: var(--red); }
+  .pill-high { background: rgba(249, 115, 22, 0.1); color: var(--orange); }
+  .pill-medium { background: var(--yellow-bg); color: var(--yellow); }
+  .pill-low { background: var(--blue-bg); color: var(--blue); }
+  .pill-score { background: var(--surface-2); color: var(--text-secondary); }
+
+  .issues {
+    border-top: 1px solid var(--border);
+  }
+
+  .issue {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background 0.1s;
+  }
+
+  .issue:last-child { border-bottom: none; }
+  .issue:hover { background: var(--surface-hover); }
+
+  .issue-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .rule-exclude-checkbox {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+  }
+
+  .issue.excluded {
+    opacity: 0.35;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-critical { background: var(--red); }
+  .dot-high { background: var(--orange); }
+  .dot-medium { background: var(--yellow); }
+  .dot-low { background: var(--blue); }
+  .dot-info { background: var(--text-muted); }
+
+  .issue-msg {
+    flex: 1;
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+
+  .url-count {
+    font-size: 0.65rem;
+    font-family: var(--mono);
+    padding: 0.1rem 0.4rem;
+    background: var(--surface-2);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .sev {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .sev-critical { background: var(--red-bg); color: var(--red); }
+  .sev-high { background: rgba(249, 115, 22, 0.1); color: var(--orange); }
+  .sev-medium { background: var(--yellow-bg); color: var(--yellow); }
+  .sev-low { background: var(--blue-bg); color: var(--blue); }
+  .sev-info { background: var(--surface-2); color: var(--text-muted); }
+
+  .issue-rec {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: 0.35rem;
+    padding-left: 1.1rem;
+    line-height: 1.5;
+  }
+
+  .url-list {
+    margin-top: 0.4rem;
+    padding-left: 1.1rem;
+  }
+
+  .url-toggle {
+    font-size: 0.72rem;
+    color: var(--accent-hover);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0;
+    list-style: none;
+    user-select: none;
+  }
+
+  .url-toggle::-webkit-details-marker { display: none; }
+
+  .url-chevron {
+    color: var(--accent-hover);
+    transition: transform 0.2s;
+  }
+
+  .url-list[open] > .url-toggle .url-chevron {
+    transform: rotate(180deg);
+  }
+
+  .url-items {
+    list-style: none;
+    padding: 0.25rem 0 0;
+    margin: 0;
+  }
+
+  .url-items li {
+    padding: 0.2rem 0;
+  }
+
+  .url-items a {
+    font-size: 0.7rem;
+    font-family: var(--mono);
+    color: var(--accent-hover);
+    text-decoration: none;
+    word-break: break-all;
+    transition: color 0.15s;
+  }
+
+  .url-items a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .asset-details {
+    margin-top: 0.15rem;
+    margin-left: 0.5rem;
+  }
+
+  .asset-toggle {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.1rem 0.3rem;
+    background: var(--surface-2);
+    border-radius: 3px;
+    list-style: none;
+    user-select: none;
+  }
+
+  .asset-toggle::-webkit-details-marker { display: none; }
+
+  .asset-list {
+    margin: 0.2rem 0 0;
+    padding: 0.3rem 0.5rem;
+    background: var(--surface-2);
+    border-radius: 4px;
+  }
+
+  .asset-line {
+    font-size: 0.62rem;
+    font-family: var(--mono);
+    color: var(--text-muted);
+    word-break: break-all;
+    line-height: 1.7;
+  }
+
+  .show-more-btn {
+    display: inline-block;
+    margin-top: 0.25rem;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.6rem;
+    font-family: var(--mono);
+    color: var(--accent-hover);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .show-more-btn:hover {
+    background: var(--accent-subtle);
+    color: var(--accent);
+  }
+</style>

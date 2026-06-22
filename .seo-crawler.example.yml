@@ -1,0 +1,48 @@
+# SEO Crawler CI/CD Configuration
+# Copy this file to .seo-crawler.yml and adjust for your project.
+
+# Scan mode: "static" (local HTML files) or "full" (live server crawl)
+mode: static
+
+# --- Static mode options ---
+# Directory containing built HTML files (e.g., ./dist, ./out, ./build)
+dir: ./dist
+
+# --- Full mode options ---
+# Uncomment below for full mode (live server crawl)
+# mode: full
+# url: http://localhost:3000
+#
+# Optional: command to start the dev/preview server
+# start_cmd: "npm run preview"
+#
+# Optional: URL to poll until the server is ready
+# wait_for: http://localhost:3000
+#
+# Optional: max time to wait for the server (default: 30s)
+# wait_timeout: 30s
+#
+# Optional: max pages to crawl (default: 1000)
+# max_pages: 1000
+
+# Minimum severity that causes a non-zero exit code.
+# Options: critical, high, medium, low, info
+fail_on: high
+
+# Rule keys to skip (comma-separated in CLI, list in YAML)
+# ignore:
+#   - og_locale
+#   - twitter_site
+#   - eeat_copyright
+
+# Run only these rule keys (leave empty to run all)
+# only:
+#   - title_exists
+#   - meta_description_exists
+#   - h1_count
+
+# Output format: "text" (colored terminal) or "json"
+format: text
+
+# Optional: write JSON report to a file
+# output: seo-report.json

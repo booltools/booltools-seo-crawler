@@ -1,0 +1,23 @@
+# Free SEO & GEO Crawler
+
+> A comprehensive, open-source SEO and AI search (GEO) auditing tool built with Go and Astro. Analyze any website for 200+ checks across technical SEO, on-page optimization, performance, security, structured data, and generative engine optimization.
+
+## Documentation
+
+- [Getting Started](/docs/getting-started): Installation and setup guide
+- [Web UI Guide](/docs/web-ui): How to use the web interface
+- [CI/CD SDK](/docs/sdk): Integrate SEO checks in your deployment pipeline
+- [Rules Reference](/docs/rules): All 130+ audit rules explained with fix guidance
+- [Rule Presets](/docs/presets): Pre-configured rule groups for common use cases
+- [Localhost Crawling](/docs/localhost): Test your development server before deploying
+- [API Reference](/docs/api): REST API endpoints for programmatic access
+
+## Key Features
+
+- 130+ audit rules across 15 categories
+- GEO (Generative Engine Optimization) checks for AI search readiness
+- Real-time progress with Server-Sent Events
+- Export reports as CSV or Markdown
+- CI/CD SDK for deployment pipelines
+- Localhost crawling support
+- Sitemap analysis with orphan page detection

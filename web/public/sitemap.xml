@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://seo-crawler.example.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://seo-crawler.example.com/docs</loc><priority>0.8</priority></url>
+  <url><loc>https://seo-crawler.example.com/docs/getting-started</loc><priority>0.7</priority></url>
+  <url><loc>https://seo-crawler.example.com/docs/web-ui</loc><priority>0.7</priority></url>
+  <url><loc>https://seo-crawler.example.com/docs/sdk</loc><priority>0.7</priority></url>
+  <url><loc>https://seo-crawler.example.com/docs/rules</loc><priority>0.8</priority></url>
+  <url><loc>https://seo-crawler.example.com/docs/presets</loc><priority>0.6</priority></url>
+  <url><loc>https://seo-crawler.example.com/docs/localhost</loc><priority>0.6</priority></url>
+  <url><loc>https://seo-crawler.example.com/docs/api</loc><priority>0.7</priority></url>
+</urlset>

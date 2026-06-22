@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import DomainInput from '../components/DomainInput.astro';
+---
+
+<Layout title="Free SEO & GEO Crawler — Audit Any Domain" description="Free open-source SEO and GEO audit tool. Analyze any website for 200+ checks including AI search readiness, technical SEO, performance, structured data, and more.">
+  <DomainInput />
+
+  <section class="features-section">
+    <h2>What does the SEO & GEO Crawler check?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3>Technical SEO</h3>
+        <p>Validates sitemap.xml, robots.txt, canonical tags, HTTPS, HTTP status codes, and crawlability across all pages.</p>
+      </div>
+      <div class="feature-card">
+        <h3>On-Page Optimization</h3>
+        <p>Checks title tags, meta descriptions, heading hierarchy, image alt text, keyword usage, and content quality.</p>
+      </div>
+      <div class="feature-card">
+        <h3>GEO / AI Readiness</h3>
+        <p>Evaluates llms.txt, structured data for AI citations, content citability, entity authority, and AI-friendly markup.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Performance</h3>
+        <p>Measures response times, page sizes, render-blocking resources, broken assets, and caching headers.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Security &amp; Accessibility</h3>
+        <p>Checks HTTPS enforcement, mixed content, CSP headers, ARIA roles, alt text, and keyboard navigation support.</p>
+      </div>
+      <div class="feature-card">
+        <h3>CI/CD Integration</h3>
+        <p>Run automated SEO checks in your deployment pipeline with our standalone Go CLI SDK. Fail builds on regressions.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .features-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .features-section h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    text-align: center;
+    letter-spacing: -0.02em;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+  }
+
+  .feature-card h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .feature-card p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>

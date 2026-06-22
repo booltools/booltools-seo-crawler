@@ -1,0 +1,60 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Web UI Guide" activeSection="web-ui">
+  <h1>Web UI Guide</h1>
+  <p>The web interface lets you audit any website visually with real-time progress.</p>
+
+  <h2>Analyzing a Website</h2>
+  <ol>
+    <li>Enter the domain in the input field (e.g. <code>example.com</code>)</li>
+    <li>Optionally, click <strong>"Customize Rules"</strong> to select specific rules or use a preset</li>
+    <li>Click <strong>"Analyze"</strong> to start the crawl</li>
+    <li>Watch real-time progress as pages are analyzed</li>
+    <li>Review the full report when analysis completes</li>
+  </ol>
+
+  <h2>Using Rule Presets</h2>
+  <p>Presets let you quickly select a group of rules relevant to your site type:</p>
+  <ul>
+    <li><strong>Full Scan</strong> — all 130+ rules for maximum coverage</li>
+    <li><strong>Essential</strong> — core SEO checks every site needs</li>
+    <li><strong>Blog / Article</strong> — optimized for content-heavy sites</li>
+    <li><strong>E-Commerce</strong> — product pages, catalog, and transactional sites</li>
+    <li><strong>Video Platform</strong> — video-centric sites (YouTube-like, courses)</li>
+    <li><strong>Landing Page</strong> — single-page sites and marketing pages</li>
+    <li><strong>Technical SEO</strong> — infrastructure, crawlability, and indexation only</li>
+    <li><strong>GEO / AI Readiness</strong> — AI search engine optimization checks only</li>
+  </ul>
+
+  <h2>Customizing Rules</h2>
+  <p>Click <strong>"Customize Rules"</strong> to expand the rules panel. You can:</p>
+  <ul>
+    <li>Toggle entire categories on/off using category checkboxes</li>
+    <li>Select or deselect individual rules</li>
+    <li>Use "Select All" / "Deselect All" for quick changes</li>
+    <li>Apply a preset then fine-tune individual rules</li>
+  </ul>
+
+  <h2>Reading the Report</h2>
+  <p>The report groups issues by category. Each issue group shows:</p>
+  <ul>
+    <li><strong>Severity badge</strong> (critical, high, medium, low, info)</li>
+    <li><strong>Issue message</strong> — what's wrong</li>
+    <li><strong>Affected URL count</strong> — how many pages are impacted</li>
+    <li><strong>Recommendation</strong> — how to fix it</li>
+    <li><strong>Affected URLs</strong> — clickable links to each affected page</li>
+    <li><strong>Relevant assets</strong> — images, scripts, or other resources related to the issue</li>
+  </ul>
+
+  <h2>Excluding Rules from Export</h2>
+  <p>On the report page, each issue group has a checkbox. Uncheck issues you want to exclude. Unchecked issues will be omitted from CSV and Markdown exports, but remain visible (dimmed) in the report.</p>
+
+  <h2>Exporting Reports</h2>
+  <p>Download reports in two formats:</p>
+  <ul>
+    <li><strong>CSV</strong> — spreadsheet-friendly format for manual review</li>
+    <li><strong>Markdown</strong> — AI-agent-friendly format that can be used with coding assistants to automatically fix issues</li>
+  </ul>
+</DocsLayout>

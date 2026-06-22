@@ -1,0 +1,93 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Getting Started" activeSection="getting-started">
+  <h1>Getting Started</h1>
+  <p>Set up and run the Free SEO Crawler locally in a few minutes.</p>
+
+  <div class="docs-screenshot">
+    <img src="/screenshots/home.png" alt="Free SEO Crawler running locally" loading="lazy" />
+    <p class="docs-caption">The crawler running locally at localhost:4321</p>
+  </div>
+
+  <h2>Prerequisites</h2>
+  <ul>
+    <li><strong>Go</strong> 1.21 or later</li>
+    <li><strong>Node.js</strong> 18 or later (for the frontend)</li>
+    <li><strong>npm</strong> (comes with Node.js)</li>
+  </ul>
+
+  <h2>Installation</h2>
+  <h3>1. Clone the repository</h3>
+  <pre><code>git clone https://github.com/MarceloBD/free-seo-crawler.git
+cd free-seo-crawler</code></pre>
+
+  <h3>2. Install Go dependencies</h3>
+  <pre><code>go mod tidy</code></pre>
+
+  <h3>3. Install frontend dependencies</h3>
+  <pre><code>cd web
+npm install
+cd ..</code></pre>
+
+  <h2>Running in Development</h2>
+  <h3>Start the backend</h3>
+  <pre><code>make dev
+# or: go run ./cmd/server</code></pre>
+  <p>The API server starts at <code>http://localhost:8080</code>.</p>
+
+  <h3>Start the frontend</h3>
+  <pre><code>cd web
+npm run dev</code></pre>
+  <p>The web interface is available at <code>http://localhost:4321</code>.</p>
+
+  <h2>Building for Production</h2>
+  <h3>Build the backend</h3>
+  <pre><code>make build
+# Binary output: bin/free-seo-crawler</code></pre>
+
+  <h3>Build the SDK CLI</h3>
+  <pre><code>make build-sdk
+# Binary output: bin/seo-crawler</code></pre>
+
+  <h3>Build the frontend</h3>
+  <pre><code>cd web
+npm run build</code></pre>
+
+  <h2>Docker Deployment</h2>
+  <pre><code>docker compose up --build</code></pre>
+  <p>The app will be available at <code>http://localhost:4321</code> with the API at <code>http://localhost:8080</code>.</p>
+
+  <h2>Running Tests</h2>
+  <pre><code>make test
+# or: go test ./... -v -count=1</code></pre>
+
+  <h2>What You'll See</h2>
+  <p>After running an analysis, you'll get a comprehensive report like this:</p>
+  <div class="docs-screenshot">
+    <img src="/screenshots/report.png" alt="Audit report example" loading="lazy" />
+    <p class="docs-caption">Full audit report with SEO and GEO scores, issues by category, and export options.</p>
+  </div>
+
+  <style>
+    .docs-screenshot {
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--surface-2);
+    }
+    .docs-screenshot img {
+      width: 100%;
+      display: block;
+    }
+    .docs-caption {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin: 0;
+    }
+  </style>
+</DocsLayout>

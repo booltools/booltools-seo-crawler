@@ -1,0 +1,136 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+import { fetchRuleCategories, buildCategoryNav } from '../../../data/rules-api';
+import { getRuleDescription } from '../../../data/rule-descriptions';
+
+const { category } = Astro.params;
+const { categories, error: fetchError } = await fetchRuleCategories();
+const currentCategory = categories.find((cat) => cat.key === category);
+
+if (!currentCategory && !fetchError) {
+  return Astro.redirect('/docs/rules');
+}
+
+const ruleSubItems = buildCategoryNav(categories);
+---
+
+<DocsLayout title={currentCategory?.label || 'Rules'} activeSection={`rules-${category}`} ruleSubItems={ruleSubItems}>
+  {fetchError && (
+    <blockquote>
+      <p>{fetchError}</p>
+    </blockquote>
+  )}
+
+  {currentCategory && (
+    <>
+      <h1>{currentCategory.label}</h1>
+      <p>{currentCategory.rules.length} rules in this category. Click any rule for full documentation.</p>
+
+      <div class="rules-list">
+        {currentCategory.rules.map((rule) => {
+          const detail = getRuleDescription(rule.key);
+          return (
+            <a href={`/docs/rules/${category}/${rule.key}`} class="rule-card-link">
+              <div class="rule-card">
+                <div class="rule-header">
+                  <code class="rule-key">{rule.key}</code>
+                  <span class={`severity-badge sev-${rule.severity}`}>{rule.severity}</span>
+                </div>
+                <p class="rule-label">{rule.label}</p>
+                <p class="rule-short">{detail.shortDescription}</p>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+
+      <nav class="category-nav">
+        {categories.map((cat, index) => {
+          if (cat.key === category) {
+            const previous = index > 0 ? categories[index - 1] : null;
+            const next = index < categories.length - 1 ? categories[index + 1] : null;
+            return (
+              <div class="nav-links-row">
+                {previous && <a href={`/docs/rules/${previous.key}`} class="nav-prev">&larr; {previous.label}</a>}
+                {next && <a href={`/docs/rules/${next.key}`} class="nav-next">{next.label} &rarr;</a>}
+              </div>
+            );
+          }
+          return null;
+        })}
+      </nav>
+    </>
+  )}
+</DocsLayout>
+
+<style>
+  .severity-badge {
+    display: inline-block;
+    padding: 0.15em 0.45em;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: uppercase;
+  }
+  .sev-critical { background: var(--red-bg); color: var(--red); }
+  .sev-high { background: rgba(249, 115, 22, 0.1); color: var(--orange); }
+  .sev-medium { background: var(--yellow-bg); color: var(--yellow); }
+  .sev-low { background: var(--blue-bg); color: var(--blue); }
+  .sev-info { background: rgba(161, 161, 170, 0.1); color: var(--text-muted); }
+
+  .rules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .rule-card-link {
+    text-decoration: none;
+  }
+  .rule-card-link:hover {
+    text-decoration: none;
+  }
+  .rule-card {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: 0.75rem 1rem;
+    transition: all 0.15s;
+  }
+  .rule-card:hover {
+    border-color: var(--accent);
+    background: var(--surface-hover);
+  }
+  .rule-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.2rem;
+  }
+  .rule-key { font-size: 0.75rem; }
+  .rule-label {
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+    font-size: 0.9rem;
+  }
+  .rule-short {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.4;
+  }
+  .category-nav {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .nav-links-row {
+    display: flex;
+    justify-content: space-between;
+  }
+  .nav-prev, .nav-next {
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  .nav-next { margin-left: auto; }
+</style>

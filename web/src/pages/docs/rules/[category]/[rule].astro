@@ -1,0 +1,287 @@
+---
+import DocsLayout from '../../../../layouts/DocsLayout.astro';
+import { fetchRuleCategories, buildCategoryNav, type RuleDefinition } from '../../../../data/rules-api';
+import { getRuleDescription } from '../../../../data/rule-descriptions';
+
+const { category, rule: ruleKey } = Astro.params;
+const { categories, error: fetchError } = await fetchRuleCategories();
+const currentCategory = categories.find((cat) => cat.key === category);
+const currentRule = currentCategory?.rules.find((r) => r.key === ruleKey);
+
+if ((!currentCategory || !currentRule) && !fetchError) {
+  return Astro.redirect(`/docs/rules/${category || ''}`);
+}
+
+const ruleSubItems = buildCategoryNav(categories);
+const detail = getRuleDescription(ruleKey || '');
+
+const rulesInCategory = currentCategory?.rules || [];
+const currentIndex = rulesInCategory.findIndex((r) => r.key === ruleKey);
+const previousRule = currentIndex > 0 ? rulesInCategory[currentIndex - 1] : null;
+const nextRule = currentIndex < rulesInCategory.length - 1 ? rulesInCategory[currentIndex + 1] : null;
+---
+
+<DocsLayout
+  title={currentRule?.label || 'Rule'}
+  activeSection={`rules-${category}`}
+  ruleSubItems={ruleSubItems}
+  activeRuleKey={ruleKey}
+>
+  {fetchError && (
+    <blockquote><p>{fetchError}</p></blockquote>
+  )}
+
+  {currentRule && (
+    <>
+      <nav class="breadcrumb">
+        <a href="/docs/rules">Rules</a>
+        <span class="sep">/</span>
+        <a href={`/docs/rules/${category}`}>{currentCategory?.label}</a>
+        <span class="sep">/</span>
+        <span>{currentRule.label}</span>
+      </nav>
+
+      <div class="rule-title-row">
+        <h1>{currentRule.label}</h1>
+        <span class={`severity-badge sev-${currentRule.severity}`}>{currentRule.severity}</span>
+      </div>
+
+      <p class="rule-key-display"><code>{currentRule.key}</code></p>
+
+      <p class="short-desc">{detail.shortDescription}</p>
+
+      <h2>What does this rule check?</h2>
+      <p>{detail.fullDescription}</p>
+
+      <h2>Why is this important?</h2>
+      <p>{detail.whyImportant}</p>
+
+      <h2>How to fix</h2>
+      <p>{detail.howToFix}</p>
+
+      <h2>Examples</h2>
+
+      <div class="example-grid">
+        <div class="example-card example-bad">
+          <div class="example-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            Incorrect
+          </div>
+          <pre><code>{detail.badExample}</code></pre>
+        </div>
+
+        <div class="example-card example-good">
+          <div class="example-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Correct
+          </div>
+          <pre><code>{detail.goodExample}</code></pre>
+        </div>
+      </div>
+
+      <h2>Agent fix snippet</h2>
+      <p>Copy this snippet and paste it into your AI coding agent to fix this issue automatically.</p>
+
+      <div class="snippet-container">
+        <button class="copy-btn" data-snippet-target="agent-snippet" aria-label="Copy snippet">
+          <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="copy-text">Copy</span>
+        </button>
+        <pre id="agent-snippet"><code>{detail.agentSnippet}</code></pre>
+      </div>
+
+      <nav class="rule-nav">
+        <div class="nav-links-row">
+          {previousRule && (
+            <a href={`/docs/rules/${category}/${previousRule.key}`} class="nav-prev">
+              &larr; {previousRule.label}
+            </a>
+          )}
+          {nextRule && (
+            <a href={`/docs/rules/${category}/${nextRule.key}`} class="nav-next">
+              {nextRule.label} &rarr;
+            </a>
+          )}
+        </div>
+      </nav>
+    </>
+  )}
+</DocsLayout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const targetId = button.getAttribute('data-snippet-target');
+      if (!targetId) return;
+      const targetElement = document.getElementById(targetId);
+      if (!targetElement) return;
+
+      const text = targetElement.textContent || '';
+      navigator.clipboard.writeText(text).then(() => {
+        const textSpan = button.querySelector('.copy-text');
+        if (textSpan) {
+          textSpan.textContent = 'Copied!';
+          setTimeout(() => { textSpan.textContent = 'Copy'; }, 2000);
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .breadcrumb a {
+    color: var(--text-muted);
+  }
+  .breadcrumb a:hover {
+    color: var(--accent-hover);
+  }
+  .breadcrumb .sep {
+    color: var(--border);
+  }
+
+  .rule-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .severity-badge {
+    display: inline-block;
+    padding: 0.2em 0.55em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+  }
+  .sev-critical { background: var(--red-bg); color: var(--red); }
+  .sev-high { background: rgba(249, 115, 22, 0.1); color: var(--orange); }
+  .sev-medium { background: var(--yellow-bg); color: var(--yellow); }
+  .sev-low { background: var(--blue-bg); color: var(--blue); }
+  .sev-info { background: rgba(161, 161, 170, 0.1); color: var(--text-muted); }
+
+  .rule-key-display {
+    margin-top: -0.5rem;
+    margin-bottom: 1rem;
+  }
+  .rule-key-display code {
+    font-size: 0.78rem;
+  }
+
+  .short-desc {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+  }
+
+  .example-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .example-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .example-card {
+    border-radius: var(--radius);
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+  }
+  .example-card pre {
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .example-label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .example-bad .example-label {
+    background: var(--red-bg);
+    color: var(--red);
+  }
+  .example-good .example-label {
+    background: var(--green-bg);
+    color: var(--green);
+  }
+
+  .snippet-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  .snippet-container pre {
+    padding-top: 2.5rem;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    padding: 0.3rem 0.6rem;
+    font-size: 0.72rem;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: all 0.15s;
+    z-index: 2;
+  }
+  .copy-btn:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  .rule-nav {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .nav-links-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .nav-prev, .nav-next {
+    font-size: 0.82rem;
+    font-weight: 500;
+    max-width: 45%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .nav-next { margin-left: auto; text-align: right; }
+</style>

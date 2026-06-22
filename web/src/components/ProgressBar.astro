@@ -1,0 +1,664 @@
+---
+interface Props {
+  jobId: string;
+}
+
+const { jobId } = Astro.props;
+---
+
+<div class="progress-container" id="progress-container" data-job-id={jobId}>
+  <div class="progress-header">
+    <h2>Analyzing</h2>
+    <span id="progress-status" class="status-pill">connecting</span>
+  </div>
+
+  <div class="bar-track">
+    <div class="bar-fill" id="progress-bar"></div>
+  </div>
+
+  <div class="progress-stats">
+    <div class="stat">
+      <span class="stat-label">Pages</span>
+      <span class="stat-value" id="pages-crawled">0 <span class="stat-total" id="pages-total"></span></span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">Issues</span>
+      <span class="stat-value" id="issues-found">0</span>
+    </div>
+    <div class="stat">
+      <span class="stat-label">ETA</span>
+      <span class="stat-value" id="eta-display">&mdash;</span>
+    </div>
+    <div class="stat stat-wide">
+      <span class="stat-label">Current URL</span>
+      <span class="stat-value stat-url" id="current-url">&mdash;</span>
+    </div>
+  </div>
+
+  <p id="progress-message" class="progress-message"></p>
+
+  <div id="stalled-banner" class="stalled-banner" style="display:none;">
+    <p>The crawl appears to have stalled or the connection was lost.</p>
+    <button id="retry-from-progress" class="btn btn-small">Retry Same Domain</button>
+  </div>
+
+  <div class="live-section">
+    <div class="live-panel">
+      <div class="live-panel-header">
+        <span class="live-panel-title">Crawled URLs</span>
+        <span class="live-panel-count" id="url-count">0</span>
+      </div>
+      <div id="live-urls" class="live-urls"></div>
+    </div>
+  </div>
+
+  <div class="live-section" id="live-issues-section" style="display:none;">
+    <div class="live-panel">
+      <div class="live-panel-header">
+        <span class="live-panel-title">Issues Found</span>
+        <span class="live-panel-count" id="issues-count">0</span>
+      </div>
+      <div id="live-issues" class="live-issues"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const container = document.getElementById('progress-container')!;
+  const jobId = container.dataset.jobId!;
+
+  const statusBadge = document.getElementById('progress-status')!;
+  const progressBar = document.getElementById('progress-bar')!;
+  const pagesCrawledElement = document.getElementById('pages-crawled')!;
+  const pagesTotalElement = document.getElementById('pages-total')!;
+  const issuesFoundElement = document.getElementById('issues-found')!;
+  const currentUrlElement = document.getElementById('current-url')!;
+  const etaDisplay = document.getElementById('eta-display')!;
+  const progressMessage = document.getElementById('progress-message')!;
+  const liveUrlsContainer = document.getElementById('live-urls')!;
+  const liveIssuesContainer = document.getElementById('live-issues')!;
+  const liveIssuesSection = document.getElementById('live-issues-section')!;
+  const urlCountBadge = document.getElementById('url-count')!;
+  const issuesCountBadge = document.getElementById('issues-count')!;
+
+  const eventSource = new EventSource(`/api/crawl/${jobId}/progress`);
+
+  let firstPageTime = 0;
+  const crawledUrls: string[] = [];
+  let totalLiveIssues = 0;
+  let userIsScrollingUrls = false;
+  let userIsScrollingIssues = false;
+
+  interface GroupedLiveIssue {
+    severity: string;
+    message: string;
+    urls: string[];
+    element: HTMLElement;
+    countElement: HTMLElement;
+  }
+  const issueGroups = new Map<string, GroupedLiveIssue>();
+
+  liveUrlsContainer.addEventListener('scroll', () => {
+    const { scrollTop, scrollHeight, clientHeight } = liveUrlsContainer;
+    userIsScrollingUrls = (scrollHeight - scrollTop - clientHeight) > 40;
+  });
+  liveIssuesContainer.addEventListener('scroll', () => {
+    const { scrollTop, scrollHeight, clientHeight } = liveIssuesContainer;
+    userIsScrollingIssues = (scrollHeight - scrollTop - clientHeight) > 40;
+  });
+
+  function formatEta(seconds: number): string {
+    if (seconds < 60) return `${Math.ceil(seconds)}s`;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.ceil(seconds % 60);
+    if (minutes < 60) return `${minutes}m ${remainingSeconds}s`;
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}m`;
+  }
+
+  function escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function addCrawledUrl(url: string): void {
+    if (!url || crawledUrls.includes(url)) return;
+    crawledUrls.push(url);
+    urlCountBadge.textContent = String(crawledUrls.length);
+
+    const entry = document.createElement('div');
+    entry.className = 'live-url-entry';
+    entry.innerHTML = `<span class="live-url-check">&#10003;</span><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer" class="live-url-link">${escapeHtml(url)}</a>`;
+
+    liveUrlsContainer.appendChild(entry);
+    if (!userIsScrollingUrls) {
+      liveUrlsContainer.scrollTop = liveUrlsContainer.scrollHeight;
+    }
+  }
+
+  interface LiveIssue {
+    ruleKey: string;
+    severity: string;
+    result: string;
+    message: string;
+    details?: string;
+  }
+
+  const severityOrder: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
+
+  function addPageIssues(url: string, issues: LiveIssue[]): void {
+    if (!issues || issues.length === 0) return;
+
+    totalLiveIssues += issues.length;
+    issuesCountBadge.textContent = String(totalLiveIssues);
+    liveIssuesSection.style.display = '';
+
+    for (const issue of issues) {
+      const groupKey = issue.ruleKey;
+      const existing = issueGroups.get(groupKey);
+
+      if (existing) {
+        if (!existing.urls.includes(url)) {
+          existing.urls.push(url);
+          existing.countElement.textContent = `${existing.urls.length} URL${existing.urls.length > 1 ? 's' : ''}`;
+        }
+      } else {
+        const row = document.createElement('div');
+        row.className = 'live-issue-row';
+        const sevClass = `sev-${issue.severity}`;
+
+        const countSpan = document.createElement('span');
+        countSpan.className = 'live-issue-url-count';
+        countSpan.textContent = '1 URL';
+
+        row.innerHTML = `
+          <span class="live-issue-dot dot-${issue.severity}"></span>
+          <span class="live-issue-msg">${escapeHtml(issue.message)}</span>
+        `;
+        const sevBadge = document.createElement('span');
+        sevBadge.className = `live-issue-sev ${sevClass}`;
+        sevBadge.textContent = issue.severity;
+
+        row.appendChild(countSpan);
+        row.appendChild(sevBadge);
+
+        const group: GroupedLiveIssue = {
+          severity: issue.severity,
+          message: issue.message,
+          urls: [url],
+          element: row,
+          countElement: countSpan,
+        };
+        issueGroups.set(groupKey, group);
+
+        let inserted = false;
+        const children = liveIssuesContainer.children;
+        const issueSevOrder = severityOrder[issue.severity] ?? 5;
+        for (let i = 0; i < children.length; i++) {
+          const childKey = (children[i] as HTMLElement).dataset.ruleKey;
+          if (childKey) {
+            const childGroup = issueGroups.get(childKey);
+            if (childGroup && (severityOrder[childGroup.severity] ?? 5) > issueSevOrder) {
+              liveIssuesContainer.insertBefore(row, children[i]);
+              inserted = true;
+              break;
+            }
+          }
+        }
+        if (!inserted) {
+          liveIssuesContainer.appendChild(row);
+        }
+        row.dataset.ruleKey = groupKey;
+      }
+    }
+
+    if (!userIsScrollingIssues) {
+      liveIssuesContainer.scrollTop = liveIssuesContainer.scrollHeight;
+    }
+  }
+
+  function playCompletionSound(): void {
+    try {
+      const audioContext = new (window.AudioContext || (window as Record<string, unknown>).webkitAudioContext as typeof AudioContext)();
+      const notes = [523.25, 659.25, 783.99];
+      notes.forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime + index * 0.15);
+        gainNode.gain.setValueAtTime(0.08, audioContext.currentTime + index * 0.15);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + index * 0.15 + 0.4);
+        oscillator.start(audioContext.currentTime + index * 0.15);
+        oscillator.stop(audioContext.currentTime + index * 0.15 + 0.4);
+      });
+    } catch {
+      // audio not available
+    }
+  }
+
+  eventSource.onmessage = (event) => {
+    const data = JSON.parse(event.data);
+
+    statusBadge.textContent = data.status;
+    statusBadge.className = `status-pill status-${data.status}`;
+
+    const crawled = data.pagesCrawled || 0;
+    const total = data.totalDiscovered || 0;
+
+    pagesCrawledElement.childNodes[0].textContent = String(crawled) + ' ';
+    pagesTotalElement.textContent = total > 0 ? `/ ${total}` : '';
+    issuesFoundElement.textContent = String(data.issuesFound || 0);
+
+    if (crawled === 1 && firstPageTime === 0) {
+      firstPageTime = Date.now();
+    }
+
+    if (crawled > 2 && total > 0 && firstPageTime > 0) {
+      const elapsed = (Date.now() - firstPageTime) / 1000;
+      const rate = crawled / elapsed;
+      const remaining = total - crawled;
+      if (rate > 0 && remaining > 0) {
+        etaDisplay.textContent = '~' + formatEta(remaining / rate);
+      } else {
+        etaDisplay.textContent = 'finishing...';
+      }
+    }
+
+    if (data.currentUrl) {
+      currentUrlElement.textContent = data.currentUrl;
+      currentUrlElement.title = data.currentUrl;
+      addCrawledUrl(data.currentUrl);
+    }
+
+    if (data.pageIssues && data.pageIssues.length > 0 && data.currentUrl) {
+      addPageIssues(data.currentUrl, data.pageIssues);
+    }
+
+    if (data.message) {
+      progressMessage.textContent = data.message;
+    }
+
+    if (total > 0) {
+      const percent = Math.min((crawled / total) * 100, 100);
+      progressBar.style.width = `${percent}%`;
+    }
+
+    if (data.status === 'completed') {
+      eventSource.close();
+      progressBar.style.width = '100%';
+      etaDisplay.textContent = 'done';
+      playCompletionSound();
+      setTimeout(() => { window.location.reload(); }, 1200);
+    }
+
+    if (data.status === 'failed') {
+      eventSource.close();
+      statusBadge.textContent = 'failed';
+      etaDisplay.textContent = '\u2014';
+      progressMessage.textContent = data.message || 'Crawl failed';
+    }
+  };
+
+  const stalledBanner = document.getElementById('stalled-banner')!;
+  const retryFromProgress = document.getElementById('retry-from-progress')!;
+  let lastEventTime = Date.now();
+  let stallCheckInterval: ReturnType<typeof setInterval> | null = null;
+  let errorCount = 0;
+
+  stallCheckInterval = setInterval(() => {
+    const secondsSinceLastEvent = (Date.now() - lastEventTime) / 1000;
+    if (secondsSinceLastEvent > 60 && stalledBanner.style.display === 'none') {
+      stalledBanner.style.display = 'flex';
+      statusBadge.textContent = 'stalled';
+      statusBadge.className = 'status-pill status-failed';
+    }
+  }, 10000);
+
+  eventSource.onmessage = ((originalHandler) => {
+    return (event: MessageEvent) => {
+      lastEventTime = Date.now();
+      errorCount = 0;
+      stalledBanner.style.display = 'none';
+      originalHandler(event);
+    };
+  })(eventSource.onmessage!);
+
+  eventSource.onerror = () => {
+    errorCount++;
+    if (errorCount > 5) {
+      stalledBanner.style.display = 'flex';
+      statusBadge.textContent = 'disconnected';
+      statusBadge.className = 'status-pill status-failed';
+      eventSource.close();
+      if (stallCheckInterval) clearInterval(stallCheckInterval);
+    } else {
+      statusBadge.textContent = 'reconnecting';
+      statusBadge.className = 'status-pill';
+    }
+  };
+
+  async function retryCrawl(): Promise<void> {
+    const reportResponse = await fetch(`/api/report/${jobId}`);
+    if (!reportResponse.ok) {
+      window.location.href = '/';
+      return;
+    }
+    const reportData = await reportResponse.json();
+    const domain = reportData?.job?.domain;
+    if (!domain) {
+      window.location.href = '/';
+      return;
+    }
+
+    retryFromProgress.textContent = 'Starting...';
+    retryFromProgress.setAttribute('disabled', 'true');
+
+    const crawlResponse = await fetch('/api/crawl', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ domain }),
+    });
+
+    if (crawlResponse.ok) {
+      const crawlData = await crawlResponse.json();
+      window.location.href = `/report/${crawlData.id}`;
+    } else {
+      window.location.href = '/';
+    }
+  }
+
+  retryFromProgress.addEventListener('click', retryCrawl);
+</script>
+
+<style>
+  .progress-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+  }
+
+  .progress-header h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .status-pill {
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: var(--surface-2);
+    color: var(--text-muted);
+  }
+
+  .status-crawling { background: var(--blue-bg); color: var(--blue); }
+  .status-analyzing { background: var(--accent-subtle); color: var(--accent-hover); }
+  .status-completed { background: var(--green-bg); color: var(--green); }
+  .status-failed { background: var(--red-bg); color: var(--red); }
+
+  .bar-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+  }
+
+  .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-stats {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .stat-wide {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+
+  .stat-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: var(--mono);
+  }
+
+  .stat-total {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  .stat-url {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .progress-message {
+    margin-top: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  .stalled-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--yellow-bg);
+    border: 1px solid rgba(234, 179, 8, 0.2);
+    border-radius: var(--radius);
+  }
+
+  .stalled-banner p {
+    color: var(--yellow);
+    font-size: 0.82rem;
+    margin: 0;
+  }
+
+  .btn-small {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: var(--font);
+    font-weight: 500;
+  }
+
+  .btn-small:hover {
+    background: var(--accent-hover);
+  }
+
+  .live-section {
+    margin-top: 1rem;
+  }
+
+  .live-panel {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .live-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .live-panel-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+
+  .live-panel-count {
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: var(--mono);
+    color: var(--text-secondary);
+    background: var(--surface);
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+  }
+
+  .live-urls {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0.5rem;
+  }
+
+  .live-issues {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  :global(.live-url-entry) {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0;
+    font-size: 0.75rem;
+    animation: fadeIn 0.2s ease;
+  }
+
+  :global(.live-url-check) {
+    color: var(--green);
+    font-size: 0.7rem;
+    flex-shrink: 0;
+  }
+
+  :global(.live-url-link) {
+    color: var(--text-muted);
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :global(.live-url-link:hover) {
+    color: var(--accent-hover);
+  }
+
+  :global(.live-issue-row) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.8rem;
+    animation: fadeIn 0.2s ease;
+    transition: background 0.1s;
+  }
+
+  :global(.live-issue-row:last-child) {
+    border-bottom: none;
+  }
+
+  :global(.live-issue-row:hover) {
+    background: var(--surface-hover);
+  }
+
+  :global(.live-issue-dot) {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  :global(.live-issue-dot.dot-critical) { background: var(--red); }
+  :global(.live-issue-dot.dot-high) { background: var(--orange); }
+  :global(.live-issue-dot.dot-medium) { background: var(--yellow); }
+  :global(.live-issue-dot.dot-low) { background: var(--blue); }
+  :global(.live-issue-dot.dot-info) { background: var(--text-muted); }
+
+  :global(.live-issue-msg) {
+    flex: 1;
+    min-width: 0;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :global(.live-issue-url-count) {
+    font-size: 0.65rem;
+    font-family: var(--mono);
+    padding: 0.1rem 0.4rem;
+    background: var(--surface-2);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  :global(.live-issue-sev) {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  :global(.live-issue-sev.sev-critical) { background: var(--red-bg); color: var(--red); }
+  :global(.live-issue-sev.sev-high) { background: rgba(249, 115, 22, 0.1); color: var(--orange); }
+  :global(.live-issue-sev.sev-medium) { background: var(--yellow-bg); color: var(--yellow); }
+  :global(.live-issue-sev.sev-low) { background: var(--blue-bg); color: var(--blue); }
+  :global(.live-issue-sev.sev-info) { background: var(--surface-2); color: var(--text-muted); }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

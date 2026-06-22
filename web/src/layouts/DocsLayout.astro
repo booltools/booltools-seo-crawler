@@ -1,0 +1,397 @@
+---
+interface RuleNavItem {
+  href: string;
+  label: string;
+  key: string;
+}
+
+interface CategoryNavItem {
+  href: string;
+  label: string;
+  key: string;
+  rules?: RuleNavItem[];
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  activeSection?: string;
+  ruleSubItems?: CategoryNavItem[];
+  activeRuleKey?: string;
+}
+
+const { title, description, activeSection, ruleSubItems = [], activeRuleKey } = Astro.props;
+
+import Layout from './Layout.astro';
+
+const sections = [
+  { href: '/docs', label: 'Overview', key: 'overview' },
+  { href: '/docs/getting-started', label: 'Getting Started', key: 'getting-started' },
+  { href: '/docs/web-ui', label: 'Web UI Guide', key: 'web-ui' },
+  { href: '/docs/sdk', label: 'CI/CD SDK', key: 'sdk' },
+  { href: '/docs/rules', label: 'Rules Reference', key: 'rules' },
+  { href: '/docs/presets', label: 'Rule Presets', key: 'presets' },
+  { href: '/docs/localhost', label: 'Localhost Crawling', key: 'localhost' },
+  { href: '/docs/api', label: 'API Reference', key: 'api' },
+];
+
+const isRulesSection = activeSection?.startsWith('rules');
+const activeCategoryKey = activeSection?.replace('rules-', '') || '';
+---
+
+<Layout title={`${title} — SEO Crawler Docs`} description={description}>
+  <div class="docs-container">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
+    <aside id="docs-sidebar" class="docs-sidebar">
+      <nav aria-label="Documentation navigation">
+        <ul class="docs-nav">
+          {sections.map((section) => (
+            <li>
+              <a href={section.href} class:list={['docs-nav-link', { active: activeSection === section.key }]}>
+                {section.label}
+              </a>
+              {section.key === 'rules' && isRulesSection && ruleSubItems.length > 0 && (
+                <ul class="docs-subnav">
+                  {ruleSubItems.map((catNav) => (
+                    <li>
+                      <a href={catNav.href} class:list={['docs-subnav-link', { active: activeCategoryKey === catNav.key }]}>
+                        {catNav.label}
+                      </a>
+                      {catNav.key === activeCategoryKey && catNav.rules && catNav.rules.length > 0 && (
+                        <ul class="docs-subnav-rules">
+                          {catNav.rules.map((ruleNav) => (
+                            <li>
+                              <a href={ruleNav.href} class:list={['docs-rule-link', { active: activeRuleKey === ruleNav.key }]} title={ruleNav.label}>
+                                {ruleNav.key}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="docs-content">
+      <slot />
+    </article>
+  </div>
+</Layout>
+
+<script>
+  const menuToggle = document.getElementById('docs-menu-toggle') as HTMLButtonElement;
+  const sidebar = document.getElementById('docs-sidebar') as HTMLElement;
+  const overlay = document.getElementById('docs-drawer-overlay') as HTMLElement;
+
+  function toggleDrawer(): void {
+    const isOpen = sidebar.classList.contains('open');
+    sidebar.classList.toggle('open', !isOpen);
+    overlay.classList.toggle('visible', !isOpen);
+    document.body.style.overflow = !isOpen ? 'hidden' : '';
+  }
+
+  menuToggle.addEventListener('click', toggleDrawer);
+  overlay.addEventListener('click', toggleDrawer);
+
+  sidebar.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      if (sidebar.classList.contains('open')) toggleDrawer();
+    });
+  });
+</script>
+
+<style>
+  .docs-container {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 2rem;
+    min-height: calc(100vh - 200px);
+    position: relative;
+  }
+
+  .docs-menu-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    font-family: var(--font);
+    cursor: pointer;
+    margin-bottom: 1rem;
+  }
+
+  .docs-drawer-overlay {
+    display: none;
+  }
+
+  .docs-sidebar {
+    position: sticky;
+    top: 72px;
+    height: fit-content;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+  }
+
+  .docs-nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .docs-nav-link {
+    display: block;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: all 0.15s;
+  }
+
+  .docs-nav-link:hover {
+    color: var(--text);
+    background: var(--surface);
+    text-decoration: none;
+  }
+
+  .docs-nav-link.active {
+    color: var(--accent-hover);
+    background: var(--accent-subtle);
+    font-weight: 500;
+  }
+
+  .docs-subnav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    padding-left: 0.75rem;
+    margin-top: 0.1rem;
+    border-left: 1px solid var(--border-subtle);
+    margin-left: 0.75rem;
+  }
+
+  .docs-subnav-link {
+    display: block;
+    padding: 0.3rem 0.65rem;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: all 0.15s;
+  }
+
+  .docs-subnav-link:hover {
+    color: var(--text-secondary);
+    background: var(--surface);
+    text-decoration: none;
+  }
+
+  .docs-subnav-link.active {
+    color: var(--accent-hover);
+    background: var(--accent-subtle);
+    font-weight: 500;
+  }
+
+  .docs-subnav-rules {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.02rem;
+    padding-left: 0.5rem;
+    margin-top: 0.05rem;
+    margin-bottom: 0.15rem;
+    border-left: 1px solid var(--border-subtle);
+    margin-left: 0.65rem;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .docs-rule-link {
+    display: block;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: var(--radius);
+    transition: all 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .docs-rule-link:hover {
+    color: var(--text-secondary);
+    background: var(--surface);
+    text-decoration: none;
+  }
+
+  .docs-rule-link.active {
+    color: var(--accent-hover);
+    background: var(--accent-subtle);
+    font-weight: 500;
+  }
+
+  .docs-content {
+    min-width: 0;
+  }
+
+  .docs-content :global(h1) {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .docs-content :global(h2) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .docs-content :global(h3) {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .docs-content :global(p) {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .docs-content :global(code) {
+    font-family: var(--mono);
+    font-size: 0.82em;
+    background: var(--surface-2);
+    padding: 0.15em 0.35em;
+    border-radius: 4px;
+    color: var(--accent-hover);
+  }
+
+  .docs-content :global(pre) {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: 1rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  .docs-content :global(pre code) {
+    background: none;
+    padding: 0;
+    color: var(--text);
+  }
+
+  .docs-content :global(ul),
+  .docs-content :global(ol) {
+    padding-left: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .docs-content :global(li) {
+    margin-bottom: 0.3rem;
+  }
+
+  .docs-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .docs-content :global(th),
+  .docs-content :global(td) {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .docs-content :global(th) {
+    font-weight: 600;
+    color: var(--text);
+    background: var(--surface);
+  }
+
+  .docs-content :global(td) {
+    color: var(--text-secondary);
+  }
+
+  .docs-content :global(blockquote) {
+    border-left: 3px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin: 0 0 1rem 0;
+    background: var(--accent-subtle);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+
+  .docs-content :global(blockquote p) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .docs-container {
+      grid-template-columns: 1fr;
+    }
+
+    .docs-menu-toggle {
+      display: flex;
+    }
+
+    .docs-sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 260px;
+      height: 100vh;
+      background: var(--bg);
+      border-right: 1px solid var(--border);
+      padding: 1.5rem 1rem;
+      z-index: 100;
+      transition: left 0.25s ease;
+    }
+
+    .docs-sidebar.open {
+      left: 0;
+    }
+
+    .docs-drawer-overlay.visible {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+    }
+  }
+</style>

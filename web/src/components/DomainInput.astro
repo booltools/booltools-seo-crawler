@@ -1,0 +1,722 @@
+---
+---
+
+<section class="hero">
+  <div class="badge">Free &amp; Open Source</div>
+  <h1>Audit any website for<br /><span class="gradient-text">SEO &amp; AI readiness</span></h1>
+  <p class="subtitle">200+ checks across technical SEO, on-page, performance, security, structured data, and generative engine optimization.</p>
+
+  <form id="crawl-form" class="crawl-form">
+    <div class="input-row">
+      <div class="input-wrapper">
+        <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <input
+          type="text"
+          id="domain-input"
+          name="domain"
+          placeholder="example.com"
+          required
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+      <button type="submit" id="submit-btn">
+        <span class="btn-text">Analyze</span>
+        <span class="btn-loading" style="display:none;">
+          <svg class="spinner" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-6.219-8.56"/></svg>
+          Analyzing...
+        </span>
+      </button>
+    </div>
+
+    <button type="button" id="toggle-rules" class="toggle-rules-btn">
+      <svg class="toggle-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      <span>Customize Rules</span>
+      <span id="rules-counter" class="rules-counter"></span>
+    </button>
+
+    <div id="rules-panel" class="rules-panel" style="display:none;">
+      <div class="rules-toolbar">
+        <div id="presets-row" class="presets-row"></div>
+        <div class="toolbar-actions">
+          <button type="button" id="select-all-rules" class="rules-action-btn">Select All</button>
+          <button type="button" id="deselect-all-rules" class="rules-action-btn">Deselect All</button>
+        </div>
+      </div>
+      <div id="rules-grid" class="rules-grid">
+        <p class="rules-loading">Loading rules...</p>
+      </div>
+    </div>
+
+    <p id="form-error" class="form-error" style="display:none;"></p>
+  </form>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon-wrapper">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      </div>
+      <div>
+        <strong>200+ SEO checks</strong>
+        <p>Technical, on-page, performance, security, structured data, and links analysis.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon-wrapper feature-icon-geo">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      </div>
+      <div>
+        <strong>GEO analysis</strong>
+        <p>AI crawler access, llms.txt, content citability, and AI-friendly structure checks.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon-wrapper feature-icon-report">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <div>
+        <strong>Actionable report</strong>
+        <p>Exactly what to fix on each page, prioritized by severity and impact.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  interface RuleDefinition {
+    key: string;
+    label: string;
+    severity: string;
+  }
+
+  interface RuleCategoryDefinition {
+    key: string;
+    label: string;
+    rules: RuleDefinition[];
+  }
+
+  interface PresetDefinition {
+    key: string;
+    label: string;
+    description: string;
+    ruleKeys: string[];
+  }
+
+  interface RulesApiResponse {
+    categories: RuleCategoryDefinition[];
+    presets: PresetDefinition[];
+  }
+
+  const form = document.getElementById('crawl-form') as HTMLFormElement;
+  const domainInput = document.getElementById('domain-input') as HTMLInputElement;
+  const submitButton = document.getElementById('submit-btn') as HTMLButtonElement;
+  const errorDisplay = document.getElementById('form-error') as HTMLParagraphElement;
+  const toggleRulesButton = document.getElementById('toggle-rules') as HTMLButtonElement;
+  const rulesPanel = document.getElementById('rules-panel') as HTMLDivElement;
+  const rulesGrid = document.getElementById('rules-grid') as HTMLDivElement;
+  const rulesCounter = document.getElementById('rules-counter') as HTMLSpanElement;
+  const selectAllButton = document.getElementById('select-all-rules') as HTMLButtonElement;
+  const deselectAllButton = document.getElementById('deselect-all-rules') as HTMLButtonElement;
+  const presetsRow = document.getElementById('presets-row') as HTMLDivElement;
+
+  let allRuleKeys: string[] = [];
+  let rulesLoaded = false;
+
+  function getSelectedRuleKeys(): string[] {
+    const checkboxes = rulesGrid.querySelectorAll<HTMLInputElement>('input[data-category]');
+    const selected: string[] = [];
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked) selected.push(checkbox.value);
+    });
+    return selected;
+  }
+
+  function updateCounter(): void {
+    const selected = getSelectedRuleKeys().length;
+    const total = allRuleKeys.length;
+    if (selected === total) {
+      rulesCounter.textContent = `(all ${total})`;
+    } else {
+      rulesCounter.textContent = `(${selected}/${total})`;
+    }
+  }
+
+  function updateCategoryCheckbox(categoryKey: string): void {
+    const categoryCheckbox = document.getElementById(`cat-${categoryKey}`) as HTMLInputElement | null;
+    if (!categoryCheckbox) return;
+    const ruleCheckboxes = rulesGrid.querySelectorAll<HTMLInputElement>(`input[data-category="${categoryKey}"]`);
+    const totalInCategory = ruleCheckboxes.length;
+    let checkedInCategory = 0;
+    ruleCheckboxes.forEach((checkbox) => { if (checkbox.checked) checkedInCategory++; });
+    categoryCheckbox.checked = checkedInCategory === totalInCategory;
+    categoryCheckbox.indeterminate = checkedInCategory > 0 && checkedInCategory < totalInCategory;
+  }
+
+  function escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function severityBadgeClass(severity: string): string {
+    const classMap: Record<string, string> = {
+      critical: 'severity-critical',
+      high: 'severity-high',
+      medium: 'severity-medium',
+      low: 'severity-low',
+      info: 'severity-info',
+    };
+    return classMap[severity] || 'severity-low';
+  }
+
+  function applyPreset(ruleKeys: string[]): void {
+    const ruleKeysSet = new Set(ruleKeys);
+    rulesGrid.querySelectorAll<HTMLInputElement>('input[data-category]').forEach((checkbox) => {
+      checkbox.checked = ruleKeysSet.has(checkbox.value);
+    });
+    rulesGrid.querySelectorAll<HTMLInputElement>('input[data-category-toggle]').forEach((toggle) => {
+      updateCategoryCheckbox(toggle.dataset.categoryToggle!);
+    });
+    updateCounter();
+    document.querySelectorAll<HTMLButtonElement>('.preset-btn').forEach((button) => {
+      button.classList.toggle('preset-active', button.dataset.preset === 'custom' ? false : true);
+    });
+  }
+
+  async function loadRules(): Promise<void> {
+    if (rulesLoaded) return;
+    try {
+      const response = await fetch('/api/rules');
+      if (!response.ok) throw new Error('Failed to load rules');
+      const data: RulesApiResponse = await response.json();
+      const { categories, presets } = data;
+
+      allRuleKeys = categories.flatMap((category) => category.rules.map((rule) => rule.key));
+
+      presetsRow.innerHTML = presets.map((preset) => `
+        <button type="button" class="preset-btn${preset.key === 'full_scan' ? ' preset-active' : ''}"
+          data-preset="${preset.key}" title="${escapeHtml(preset.description)}">
+          ${escapeHtml(preset.label)}
+        </button>
+      `).join('');
+
+      presetsRow.querySelectorAll<HTMLButtonElement>('.preset-btn').forEach((button) => {
+        button.addEventListener('click', () => {
+          const presetKey = button.dataset.preset!;
+          const preset = presets.find((p) => p.key === presetKey);
+          if (!preset) return;
+          applyPreset(preset.ruleKeys);
+          presetsRow.querySelectorAll<HTMLButtonElement>('.preset-btn').forEach((b) => b.classList.remove('preset-active'));
+          button.classList.add('preset-active');
+        });
+      });
+
+      rulesGrid.innerHTML = categories.map((category) => `
+        <div class="rule-category">
+          <label class="category-header">
+            <input type="checkbox" id="cat-${category.key}" data-category-toggle="${category.key}" checked />
+            <span class="category-label">${escapeHtml(category.label)}</span>
+            <span class="category-count">${category.rules.length}</span>
+          </label>
+          <div class="category-rules">
+            ${category.rules.map((rule) => `
+              <label class="rule-item">
+                <input type="checkbox" value="${rule.key}" data-category="${category.key}" checked />
+                <span class="rule-label">${escapeHtml(rule.label)}</span>
+                <span class="severity-badge ${severityBadgeClass(rule.severity)}">${rule.severity}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      rulesGrid.querySelectorAll<HTMLInputElement>('input[data-category-toggle]').forEach((toggle) => {
+        toggle.addEventListener('change', () => {
+          const categoryKey = toggle.dataset.categoryToggle!;
+          const ruleCheckboxes = rulesGrid.querySelectorAll<HTMLInputElement>(`input[data-category="${categoryKey}"]`);
+          ruleCheckboxes.forEach((checkbox) => { checkbox.checked = toggle.checked; });
+          updateCounter();
+        });
+      });
+
+      rulesGrid.querySelectorAll<HTMLInputElement>('input[data-category]').forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+          updateCategoryCheckbox(checkbox.dataset.category!);
+          updateCounter();
+        });
+      });
+
+      rulesLoaded = true;
+      updateCounter();
+    } catch {
+      rulesGrid.innerHTML = '<p class="rules-error">Failed to load rules. Please refresh.</p>';
+    }
+  }
+
+  toggleRulesButton.addEventListener('click', async () => {
+    const isHidden = rulesPanel.style.display === 'none';
+    rulesPanel.style.display = isHidden ? 'block' : 'none';
+    toggleRulesButton.classList.toggle('expanded', isHidden);
+    if (isHidden) await loadRules();
+  });
+
+  selectAllButton.addEventListener('click', () => {
+    rulesGrid.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.checked = true;
+      checkbox.indeterminate = false;
+    });
+    updateCounter();
+  });
+
+  deselectAllButton.addEventListener('click', () => {
+    rulesGrid.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.checked = false;
+      checkbox.indeterminate = false;
+    });
+    updateCounter();
+  });
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    errorDisplay.style.display = 'none';
+
+    const domain = domainInput.value.trim();
+    if (!domain) return;
+
+    const selectedRules = rulesLoaded ? getSelectedRuleKeys() : [];
+    const allSelected = !rulesLoaded || selectedRules.length === allRuleKeys.length;
+
+    if (rulesLoaded && selectedRules.length === 0) {
+      errorDisplay.textContent = 'Please select at least one rule to analyze.';
+      errorDisplay.style.display = 'block';
+      return;
+    }
+
+    submitButton.disabled = true;
+    submitButton.querySelector('.btn-text')!.setAttribute('style', 'display:none');
+    submitButton.querySelector('.btn-loading')!.setAttribute('style', 'display:inline-flex;align-items:center;gap:6px');
+
+    try {
+      const body: Record<string, unknown> = { domain };
+      if (!allSelected) {
+        body.selectedRules = selectedRules;
+      }
+
+      const response = await fetch('/api/crawl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to start crawl');
+      }
+
+      const data = await response.json();
+      window.location.href = `/report/${data.id}`;
+    } catch (error) {
+      errorDisplay.textContent = error instanceof Error ? error.message : 'Something went wrong';
+      errorDisplay.style.display = 'block';
+      submitButton.disabled = false;
+      submitButton.querySelector('.btn-text')!.setAttribute('style', 'display:inline');
+      submitButton.querySelector('.btn-loading')!.setAttribute('style', 'display:none');
+    }
+  });
+</script>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 5rem 0 2rem;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.3rem 0.9rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--accent-hover);
+    background: var(--accent-subtle);
+    border: 1px solid rgba(99, 102, 241, 0.15);
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  h1 {
+    font-size: 2.75rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 50%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    max-width: 540px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+
+  .crawl-form {
+    max-width: 620px;
+    margin: 0 auto 4rem;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .input-row:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+  }
+
+  .input-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 0.875rem;
+  }
+
+  .input-icon {
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  input[type="text"] {
+    flex: 1;
+    padding: 0.75rem;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: var(--mono);
+    outline: none;
+  }
+
+  input::placeholder {
+    color: var(--text-muted);
+  }
+
+  button[type="submit"] {
+    padding: 0.75rem 1.5rem;
+    background: var(--accent);
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 0.875rem;
+    font-family: var(--font);
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+
+  button[type="submit"]:hover:not(:disabled) {
+    background: var(--accent-hover);
+  }
+
+  button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .spinner {
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .toggle-rules-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    font-family: var(--font);
+    color: var(--text-secondary);
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .toggle-rules-btn:hover {
+    color: var(--text);
+    border-color: var(--border);
+  }
+
+  .toggle-chevron {
+    transition: transform 0.2s;
+  }
+
+  .toggle-rules-btn.expanded .toggle-chevron {
+    transform: rotate(180deg);
+  }
+
+  .rules-counter {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+
+  .rules-panel {
+    margin-top: 0.75rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    max-height: 420px;
+    overflow-y: auto;
+    text-align: left;
+  }
+
+
+  .rules-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    z-index: 1;
+  }
+
+  .toolbar-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  :global(.presets-row) {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  :global(.preset-btn) {
+    padding: 0.25rem 0.55rem;
+    font-size: 0.68rem;
+    font-family: var(--font);
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  :global(.preset-btn:hover) {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  :global(.preset-btn.preset-active) {
+    color: white;
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .rules-action-btn {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.72rem;
+    font-family: var(--font);
+    color: var(--text-secondary);
+    background: var(--bg);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .rules-action-btn:hover {
+    color: var(--text);
+    border-color: var(--border);
+  }
+
+  .rules-grid {
+    overflow-y: auto;
+    padding: 0.5rem;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .rules-loading, .rules-error {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .rules-error {
+    color: var(--red);
+  }
+
+  :global(.rule-category) {
+    margin-bottom: 0.25rem;
+  }
+
+  :global(.category-header) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: background 0.1s;
+  }
+
+  :global(.category-header:hover) {
+    background: var(--bg);
+  }
+
+  :global(.category-count) {
+    margin-left: auto;
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  :global(.category-rules) {
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  :global(.rule-item) {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: background 0.1s;
+  }
+
+  :global(.rule-item:hover) {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  :global(.rule-label) {
+    flex: 1;
+    text-align: left;
+  }
+
+  :global(.severity-badge) {
+    font-size: 0.65rem;
+    font-weight: 500;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+
+  :global(.severity-critical) { background: var(--red-bg, rgba(239,68,68,0.1)); color: var(--red, #ef4444); }
+  :global(.severity-high) { background: rgba(249,115,22,0.1); color: #f97316; }
+  :global(.severity-medium) { background: var(--yellow-bg, rgba(234,179,8,0.1)); color: var(--yellow, #eab308); }
+  :global(.severity-low) { background: rgba(99,102,241,0.1); color: var(--accent, #6366f1); }
+  :global(.severity-info) { background: rgba(107,114,128,0.1); color: var(--text-muted, #6b7280); }
+
+  .form-error {
+    color: var(--red);
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .feature {
+    display: flex;
+    gap: 0.875rem;
+    padding: 1.25rem;
+    background: var(--bg);
+    text-align: left;
+  }
+
+  .feature-icon-wrapper {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: var(--accent-subtle);
+    color: var(--accent-hover);
+  }
+
+  .feature-icon-geo {
+    background: var(--green-bg);
+    color: var(--green);
+  }
+
+  .feature-icon-report {
+    background: var(--yellow-bg);
+    color: var(--yellow);
+  }
+
+  .feature strong {
+    display: block;
+    margin-bottom: 0.2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .feature p {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 720px) {
+    h1 { font-size: 2rem; }
+
+    .features {
+      grid-template-columns: 1fr;
+    }
+
+    .input-row {
+      flex-direction: column;
+    }
+
+    .hero {
+      padding: 3rem 0 2rem;
+    }
+  }
+</style>

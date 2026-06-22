@@ -1,0 +1,13 @@
+bin/
+data.db*
+web/node_modules/
+web/dist/
+web/.astro/
+.git/
+.github/
+.vscode/
+.idea/
+*.md
+.env*
+Makefile
+tests/

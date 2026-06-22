@@ -1,0 +1,122 @@
+---
+interface Props {
+  title: string;
+  score: number;
+  grade: string;
+  subtitle?: string;
+}
+
+const { title, score, grade, subtitle } = Astro.props;
+
+const gradeConfig: Record<string, { color: string; bg: string }> = {
+  A: { color: '#22c55e', bg: 'rgba(34, 197, 94, 0.08)' },
+  B: { color: '#84cc16', bg: 'rgba(132, 204, 22, 0.08)' },
+  C: { color: '#eab308', bg: 'rgba(234, 179, 8, 0.08)' },
+  D: { color: '#f97316', bg: 'rgba(249, 115, 22, 0.08)' },
+  F: { color: '#ef4444', bg: 'rgba(239, 68, 68, 0.08)' },
+};
+
+const config = gradeConfig[grade] || { color: '#71717a', bg: 'rgba(113, 113, 122, 0.08)' };
+const circumference = 2 * Math.PI * 44;
+const offset = circumference - (circumference * score) / 100;
+---
+
+<div class="score-card">
+  <div class="ring-container">
+    <svg viewBox="0 0 100 100" class="ring">
+      <circle class="ring-bg" cx="50" cy="50" r="44" />
+      <circle
+        class="ring-fill"
+        cx="50"
+        cy="50"
+        r="44"
+        style={`stroke-dasharray: ${circumference}; stroke-dashoffset: ${offset}; stroke: ${config.color}`}
+      />
+    </svg>
+    <div class="ring-label">
+      <span class="ring-grade" style={`color: ${config.color}`}>{grade}</span>
+      <span class="ring-score">{Math.round(score)}</span>
+    </div>
+  </div>
+  <div class="card-label">
+    <span class="card-title">{title}</span>
+    {subtitle && <span class="card-subtitle">{subtitle}</span>}
+  </div>
+</div>
+
+<style>
+  .score-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .ring-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+  }
+
+  .ring {
+    transform: rotate(-90deg);
+    width: 100px;
+    height: 100px;
+  }
+
+  .ring-bg {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 6;
+  }
+
+  .ring-fill {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.8s ease;
+  }
+
+  .ring-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ring-grade {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .ring-score {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    margin-top: 2px;
+  }
+
+  .card-label {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .card-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .card-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+</style>

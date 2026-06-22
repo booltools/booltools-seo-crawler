@@ -1,0 +1,109 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+interface PresetDefinition {
+  key: string;
+  label: string;
+  description: string;
+  ruleKeys: string[];
+}
+
+interface RulesApiResponse {
+  categories: unknown[];
+  presets: PresetDefinition[];
+}
+
+const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
+
+let presets: PresetDefinition[] = [];
+try {
+  const response = await fetch(`${apiUrl}/api/rules`);
+  if (response.ok) {
+    const data: RulesApiResponse = await response.json();
+    presets = data.presets;
+  }
+} catch {
+  // API not available at build time
+}
+---
+
+<DocsLayout title="Rule Presets" activeSection="presets">
+  <h1>Rule Presets</h1>
+  <p>Presets are curated groups of audit rules designed for specific website types. Use them to quickly focus your audit on the checks that matter most for your site.</p>
+
+  <h2>Using Presets</h2>
+  <ol>
+    <li>On the home page, click <strong>"Customize Rules"</strong></li>
+    <li>At the top of the rules panel, click a preset button (e.g. "Blog / Article")</li>
+    <li>Only the rules in that preset will be selected</li>
+    <li>You can further customize by toggling individual rules</li>
+  </ol>
+
+  <h2>Available Presets</h2>
+
+  {presets.map((preset) => (
+    <div class="preset-card" id={preset.key}>
+      <h3>{preset.label}</h3>
+      <p>{preset.description}</p>
+      <p class="rule-count"><strong>{preset.ruleKeys.length}</strong> rules included</p>
+      <details>
+        <summary>View rules ({preset.ruleKeys.length})</summary>
+        <ul class="rule-keys">
+          {preset.ruleKeys.map((key) => (
+            <li><a href={`/docs/rules#rule-${key}`}><code>{key}</code></a></li>
+          ))}
+        </ul>
+      </details>
+    </div>
+  ))}
+
+  {presets.length === 0 && (
+    <blockquote>
+      <p>Start the backend server with <code>make dev</code> to load preset data.</p>
+    </blockquote>
+  )}
+
+  <h2>Using Presets in the SDK</h2>
+  <p>The SDK uses <code>--only</code> and <code>--ignore</code> flags instead of presets. You can replicate a preset by using <code>--only</code> with the preset's rule keys:</p>
+  <pre><code>seo-crawler --mode=full --url=http://localhost:3000 \
+  --only=title_exists,meta_description_exists,h1_count,canonical_exists,robots_txt_exists,sitemap_exists</code></pre>
+</DocsLayout>
+
+<style>
+  .preset-card {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .preset-card h3 {
+    margin-top: 0;
+  }
+
+  .rule-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  details summary {
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--accent-hover);
+    font-weight: 500;
+  }
+
+  .rule-keys {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.2rem;
+    padding-left: 0;
+    list-style: none;
+    margin-top: 0.5rem;
+  }
+
+  .rule-keys li {
+    font-size: 0.82rem;
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+import { fetchRuleCategories, buildCategoryNav, type RuleDefinition } from '../../../data/rules-api';
+
+const { categories, error: fetchError } = await fetchRuleCategories();
+const totalRules = categories.reduce((sum, cat) => sum + cat.rules.length, 0);
+const ruleSubItems = buildCategoryNav(categories);
+
+const severityCounts = (rules: RuleDefinition[]) => {
+  const counts: Record<string, number> = {};
+  for (const rule of rules) {
+    counts[rule.severity] = (counts[rule.severity] || 0) + 1;
+  }
+  return counts;
+};
+---
+
+<DocsLayout title="Rules Reference" activeSection="rules" ruleSubItems={ruleSubItems}>
+  <h1>Rules Reference</h1>
+  <p>Complete reference for all <strong>{totalRules}</strong> audit rules grouped by category. Click a category to view its rules in detail, or navigate using the sidebar.</p>
+
+  {fetchError && (
+    <blockquote>
+      <p>{fetchError}</p>
+    </blockquote>
+  )}
+
+  <h2>Severity Levels</h2>
+  <table>
+    <thead>
+      <tr><th>Severity</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><span class="severity-badge sev-critical">critical</span></td><td>Must fix — blocks indexing or causes major SEO damage</td></tr>
+      <tr><td><span class="severity-badge sev-high">high</span></td><td>Should fix — significant negative impact on SEO</td></tr>
+      <tr><td><span class="severity-badge sev-medium">medium</span></td><td>Recommended — moderate impact, improves rankings</td></tr>
+      <tr><td><span class="severity-badge sev-low">low</span></td><td>Nice to have — minor improvements</td></tr>
+      <tr><td><span class="severity-badge sev-info">info</span></td><td>Informational — no direct SEO impact</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Categories</h2>
+  <div class="category-grid">
+    {categories.map((category) => {
+      const counts = severityCounts(category.rules);
+      return (
+        <a href={`/docs/rules/${category.key}`} class="category-card">
+          <h3>{category.label}</h3>
+          <p class="rule-count">{category.rules.length} rules</p>
+          <div class="severity-row">
+            {counts.critical && <span class="severity-badge sev-critical">{counts.critical} critical</span>}
+            {counts.high && <span class="severity-badge sev-high">{counts.high} high</span>}
+            {counts.medium && <span class="severity-badge sev-medium">{counts.medium} medium</span>}
+            {counts.low && <span class="severity-badge sev-low">{counts.low} low</span>}
+            {counts.info && <span class="severity-badge sev-info">{counts.info} info</span>}
+          </div>
+        </a>
+      );
+    })}
+  </div>
+</DocsLayout>
+
+<style>
+  .severity-badge {
+    display: inline-block;
+    padding: 0.15em 0.45em;
+    font-size: 0.65rem;
+    font-weight: 600;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .sev-critical { background: var(--red-bg); color: var(--red); }
+  .sev-high { background: rgba(249, 115, 22, 0.1); color: var(--orange); }
+  .sev-medium { background: var(--yellow-bg); color: var(--yellow); }
+  .sev-low { background: var(--blue-bg); color: var(--blue); }
+  .sev-info { background: rgba(161, 161, 170, 0.1); color: var(--text-muted); }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.75rem;
+  }
+  .category-card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .category-card:hover {
+    border-color: var(--accent);
+    background: var(--surface-hover);
+    text-decoration: none;
+  }
+  .category-card h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 0.25rem;
+  }
+  .rule-count {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    font-family: var(--mono);
+  }
+  .severity-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+</style>

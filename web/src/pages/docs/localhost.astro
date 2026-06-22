@@ -1,0 +1,83 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout title="Localhost Crawling" activeSection="localhost">
+  <h1>Localhost Crawling</h1>
+  <p>The SEO Crawler can analyze applications running on your local machine. This is useful for testing SEO before deployment.</p>
+
+  <h2>Web UI</h2>
+  <p>Simply enter your localhost URL in the domain input:</p>
+  <pre><code>localhost:3000</code></pre>
+  <p>The crawler automatically uses <code>http://</code> for localhost addresses. You can also use:</p>
+  <ul>
+    <li><code>localhost:3000</code></li>
+    <li><code>http://localhost:3000</code></li>
+    <li><code>127.0.0.1:3000</code></li>
+    <li><code>http://127.0.0.1:8080</code></li>
+  </ul>
+
+  <h2>SDK CLI</h2>
+  <p>Use the <code>--url</code> flag with a localhost address:</p>
+  <pre><code>seo-crawler --mode=full --url=http://localhost:3000</code></pre>
+
+  <h3>With auto-start</h3>
+  <p>The SDK can start your dev server before crawling:</p>
+  <pre><code>seo-crawler --mode=full \
+  --start-cmd="npm run dev" \
+  --wait-for=http://localhost:3000 \
+  --url=http://localhost:3000 \
+  --wait-timeout=60s</code></pre>
+
+  <h2>Rules to Ignore for Localhost</h2>
+  <p>Some rules will always fail on localhost because they check for production requirements. Add these to your <code>.seo-crawler.yml</code> ignore list:</p>
+
+  <table>
+    <thead>
+      <tr><th>Rule</th><th>Why it fails on localhost</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>uses_https</code></td><td>Localhost typically runs on HTTP</td></tr>
+      <tr><td><code>hsts_header</code></td><td>HSTS is a production HTTPS feature</td></tr>
+      <tr><td><code>mixed_content</code></td><td>Mixed content warnings are HTTP vs HTTPS</td></tr>
+      <tr><td><code>security_csp</code></td><td>CSP headers are usually set at the CDN/proxy level</td></tr>
+      <tr><td><code>security_permissions</code></td><td>Permissions-Policy is a production header</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Example config for localhost testing</h3>
+  <pre><code># .seo-crawler.yml
+mode: full
+url: http://localhost:3000
+start_cmd: "npm run dev"
+wait_for: http://localhost:3000
+wait_timeout: 60s
+fail_on: high
+ignore:
+  - uses_https
+  - hsts_header
+  - mixed_content
+  - security_csp
+  - security_permissions
+  - security_referrer
+  - security_xcto
+  - security_xfo</code></pre>
+
+  <h2>Frameworks</h2>
+  <h3>Next.js</h3>
+  <pre><code>seo-crawler --mode=full --start-cmd="npm run dev" --wait-for=http://localhost:3000 --url=http://localhost:3000</code></pre>
+
+  <h3>Astro</h3>
+  <pre><code>seo-crawler --mode=full --start-cmd="npm run dev" --wait-for=http://localhost:4321 --url=http://localhost:4321</code></pre>
+
+  <h3>Nuxt</h3>
+  <pre><code>seo-crawler --mode=full --start-cmd="npm run dev" --wait-for=http://localhost:3000 --url=http://localhost:3000</code></pre>
+
+  <h3>Static sites (Vite, Gatsby, Hugo)</h3>
+  <p>For static site generators, use static mode with the output directory:</p>
+  <pre><code># Build first
+npm run build
+
+# Then scan
+seo-crawler --mode=static --dir=./dist</code></pre>
+</DocsLayout>

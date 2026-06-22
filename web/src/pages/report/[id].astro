@@ -1,0 +1,651 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ProgressBar from '../../components/ProgressBar.astro';
+import ScoreCard from '../../components/ScoreCard.astro';
+import AuditCategory from '../../components/AuditCategory.astro';
+
+const { id } = Astro.params;
+
+const apiBaseUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
+
+type Issue = {
+  ruleKey: string;
+  category: string;
+  categoryLabel: string;
+  severity: string;
+  result: string;
+  message: string;
+  recommendation: string;
+  affectedUrl?: string;
+  details?: string;
+};
+
+type ChangeItem = {
+  category: string;
+  severity: string;
+  issue: string;
+  recommendation: string;
+};
+
+type LinkChangeItem = {
+  url: string;
+  changes: ChangeItem[];
+};
+
+type ReportData = {
+  job: {
+    id: string;
+    domain: string;
+    status: string;
+    maxPages: number;
+    pagesCrawled: number;
+    issuesFound: number;
+    errorMessage?: string;
+    createdAt: string;
+    completedAt?: string;
+  };
+  seoScore: {
+    overall: number;
+    grade: string;
+    categoryScores: Record<string, number>;
+    totalRules: number;
+    passedRules: number;
+    failedRules: number;
+    warningRules: number;
+    criticalIssues: number;
+  };
+  geoScore: {
+    overall: number;
+    grade: string;
+    crawlerAccess: number;
+    llmsTxt: number;
+    citability: number;
+    entityAuth: number;
+    aiFriendly: number;
+    totalRules: number;
+    passedRules: number;
+    failedRules: number;
+  };
+  pages: {
+    url: string;
+    statusCode: number;
+    depth: number;
+    issues: Issue[];
+    passes: number;
+    warnings: number;
+    failures: number;
+  }[];
+  issuesBySeverity: Record<string, Issue[]>;
+  linksToChange: LinkChangeItem[];
+  summary: {
+    totalPages: number;
+    totalIssues: number;
+    criticalIssues: number;
+    highIssues: number;
+    mediumIssues: number;
+    lowIssues: number;
+    infoIssues: number;
+    passedChecks: number;
+  };
+};
+
+type CategoryGroup = {
+  key: string;
+  label: string;
+  score?: number;
+  issues: Issue[];
+};
+
+let report: ReportData | null = null;
+let jobStatus = 'loading';
+let errorMessage = '';
+
+try {
+  const response = await fetch(`${apiBaseUrl}/api/report/${id}`);
+  if (response.ok) {
+    report = await response.json() as ReportData;
+    jobStatus = report.job?.status ?? 'unknown';
+  } else {
+    errorMessage = 'Report not found';
+    jobStatus = 'error';
+  }
+} catch {
+  errorMessage = 'Could not connect to the API server';
+  jobStatus = 'error';
+}
+
+const isInProgress =
+  jobStatus === 'queued' || jobStatus === 'crawling' || jobStatus === 'analyzing';
+const isCompleted = jobStatus === 'completed';
+const isFailed = jobStatus === 'failed';
+
+let categoryGroups: CategoryGroup[] = [];
+let jobDomain = '';
+let summaryTotalPages = 0;
+let summaryTotalIssues = 0;
+let summaryPassedChecks = 0;
+let summaryCritical = 0;
+let summaryHigh = 0;
+let summaryMedium = 0;
+let summaryLow = 0;
+let seoOverall = 0;
+let seoGrade = 'F';
+let seoPassedRules = 0;
+let seoTotalRules = 0;
+let geoOverall = 0;
+let geoGrade = 'F';
+let geoPassedRules = 0;
+let geoTotalRules = 0;
+let linksToChange: LinkChangeItem[] = [];
+const hasPartialData = report && (report.pages?.length > 0);
+
+if (report && (isCompleted || hasPartialData)) {
+  jobDomain = report.job.domain;
+  summaryTotalPages = report.summary?.totalPages ?? report.pages?.length ?? 0;
+  summaryTotalIssues = report.summary?.totalIssues ?? 0;
+  summaryPassedChecks = report.summary?.passedChecks ?? 0;
+  summaryCritical = report.summary?.criticalIssues ?? 0;
+  summaryHigh = report.summary?.highIssues ?? 0;
+  summaryMedium = report.summary?.mediumIssues ?? 0;
+  summaryLow = report.summary?.lowIssues ?? 0;
+  seoOverall = report.seoScore?.overall ?? 0;
+  seoGrade = report.seoScore?.grade ?? '—';
+  seoPassedRules = report.seoScore?.passedRules ?? 0;
+  seoTotalRules = report.seoScore?.totalRules ?? 0;
+  geoOverall = report.geoScore?.overall ?? 0;
+  geoGrade = report.geoScore?.grade ?? '—';
+  geoPassedRules = report.geoScore?.passedRules ?? 0;
+  geoTotalRules = report.geoScore?.totalRules ?? 0;
+  linksToChange = report.linksToChange || [];
+
+  const issuesBySeverity = report.issuesBySeverity || {};
+  const allIssues: Issue[] = Object.values(issuesBySeverity).flat();
+  const groupedByCategory = new Map<string, { label: string; issues: Issue[] }>();
+
+  for (const issue of allIssues) {
+    if (!groupedByCategory.has(issue.category)) {
+      groupedByCategory.set(issue.category, {
+        label: issue.categoryLabel,
+        issues: [],
+      });
+    }
+    groupedByCategory.get(issue.category)!.issues.push(issue);
+  }
+
+  const categoryScores = report.seoScore?.categoryScores || {};
+
+  categoryGroups = Array.from(groupedByCategory.entries()).map(([key, value]) => ({
+    key,
+    label: value.label,
+    score: categoryScores[key],
+    issues: value.issues,
+  }));
+
+  categoryGroups.sort((a, b) => b.issues.length - a.issues.length);
+}
+
+const seoSubtitle = `${seoPassedRules} of ${seoTotalRules} checks passed`;
+const geoSubtitle = `${geoPassedRules} of ${geoTotalRules} checks passed`;
+---
+
+<Layout title={`Audit Report — ${jobDomain || id}`}>
+  {isInProgress && <ProgressBar jobId={id!} />}
+
+  {isFailed && (
+    <div class="error-card">
+      <h2>Crawl Failed</h2>
+      <p>{report?.job?.errorMessage || errorMessage || 'The crawl encountered an error. Please try again.'}</p>
+      <div class="error-actions">
+        <button id="retry-crawl-btn" class="btn" data-domain={report?.job?.domain || ''}>Retry Same Domain</button>
+        <a href="/" class="btn btn-outline">New Crawl</a>
+      </div>
+    </div>
+  )}
+
+  {jobStatus === 'error' && (
+    <div class="error-card">
+      <h2>Error</h2>
+      <p>{errorMessage}</p>
+      <a href="/" class="btn">Go Back</a>
+    </div>
+  )}
+
+  {(isCompleted || hasPartialData) && report && (
+    <>
+      <div class="report-header">
+        <span class="domain-pill">{jobDomain}</span>
+        <h1>Audit Report{isInProgress ? ' (Live Preview)' : ''}</h1>
+        <div class="summary-row">
+          <span class="summary-item">{summaryTotalPages} pages</span>
+          <span class="sep">/</span>
+          <span class="summary-item">{summaryPassedChecks} passed</span>
+          {summaryTotalIssues > 0 && (
+            <>
+              <span class="sep">/</span>
+              <span class="summary-badges">
+                {summaryCritical > 0 && <span class="summary-badge badge-critical">{summaryCritical} critical</span>}
+                {summaryHigh > 0 && <span class="summary-badge badge-high">{summaryHigh} high</span>}
+                {summaryMedium > 0 && <span class="summary-badge badge-medium">{summaryMedium} medium</span>}
+                {summaryLow > 0 && <span class="summary-badge badge-low">{summaryLow} low</span>}
+              </span>
+            </>
+          )}
+        </div>
+      </div>
+
+      {isCompleted && (
+        <div class="scores-row">
+          <ScoreCard
+            title="SEO Score"
+            score={seoOverall}
+            grade={seoGrade}
+            subtitle={seoSubtitle}
+          />
+          <ScoreCard
+            title="GEO Score"
+            score={geoOverall}
+            grade={geoGrade}
+            subtitle={geoSubtitle}
+          />
+        </div>
+      )}
+
+      <section class="section">
+        <h2 class="section-title">Issues by Category{isInProgress ? ' (updating...)' : ''}</h2>
+        {categoryGroups.map((group) => (
+          <AuditCategory
+            category={group.key}
+            label={group.label}
+            score={group.score}
+            issues={group.issues}
+          />
+        ))}
+        {categoryGroups.length === 0 && (
+          <p class="empty-state">{isInProgress ? 'Waiting for first results...' : 'No issues found — great job!'}</p>
+        )}
+      </section>
+
+      {isCompleted && linksToChange.length > 0 && (
+        <section class="section">
+          <h2 class="section-title">Links That Need Changes</h2>
+          <p class="section-desc">Each URL below has specific issues that need to be fixed.</p>
+          <div class="links-list">
+            {linksToChange.slice(0, 50).map((link) => (
+              <details class="link-item">
+                <summary>
+                  <a href={link.url} target="_blank" rel="noopener noreferrer" class="link-url-text" onclick="event.stopPropagation()">{link.url}</a>
+                  <span class="link-count">{link.changes.length}</span>
+                </summary>
+                <div class="link-body">
+                  {link.changes.map((change) => (
+                    <div class="change-row">
+                      <div class="change-top">
+                        <span class={`dot dot-${change.severity}`} />
+                        <span class="change-msg">{change.issue}</span>
+                        <span class="change-cat">{change.category}</span>
+                      </div>
+                      <p class="change-rec">{change.recommendation}</p>
+                    </div>
+                  ))}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <div class="actions-bar">
+        {isCompleted && (
+          <>
+            <button class="btn btn-outline" data-export-url={`/api/report/${id}/export/csv`} data-export-filename={`${jobDomain}-seo-audit.csv`}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download CSV
+            </button>
+            <button class="btn btn-outline" data-export-url={`/api/report/${id}/export/md`} data-export-filename={`${jobDomain}-ai-fix-instructions.md`}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Download AI Fix (.md)
+            </button>
+          </>
+        )}
+        <a href="/" class="btn btn-outline">New Crawl</a>
+      </div>
+
+      <script>
+        function getExcludedRuleKeys(): string[] {
+          const unchecked = document.querySelectorAll<HTMLInputElement>('.rule-exclude-checkbox:not(:checked)');
+          return Array.from(unchecked).map((checkbox) => checkbox.dataset.ruleKey).filter(Boolean) as string[];
+        }
+
+        document.querySelectorAll('[data-export-url]').forEach((button) => {
+          button.addEventListener('click', async () => {
+            const baseUrl = button.getAttribute('data-export-url');
+            const filename = button.getAttribute('data-export-filename');
+            if (!baseUrl || !filename) return;
+
+            const excludedKeys = getExcludedRuleKeys();
+            const separator = baseUrl.includes('?') ? '&' : '?';
+            const exportUrl = excludedKeys.length > 0
+              ? `${baseUrl}${separator}exclude=${encodeURIComponent(excludedKeys.join(','))}`
+              : baseUrl;
+
+            button.setAttribute('disabled', 'true');
+            const originalText = button.textContent;
+            button.textContent = 'Downloading...';
+
+            try {
+              const response = await fetch(exportUrl);
+              if (!response.ok) throw new Error('Download failed');
+              const blob = await response.blob();
+              const objectUrl = URL.createObjectURL(blob);
+              const anchor = document.createElement('a');
+              anchor.href = objectUrl;
+              anchor.download = filename;
+              document.body.appendChild(anchor);
+              anchor.click();
+              anchor.remove();
+              URL.revokeObjectURL(objectUrl);
+            } catch {
+              alert('Failed to download the file. Please try again.');
+            } finally {
+              button.removeAttribute('disabled');
+              button.textContent = originalText;
+            }
+          });
+        });
+      </script>
+    </>
+  )}
+</Layout>
+
+<script>
+  const retryBtn = document.getElementById('retry-crawl-btn') as HTMLButtonElement | null;
+  if (retryBtn) {
+    retryBtn.addEventListener('click', async () => {
+      const domain = retryBtn.dataset.domain;
+      if (!domain) {
+        window.location.href = '/';
+        return;
+      }
+
+      retryBtn.textContent = 'Starting...';
+      retryBtn.disabled = true;
+
+      try {
+        const response = await fetch('/api/crawl', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ domain }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          window.location.href = `/report/${data.id}`;
+        } else {
+          window.location.href = '/';
+        }
+      } catch {
+        window.location.href = '/';
+      }
+    });
+  }
+</script>
+
+<style>
+  .report-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .domain-pill {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--accent-hover);
+    background: var(--accent-subtle);
+    border: 1px solid rgba(99, 102, 241, 0.12);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 0.75rem;
+  }
+
+  .report-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .summary-row {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .summary-item {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-family: var(--mono);
+  }
+
+  .summary-badges {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .summary-badge {
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: var(--mono);
+  }
+
+  .badge-critical { background: var(--red-bg); color: var(--red); }
+  .badge-high { background: rgba(249, 115, 22, 0.1); color: var(--orange); }
+  .badge-medium { background: var(--yellow-bg); color: var(--yellow); }
+  .badge-low { background: var(--blue-bg); color: var(--blue); }
+
+  .sep {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+
+  .scores-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .section {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .section-desc {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: var(--green);
+    padding: 1.5rem;
+    background: var(--green-bg);
+    border: 1px solid rgba(34, 197, 94, 0.1);
+    border-radius: var(--radius-lg);
+    font-size: 0.85rem;
+  }
+
+  .error-card {
+    text-align: center;
+    padding: 3rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  .error-card h2 {
+    color: var(--red);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .error-card p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+  }
+
+  .error-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1.25rem;
+    background: var(--accent);
+    color: white;
+    border-radius: var(--radius);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: background 0.15s;
+  }
+
+  .btn:hover { background: var(--accent-hover); text-decoration: none; }
+
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .btn-outline:hover { background: var(--surface-hover); }
+
+  button.btn { cursor: pointer; }
+  button.btn[disabled] { opacity: 0.6; cursor: wait; }
+
+  .links-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .link-item {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .link-item summary {
+    padding: 0.6rem 0.875rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    font-size: 0.8rem;
+  }
+
+  .link-item summary::-webkit-details-marker { display: none; }
+
+  .link-url-text {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent-hover);
+    word-break: break-all;
+  }
+
+  .link-count {
+    font-size: 0.65rem;
+    font-family: var(--mono);
+    padding: 0.1rem 0.4rem;
+    background: var(--surface-2);
+    border-radius: 999px;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    margin-left: 0.75rem;
+  }
+
+  .link-body {
+    border-top: 1px solid var(--border);
+  }
+
+  .change-row {
+    padding: 0.5rem 0.875rem;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .change-row:last-child { border-bottom: none; }
+
+  .change-top {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .dot-critical { background: var(--red); }
+  .dot-high { background: var(--orange); }
+  .dot-medium { background: var(--yellow); }
+  .dot-low { background: var(--blue); }
+
+  .change-msg {
+    flex: 1;
+    font-size: 0.78rem;
+  }
+
+  .change-cat {
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .change-rec {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    padding-left: 0.9rem;
+    margin-top: 0.2rem;
+  }
+
+  .actions-bar {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem 0 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .actions-bar .btn {
+    gap: 0.4rem;
+  }
+
+  @media (max-width: 640px) {
+    .scores-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
