@@ -22,22 +22,22 @@ func (c *EEATSiteChecker) Check(result crawler.CrawlResult) []valueobject.AuditR
 		}
 	}
 
-	aboutRule := valueobject.NewAuditRule("eeat_about_page", valueobject.CategoryEEAT, valueobject.SeverityMedium)
+	aboutRule := valueobject.NewAuditRule("eeat_about_page", valueobject.CategoryEEAT, valueobject.SeverityLow)
 	if !foundPages["/about"] && !foundPages["/about-us"] {
-		aboutRule.Fail(
+		aboutRule.Warn(
 			"No About page found",
-			"Create an About page (/about or /about-us) that describes your organization, mission, and team. This is critical for E-E-A-T.",
+			"Create an About page (/about or /about-us) that describes your organization, mission, and team. Note: single-page sites may include this as a section on the homepage.",
 		)
 	} else {
 		aboutRule.Pass("About page exists")
 	}
 	rules = append(rules, aboutRule)
 
-	contactRule := valueobject.NewAuditRule("eeat_contact_page", valueobject.CategoryEEAT, valueobject.SeverityMedium)
+	contactRule := valueobject.NewAuditRule("eeat_contact_page", valueobject.CategoryEEAT, valueobject.SeverityLow)
 	if !foundPages["/contact"] && !foundPages["/contact-us"] {
-		contactRule.Fail(
+		contactRule.Warn(
 			"No Contact page found",
-			"Create a Contact page (/contact or /contact-us) with contact information. This builds trust with both users and search engines.",
+			"Create a Contact page (/contact or /contact-us) with contact information. Note: single-page sites may include this as a section on the homepage.",
 		)
 	} else {
 		contactRule.Pass("Contact page exists")

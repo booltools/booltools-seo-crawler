@@ -13,13 +13,13 @@ type ResourceChecker struct{}
 func (c *ResourceChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 	var rules []valueobject.AuditRule
 
-	jsCountRule := valueobject.NewAuditRule("js_file_count", valueobject.CategoryPerformance, valueobject.SeverityMedium)
+	jsCountRule := valueobject.NewAuditRule("js_file_count", valueobject.CategoryPerformance, valueobject.SeverityLow)
 	jsCountRule.AffectedURL = page.URL
 	jsCount := len(page.Scripts)
-	if jsCount > 10 {
+	if jsCount > 30 {
 		jsCountRule.Warn(
 			fmt.Sprintf("Page loads %d JavaScript files", jsCount),
-			"Reduce the number of JavaScript files by bundling them. Fewer HTTP requests improve load time.",
+			"Reduce the number of JavaScript files. While HTTP/2 multiplexing handles many requests efficiently, excessive scripts may still impact parse time.",
 		)
 		jsCountRule.WithDetails(formatResourceURLs(scriptURLs(page.Scripts)))
 	} else {
@@ -48,14 +48,16 @@ func (c *ResourceChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 		}
 	}
 
-	renderBlockingRule := valueobject.NewAuditRule("render_blocking", valueobject.CategoryPerformance, valueobject.SeverityHigh)
+	renderBlockingRule := valueobject.NewAuditRule("render_blocking", valueobject.CategoryPerformance, valueobject.SeverityMedium)
 	renderBlockingRule.AffectedURL = page.URL
-	if len(renderBlockingScripts) > 0 {
-		renderBlockingRule.Fail(
+	if len(renderBlockingScripts) > 3 {
+		renderBlockingRule.Warn(
 			fmt.Sprintf("%d render-blocking scripts found in <head>", len(renderBlockingScripts)),
-			"Add 'async' or 'defer' attributes to scripts in the <head>, or move them to the end of <body>.",
+			"Add 'async' or 'defer' attributes to scripts in the <head>, or move them to the end of <body>. Note: framework bootstrap scripts (Next.js, Nuxt, Astro) require synchronous loading for hydration.",
 		)
 		renderBlockingRule.WithDetails(formatResourceURLs(renderBlockingScripts))
+	} else if len(renderBlockingScripts) > 0 {
+		renderBlockingRule.Pass(fmt.Sprintf("%d render-blocking script(s) in <head> (likely framework bootstrap)", len(renderBlockingScripts)))
 	} else {
 		renderBlockingRule.Pass("No render-blocking scripts in <head>")
 	}

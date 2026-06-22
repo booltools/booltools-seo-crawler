@@ -23,7 +23,7 @@ func TestResourceChecker_FewScripts(t *testing.T) {
 
 func TestResourceChecker_TooManyScripts(t *testing.T) {
 	page := makePageData(`<html><head></head><body></body></html>`)
-	scripts := make([]crawler.ResourceData, 15)
+	scripts := make([]crawler.ResourceData, 35)
 	for i := range scripts {
 		scripts[i] = crawler.ResourceData{URL: "https://example.com/script.js"}
 	}
@@ -33,7 +33,7 @@ func TestResourceChecker_TooManyScripts(t *testing.T) {
 
 	jsRule := findRule(rules, "js_file_count")
 	if jsRule == nil || jsRule.Result != valueobject.RuleResultWarning {
-		t.Error("expected js_file_count to warn for 15 scripts")
+		t.Error("expected js_file_count to warn for 35 scripts")
 	}
 	if jsRule.Details == "" {
 		t.Error("expected js_file_count to include script URL details")
@@ -43,17 +43,34 @@ func TestResourceChecker_TooManyScripts(t *testing.T) {
 func TestResourceChecker_RenderBlocking(t *testing.T) {
 	page := makePageData(`<html><head></head><body></body></html>`)
 	page.Scripts = []crawler.ResourceData{
-		{URL: "https://example.com/blocking.js", Location: "head", IsAsync: false, IsDefer: false},
+		{URL: "https://example.com/blocking1.js", Location: "head", IsAsync: false, IsDefer: false},
+		{URL: "https://example.com/blocking2.js", Location: "head", IsAsync: false, IsDefer: false},
+		{URL: "https://example.com/blocking3.js", Location: "head", IsAsync: false, IsDefer: false},
+		{URL: "https://example.com/blocking4.js", Location: "head", IsAsync: false, IsDefer: false},
 	}
 	checker := &performance.ResourceChecker{}
 	rules := checker.Check(page)
 
 	blockingRule := findRule(rules, "render_blocking")
-	if blockingRule == nil || blockingRule.Result != valueobject.RuleResultFail {
-		t.Error("expected render_blocking to fail for sync script in head")
+	if blockingRule == nil || blockingRule.Result != valueobject.RuleResultWarning {
+		t.Error("expected render_blocking to warn for 4+ sync scripts in head")
 	}
 	if blockingRule.Details == "" {
 		t.Error("expected render_blocking to include script URL details")
+	}
+}
+
+func TestResourceChecker_RenderBlockingSingleFrameworkScript(t *testing.T) {
+	page := makePageData(`<html><head></head><body></body></html>`)
+	page.Scripts = []crawler.ResourceData{
+		{URL: "https://example.com/_next/static/chunks/bootstrap.js", Location: "head", IsAsync: false, IsDefer: false},
+	}
+	checker := &performance.ResourceChecker{}
+	rules := checker.Check(page)
+
+	blockingRule := findRule(rules, "render_blocking")
+	if blockingRule == nil || blockingRule.Result != valueobject.RuleResultPass {
+		t.Error("expected render_blocking to pass for 1-3 framework bootstrap scripts")
 	}
 }
 

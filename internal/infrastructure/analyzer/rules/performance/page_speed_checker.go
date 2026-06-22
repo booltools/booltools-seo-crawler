@@ -31,13 +31,13 @@ func (c *PageSpeedChecker) Check(page crawler.PageData) []valueobject.AuditRule 
 	}
 	rules = append(rules, pageSizeRule)
 
-	htmlSizeRule := valueobject.NewAuditRule("html_size", valueobject.CategoryPerformance, valueobject.SeverityMedium)
+	htmlSizeRule := valueobject.NewAuditRule("html_size", valueobject.CategoryPerformance, valueobject.SeverityLow)
 	htmlSizeRule.AffectedURL = page.URL
 	htmlSizeKB := len(page.HTML) / 1024
-	if htmlSizeKB > 100 {
+	if htmlSizeKB > 150 {
 		htmlSizeRule.Warn(
 			fmt.Sprintf("HTML document is large (%d KB)", htmlSizeKB),
-			"Reduce HTML document size to under 100KB. Remove inline scripts/styles and use external files.",
+			"Reduce HTML document size to under 150KB. Remove inline scripts/styles and use external files. Note: i18n pages or apps with inline data may exceed this threshold acceptably.",
 		)
 	} else {
 		htmlSizeRule.Pass(fmt.Sprintf("HTML document size is acceptable (%d KB)", htmlSizeKB))
@@ -62,7 +62,7 @@ func (c *PageSpeedChecker) Check(page crawler.PageData) []valueobject.AuditRule 
 	}
 	rules = append(rules, ttfbRule)
 
-	compressionRule := valueobject.NewAuditRule("compression", valueobject.CategoryPerformance, valueobject.SeverityMedium)
+	compressionRule := valueobject.NewAuditRule("compression", valueobject.CategoryPerformance, valueobject.SeverityLow)
 	compressionRule.AffectedURL = page.URL
 	contentEncoding := page.Headers.Get("Content-Encoding")
 	vary := page.Headers.Get("Vary")
@@ -82,7 +82,7 @@ func (c *PageSpeedChecker) Check(page crawler.PageData) []valueobject.AuditRule 
 	} else {
 		compressionRule.Warn(
 			"Response may not be compressed",
-			"Enable GZIP or Brotli compression on your server to reduce transfer size. Note: this check may be inaccurate if compression is handled transparently.",
+			"Enable GZIP or Brotli compression on your server. Note: CDN edge layers (Vercel, Cloudflare, Netlify) often apply compression transparently — this check may not detect it.",
 		)
 		compressionRule.WithDetails(fmt.Sprintf("Content-Encoding: %q, Vary: %q, Content-Length: %d bytes", contentEncoding, vary, page.ContentLength))
 	}

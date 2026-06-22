@@ -94,8 +94,8 @@ func (c *ImageChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 	formatRule.AffectedURL = page.URL
 	if len(nonModernFormatURLs) > 0 {
 		formatRule.Warn(
-			fmt.Sprintf("%d images use legacy formats instead of WebP/AVIF", len(nonModernFormatURLs)),
-			"Convert images to WebP or AVIF format for better compression and faster loading.",
+			fmt.Sprintf("%d images use legacy formats based on URL extension", len(nonModernFormatURLs)),
+			"Convert images to WebP or AVIF format. Note: frameworks like Next.js Image serve modern formats via content negotiation even if the URL path shows .jpg/.png — this may be a false positive.",
 		)
 		formatRule.WithDetails(formatAssetList(nonModernFormatURLs))
 	} else {

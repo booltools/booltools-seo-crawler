@@ -1,6 +1,8 @@
 package security
 
 import (
+	"strings"
+
 	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/crawler"
 )
@@ -54,10 +56,20 @@ func (c *SecurityHeaderChecker) Check(page crawler.PageData) []valueobject.Audit
 	serverRule.AffectedURL = page.URL
 	serverHeader := page.Headers.Get("Server")
 	if serverHeader != "" {
-		serverRule.Warn(
-			"Server version is disclosed: "+serverHeader,
-			"Remove or obfuscate the Server header to avoid exposing server software information to attackers.",
-		)
+		loweredServer := strings.ToLower(serverHeader)
+		isManagedCDN := loweredServer == "vercel" ||
+			loweredServer == "cloudflare" ||
+			loweredServer == "netlify" ||
+			strings.HasPrefix(loweredServer, "cloudfront") ||
+			strings.HasPrefix(loweredServer, "awselb")
+		if isManagedCDN {
+			serverRule.Pass("Server header is from a managed CDN (" + serverHeader + ") — cannot be removed")
+		} else {
+			serverRule.Warn(
+				"Server version is disclosed: "+serverHeader,
+				"Remove or obfuscate the Server header to avoid exposing server software information to attackers.",
+			)
+		}
 	} else {
 		serverRule.Pass("Server version is not disclosed")
 	}

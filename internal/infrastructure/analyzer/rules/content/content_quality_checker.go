@@ -21,29 +21,29 @@ func (c *ContentQualityChecker) Check(page crawler.PageData) []valueobject.Audit
 
 	wordCountRule := valueobject.NewAuditRule("content_word_count", valueobject.CategoryContent, valueobject.SeverityMedium)
 	wordCountRule.AffectedURL = page.URL
-	if wordCount < 100 {
+	if wordCount < 50 {
 		wordCountRule.Fail(
 			fmt.Sprintf("Page has very thin content (%d words)", wordCount),
-			"Add more substantive content. Pages with under 100 words provide little value to users or search engines. Aim for at least 300 words.",
+			"Add more substantive content. Pages with under 50 words provide little value. Note: client-rendered SPAs may show low word counts because content renders via JavaScript.",
 		)
 	} else if wordCount < 300 {
 		wordCountRule.Warn(
 			fmt.Sprintf("Page content may be too thin (%d words)", wordCount),
-			"Consider expanding the content to at least 300 words for better search visibility.",
+			"Consider expanding the content to at least 300 words for better search visibility. Note: client-rendered SPAs may show low word counts because content renders via JavaScript.",
 		)
 	} else {
 		wordCountRule.Pass(fmt.Sprintf("Content length is adequate (%d words)", wordCount))
 	}
 	rules = append(rules, wordCountRule)
 
-	ratioRule := valueobject.NewAuditRule("content_text_html_ratio", valueobject.CategoryContent, valueobject.SeverityMedium)
+	ratioRule := valueobject.NewAuditRule("content_text_html_ratio", valueobject.CategoryContent, valueobject.SeverityLow)
 	ratioRule.AffectedURL = page.URL
 	if htmlLength > 0 {
 		ratio := float64(textLength) / float64(htmlLength) * 100
-		if ratio < 10 {
+		if ratio < 5 {
 			ratioRule.Warn(
 				fmt.Sprintf("Low text-to-HTML ratio (%.1f%%)", ratio),
-				"Increase the amount of visible text content relative to HTML code. Reduce unnecessary markup, inline styles, and scripts.",
+				"Increase the amount of visible text content relative to HTML code. Note: client-rendered SPAs (React, Vue, Angular) will show low ratios because content renders via JavaScript.",
 			)
 			ratioRule.WithDetails(fmt.Sprintf("Text content: %d bytes, HTML size: %d bytes, Ratio: %.1f%%", textLength, htmlLength, ratio))
 		} else {

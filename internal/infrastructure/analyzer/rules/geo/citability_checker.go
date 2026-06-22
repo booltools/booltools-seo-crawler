@@ -56,12 +56,12 @@ func (c *CitabilityChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 		return rules
 	}
 
-	statsRule := valueobject.NewAuditRule("geo_citability_statistics", valueobject.CategoryGEO, valueobject.SeverityMedium)
+	statsRule := valueobject.NewAuditRule("geo_citability_statistics", valueobject.CategoryGEO, valueobject.SeverityLow)
 	statsRatio := float64(pagesWithStats) / float64(totalPages) * 100
 	if statsRatio < 30 {
-		statsRule.Fail(
+		statsRule.Warn(
 			fmt.Sprintf("Only %.0f%% of pages contain specific data points or statistics", statsRatio),
-			"Add specific numbers, percentages, and data points to your content. AI models prefer citing pages with verifiable, quantifiable information.",
+			"Add specific numbers, percentages, and data points to your content. AI models prefer citing pages with verifiable, quantifiable information. Note: client-rendered content may not be detected.",
 		)
 	} else {
 		statsRule.Pass(fmt.Sprintf("%.0f%% of pages contain data points and statistics", statsRatio))
@@ -72,7 +72,7 @@ func (c *CitabilityChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 	if pagesWithFAQ == 0 {
 		faqRule.Warn(
 			"No FAQ-style content found on any page",
-			"Add FAQ sections with clear question-answer pairs. AI models frequently extract and cite Q&A-formatted content.",
+			"Add FAQ sections with clear question-answer pairs. AI models frequently extract and cite Q&A-formatted content. Note: client-rendered FAQ sections will not be detected.",
 		)
 	} else {
 		faqRule.Pass(fmt.Sprintf("%d pages have FAQ-style content", pagesWithFAQ))
@@ -82,8 +82,8 @@ func (c *CitabilityChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 	tablesRule := valueobject.NewAuditRule("geo_citability_tables", valueobject.CategoryGEO, valueobject.SeverityLow)
 	if pagesWithTables == 0 {
 		tablesRule.Warn(
-			"No comparison tables found",
-			"Add comparison tables for \"vs\" content and feature comparisons. Structured data in tables is easily extracted by AI models.",
+			"No data tables found",
+			"Add tables for structured data, feature comparisons, or specifications. Structured data in tables is easily extracted by AI models.",
 		)
 	} else {
 		tablesRule.Pass(fmt.Sprintf("%d pages contain data tables", pagesWithTables))

@@ -40,13 +40,14 @@ type ReportOutput struct {
 }
 
 type ReportIssue struct {
-	RuleKey        string `json:"ruleKey"`
-	Severity       string `json:"severity"`
-	Category       string `json:"category"`
-	Message        string `json:"message"`
-	Recommendation string `json:"recommendation"`
-	AffectedCount  int    `json:"affectedCount"`
+	RuleKey        string   `json:"ruleKey"`
+	Severity       string   `json:"severity"`
+	Category       string   `json:"category"`
+	Message        string   `json:"message"`
+	Recommendation string   `json:"recommendation"`
+	AffectedCount  int      `json:"affectedCount"`
 	AffectedURLs   []string `json:"affectedUrls,omitempty"`
+	Details        string   `json:"details,omitempty"`
 }
 
 type Reporter struct {
@@ -115,6 +116,19 @@ func (reporter *Reporter) reportText(result *ScanResult, grouped []groupedRule, 
 			if issue.affectedCount > 0 {
 				fmt.Fprintf(writer, "    %s→ %d page%s affected%s\n", colorGray, issue.affectedCount, pluralize(issue.affectedCount), colorReset)
 			}
+			if issue.details != "" && issue.affectedCount == 0 {
+				lines := strings.Split(issue.details, "\n")
+				limit := 5
+				if len(lines) < limit {
+					limit = len(lines)
+				}
+				for _, line := range lines[:limit] {
+					fmt.Fprintf(writer, "    %s• %s%s\n", colorGray, line, colorReset)
+				}
+				if len(lines) > 5 {
+					fmt.Fprintf(writer, "    %s... and %d more%s\n", colorGray, len(lines)-5, colorReset)
+				}
+			}
 		}
 		fmt.Fprintln(writer)
 	}
@@ -175,6 +189,7 @@ func buildReportOutput(result *ScanResult, grouped []groupedRule, exitCode int) 
 			Recommendation: group.recommendation,
 			AffectedCount:  group.affectedCount,
 			AffectedURLs:   group.affectedURLs,
+			Details:        group.details,
 		})
 	}
 
@@ -198,6 +213,7 @@ type groupedRule struct {
 	result         valueobject.RuleResult
 	message        string
 	recommendation string
+	details        string
 	affectedCount  int
 	affectedURLs   []string
 }
@@ -222,10 +238,16 @@ func groupRulesByKey(rules []valueobject.AuditRule) []groupedRule {
 				existing.result = valueobject.RuleResultFail
 				existing.message = rule.Message
 				existing.recommendation = rule.Recommendation
+				if rule.Details != "" {
+					existing.details = rule.Details
+				}
 			} else if rule.Result == valueobject.RuleResultWarning && existing.result != valueobject.RuleResultFail {
 				existing.result = valueobject.RuleResultWarning
 				existing.message = rule.Message
 				existing.recommendation = rule.Recommendation
+				if rule.Details != "" {
+					existing.details = rule.Details
+				}
 			}
 		} else {
 			entry := &groupedRule{
@@ -235,6 +257,7 @@ func groupRulesByKey(rules []valueobject.AuditRule) []groupedRule {
 				result:         rule.Result,
 				message:        rule.Message,
 				recommendation: rule.Recommendation,
+				details:        rule.Details,
 				affectedCount:  0,
 				affectedURLs:   make([]string, 0),
 			}
