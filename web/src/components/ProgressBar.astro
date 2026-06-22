@@ -240,24 +240,40 @@ const { jobId } = Astro.props;
     }
   }
 
+  let lastCrawled = 0;
+  let lastTotal = 0;
+  let lastIssues = 0;
+
   eventSource.onmessage = (event) => {
     const data = JSON.parse(event.data);
 
     statusBadge.textContent = data.status;
     statusBadge.className = `status-pill status-${data.status}`;
 
-    const crawled = data.pagesCrawled || 0;
-    const total = data.totalDiscovered || 0;
+    const crawled = data.pagesCrawled || lastCrawled;
+    const total = data.totalDiscovered || lastTotal;
+    const issues = data.issuesFound ?? lastIssues;
+
+    lastCrawled = crawled;
+    lastTotal = total;
+    lastIssues = issues;
 
     pagesCrawledElement.childNodes[0].textContent = String(crawled) + ' ';
     pagesTotalElement.textContent = total > 0 ? `/ ${total}` : '';
-    issuesFoundElement.textContent = String(data.issuesFound || 0);
+    issuesFoundElement.textContent = String(issues);
 
     if (crawled === 1 && firstPageTime === 0) {
       firstPageTime = Date.now();
     }
 
-    if (crawled > 2 && total > 0 && firstPageTime > 0) {
+    if (data.status === 'analyzing') {
+      progressBar.style.width = '100%';
+      progressBar.classList.add('bar-analyzing');
+      etaDisplay.textContent = 'finalizing';
+      currentUrlElement.textContent = 'site-level checks';
+      currentUrlElement.title = 'Checking broken links, assets, sitemaps, security headers...';
+    } else if (crawled > 2 && total > 0 && firstPageTime > 0) {
+      progressBar.classList.remove('bar-analyzing');
       const elapsed = (Date.now() - firstPageTime) / 1000;
       const rate = crawled / elapsed;
       const remaining = total - crawled;
@@ -282,7 +298,7 @@ const { jobId } = Astro.props;
       progressMessage.textContent = data.message;
     }
 
-    if (total > 0) {
+    if (total > 0 && data.status !== 'analyzing') {
       const percent = Math.min((crawled / total) * 100, 100);
       progressBar.style.width = `${percent}%`;
     }
@@ -290,6 +306,7 @@ const { jobId } = Astro.props;
     if (data.status === 'completed') {
       eventSource.close();
       progressBar.style.width = '100%';
+      progressBar.classList.remove('bar-analyzing');
       etaDisplay.textContent = 'done';
       playCompletionSound();
       setTimeout(() => { window.location.reload(); }, 1200);
@@ -426,6 +443,15 @@ const { jobId } = Astro.props;
     background: var(--accent);
     border-radius: 2px;
     transition: width 0.4s ease;
+  }
+
+  .bar-fill.bar-analyzing {
+    animation: pulse-bar 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-bar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
   }
 
   .progress-stats {

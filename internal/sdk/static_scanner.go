@@ -121,8 +121,8 @@ func parseHTMLFile(filePath string, baseDirectory string) (crawler.PageData, err
 	if parsedURL != nil {
 		crawler.ExtractLinks(document, parsedURL, "", &pageData)
 		crawler.ExtractImages(document, parsedURL, &pageData)
+		crawler.ExtractResources(document, parsedURL, &pageData)
 	}
-	crawler.ExtractResources(document, &pageData)
 
 	return pageData, nil
 }

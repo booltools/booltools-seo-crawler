@@ -156,9 +156,12 @@ func (wp *WorkerPool) processJob(workerID int, job *entity.CrawlJob) {
 	wp.crawlJobRepo.Update(ctx, job)
 
 	wp.progressBroker.Publish(ProgressEvent{
-		JobID:   job.ID,
-		Status:  string(entity.CrawlStatusAnalyzing),
-		Message: "Running site-level analysis...",
+		JobID:           job.ID,
+		Status:          string(entity.CrawlStatusAnalyzing),
+		PagesCrawled:    job.PagesCrawled,
+		TotalDiscovered: job.PagesCrawled,
+		IssuesFound:     totalIssues,
+		Message:         "Checking broken links, assets, sitemaps, security headers...",
 	})
 
 	siteRules := filterRulesBySelection(wp.siteAnalyzer.AnalyzeSite(*crawlResult), job)

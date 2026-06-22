@@ -146,7 +146,7 @@ func (sc *SiteCrawler) Crawl(targetDomain string, maxPages int, onPage OnPageCal
 
 		ExtractLinks(document, response.Request.URL, hostname, &pageData)
 		ExtractImages(document, response.Request.URL, &pageData)
-		ExtractResources(document, &pageData)
+		ExtractResources(document, response.Request.URL, &pageData)
 
 		mutex.Lock()
 		pagesCompleted++
@@ -299,9 +299,15 @@ func ExtractImages(document *goquery.Document, baseURL *url.URL, pageData *PageD
 	})
 }
 
-func ExtractResources(document *goquery.Document, pageData *PageData) {
+func ExtractResources(document *goquery.Document, baseURL *url.URL, pageData *PageData) {
 	document.Find("script[src]").Each(func(_ int, selection *goquery.Selection) {
 		src := selection.AttrOr("src", "")
+		if src != "" {
+			if resolvedURL, err := baseURL.Parse(src); err == nil {
+				src = resolvedURL.String()
+			}
+		}
+
 		_, isAsync := selection.Attr("async")
 		_, isDefer := selection.Attr("defer")
 
@@ -321,6 +327,11 @@ func ExtractResources(document *goquery.Document, pageData *PageData) {
 
 	document.Find("link[rel='stylesheet']").Each(func(_ int, selection *goquery.Selection) {
 		href := selection.AttrOr("href", "")
+		if href != "" {
+			if resolvedURL, err := baseURL.Parse(href); err == nil {
+				href = resolvedURL.String()
+			}
+		}
 		pageData.Stylesheets = append(pageData.Stylesheets, ResourceData{
 			URL:  href,
 			Type: "css",
