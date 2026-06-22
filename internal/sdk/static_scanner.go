@@ -102,7 +102,7 @@ func parseHTMLFile(filePath string, baseDirectory string) (crawler.PageData, err
 	}
 
 	relativePath, _ := filepath.Rel(baseDirectory, filePath)
-	pageURL := "file://" + filepath.ToSlash(relativePath)
+	pageURL := "file:///" + filepath.ToSlash(relativePath)
 
 	parsedURL, _ := url.Parse(pageURL)
 
@@ -143,6 +143,7 @@ var networkDependentRules = map[string]struct{}{
 	"compression":                 {},
 	"page_size":                   {},
 	"crawl_depth":                 {},
+	"canonical_self_ref":          {},
 }
 
 func filterNetworkDependentRules(rules []valueobject.AuditRule) []valueobject.AuditRule {

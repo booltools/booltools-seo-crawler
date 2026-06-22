@@ -5,16 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Booltools SEO Crawler — Free Open-Source SEO & GEO Auditor</title>
   <meta name="description" content="Analyze any website for 130+ SEO checks including generative engine optimization (GEO). Free, open-source, built with Go and Astro." />
-  <meta property="og:title" content="Booltools SEO Crawler" />
-  <meta property="og:description" content="Free open-source website auditor for SEO and AI search readiness. 130+ audit rules, real-time analysis, CI/CD SDK." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="Booltools SEO Crawler — Free Open-Source SEO & GEO Auditor" />
+  <meta property="og:description" content="Analyze any website for 130+ SEO checks including generative engine optimization (GEO). Free, open-source, built with Go and Astro." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Booltools SEO Crawler — Free Open-Source SEO & GEO Auditor" />
+  <meta name="twitter:description" content="Analyze any website for 130+ SEO checks including generative engine optimization (GEO). Free, open-source, built with Go and Astro." />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='28' font-size='28'>🔍</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Booltools SEO Crawler",
+    "url": "https://booltools.github.io/booltools-seo-crawler/",
+    "description": "Free open-source website auditor for SEO and AI search readiness. 130+ audit rules across 15 categories.",
+    "author": {
+      "@type": "Organization",
+      "name": "Booltools",
+      "url": "https://github.com/booltools"
+    },
+    "license": "https://opensource.org/licenses/MIT"
+  }
+  </script>
 </head>
 <body>
   <header class="header">
@@ -28,7 +51,7 @@
         <a href="#categories">Categories</a>
         <a href="#sdk">CI/CD SDK</a>
         <a href="docs/">Docs</a>
-        <a href="https://github.com/booltools/booltools-seo-crawler" class="btn btn-outline" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/booltools/booltools-seo-crawler" class="btn btn-outline" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
     </nav>
   </header>
@@ -44,8 +67,8 @@
           or feed them directly to AI agents.
         </p>
         <div class="hero-actions">
-          <a href="https://github.com/booltools/booltools-seo-crawler#quick-start" class="btn btn-primary" target="_blank" rel="noopener">Get Started</a>
-          <a href="https://github.com/booltools/booltools-seo-crawler/releases" class="btn btn-secondary" target="_blank" rel="noopener">Download SDK</a>
+          <a href="https://github.com/booltools/booltools-seo-crawler#quick-start" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Get Started</a>
+          <a href="https://github.com/booltools/booltools-seo-crawler/releases" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Download SDK</a>
         </div>
         <div class="hero-tech">
           <span>Built with</span>
@@ -112,62 +135,62 @@
         <div class="categories-grid">
           <div class="category-card">
             <span class="category-count">15</span>
-            <h4>On-Page SEO</h4>
+            <h3>On-Page SEO</h3>
             <p>Title, meta description, headings, images, alt text</p>
           </div>
           <div class="category-card">
             <span class="category-count">24</span>
-            <h4>Technical SEO</h4>
+            <h3>Technical SEO</h3>
             <p>Canonical, robots.txt, sitemap, redirects, HTTP status</p>
           </div>
           <div class="category-card highlight">
             <span class="category-count">24</span>
-            <h4>GEO</h4>
+            <h3>GEO</h3>
             <p>AI crawler access, llms.txt, citability, entity authority</p>
           </div>
           <div class="category-card">
             <span class="category-count">9</span>
-            <h4>Performance</h4>
+            <h3>Performance</h3>
             <p>Page size, TTFB, compression, render blocking</p>
           </div>
           <div class="category-card">
             <span class="category-count">9</span>
-            <h4>Security</h4>
+            <h3>Security</h3>
             <p>HTTPS, HSTS, CSP, XFO, security headers</p>
           </div>
           <div class="category-card">
             <span class="category-count">12</span>
-            <h4>Social / Open Graph</h4>
+            <h3>Social / Open Graph</h3>
             <p>OG tags, Twitter cards, social metadata</p>
           </div>
           <div class="category-card">
             <span class="category-count">6</span>
-            <h4>Links</h4>
+            <h3>Links</h3>
             <p>Internal/external links, broken links, anchor text</p>
           </div>
           <div class="category-card">
             <span class="category-count">6</span>
-            <h4>E-E-A-T</h4>
+            <h3>E-E-A-T</h3>
             <p>Author, about, contact, privacy pages</p>
           </div>
           <div class="category-card">
             <span class="category-count">6</span>
-            <h4>URL Structure</h4>
+            <h3>URL Structure</h3>
             <p>Lowercase, length, special characters</p>
           </div>
           <div class="category-card">
             <span class="category-count">5</span>
-            <h4>Accessibility</h4>
+            <h3>Accessibility</h3>
             <p>Language, viewport, ARIA labels</p>
           </div>
           <div class="category-card">
             <span class="category-count">3</span>
-            <h4>Structured Data</h4>
+            <h3>Structured Data</h3>
             <p>JSON-LD, breadcrumbs, schema validation</p>
           </div>
           <div class="category-card">
             <span class="category-count">3</span>
-            <h4>Duplicate Content</h4>
+            <h3>Duplicate Content</h3>
             <p>Duplicate titles, descriptions, body</p>
           </div>
         </div>
@@ -221,7 +244,7 @@ seo-crawler --mode=static --dir=./dist</code></pre>
         <h2>Ready to audit your website?</h2>
         <p>Get started in under a minute. Clone, run, analyze.</p>
         <div class="cta-actions">
-          <a href="https://github.com/booltools/booltools-seo-crawler" class="btn btn-primary" target="_blank" rel="noopener">View on GitHub</a>
+          <a href="https://github.com/booltools/booltools-seo-crawler" class="btn btn-primary" target="_blank" rel="noopener noreferrer">View on GitHub</a>
         </div>
         <div class="cta-install">
           <code>git clone https://github.com/booltools/booltools-seo-crawler.git</code>
@@ -232,7 +255,7 @@ seo-crawler --mode=static --dir=./dist</code></pre>
 
   <footer class="footer">
     <div class="container">
-      <p>MIT License &bull; Made by <a href="https://github.com/booltools" target="_blank" rel="noopener">Booltools</a></p>
+      <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer">Booltools</a> &bull; MIT License</p>
     </div>
   </footer>
 </body>

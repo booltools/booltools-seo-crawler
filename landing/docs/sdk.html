@@ -4,16 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CI/CD SDK — Booltools SEO Crawler</title>
-  <meta name="description" content="Standalone CLI binary to catch SEO regressions in your deployment pipeline." />
+  <meta name="description" content="Standalone CLI binary to catch SEO regressions in your deployment pipeline. Supports static HTML scanning, live server crawling, and GitHub Actions integration." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/sdk.html" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="CI/CD SDK — Booltools SEO Crawler" />
+  <meta property="og:description" content="Standalone CLI binary to catch SEO regressions in your deployment pipeline. Supports static HTML scanning, live server crawling, and GitHub Actions." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/sdk.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CI/CD SDK — Booltools SEO Crawler" />
+  <meta name="twitter:description" content="Standalone CLI binary to catch SEO regressions in your deployment pipeline." />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="docs.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "CI/CD SDK — Booltools SEO Crawler",
+    "url": "https://booltools.github.io/booltools-seo-crawler/docs/sdk.html",
+    "description": "Standalone CLI binary to catch SEO regressions in your deployment pipeline.",
+    "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": "https://booltools.github.io/booltools-seo-crawler/" },
+    "author": { "@type": "Organization", "name": "Booltools", "url": "https://github.com/booltools" }
+  }
+  </script>
 </head>
 <body>
   <header class="docs-header">
     <a href="../">🔍 Booltools SEO Crawler</a>
-    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
   </header>
 
   <div class="docs-page">
@@ -22,10 +46,12 @@
         <ul>
           <li><a href="./">Overview</a></li>
           <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="web-ui.html">Web UI Guide</a></li>
           <li><a href="sdk.html" class="active">CI/CD SDK</a></li>
-          <li><a href="api.html">API Reference</a></li>
           <li><a href="rules.html">Rules Reference</a></li>
           <li><a href="presets.html">Rule Presets</a></li>
+          <li><a href="localhost.html">Localhost Crawling</a></li>
+          <li><a href="api.html">API Reference</a></li>
         </ul>
       </nav>
     </aside>
@@ -43,6 +69,31 @@ make build-sdk
 # Binary: bin/seo-crawler</code></pre>
 
       <h3>Download release binary</h3>
+
+      <div class="download-buttons">
+        <a href="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-amd64" class="download-btn">
+          <span class="download-icon">&#x1f427;</span>
+          <span class="download-info"><strong>Linux</strong><small>amd64</small></span>
+        </a>
+        <a href="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-arm64" class="download-btn">
+          <span class="download-icon">&#x1f427;</span>
+          <span class="download-info"><strong>Linux</strong><small>arm64</small></span>
+        </a>
+        <a href="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-darwin-arm64" class="download-btn">
+          <span class="download-icon">&#x1f34e;</span>
+          <span class="download-info"><strong>macOS</strong><small>Apple Silicon</small></span>
+        </a>
+        <a href="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-darwin-amd64" class="download-btn">
+          <span class="download-icon">&#x1f34e;</span>
+          <span class="download-info"><strong>macOS</strong><small>Intel</small></span>
+        </a>
+        <a href="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-windows-amd64.exe" class="download-btn">
+          <span class="download-icon">&#x1fa9f;</span>
+          <span class="download-info"><strong>Windows</strong><small>amd64</small></span>
+        </a>
+      </div>
+
+      <h4>Linux / macOS</h4>
       <pre><code># Linux (amd64)
 curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-amd64 -o seo-crawler
 chmod +x seo-crawler
@@ -54,6 +105,14 @@ chmod +x seo-crawler
 # macOS (Intel)
 curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-darwin-amd64 -o seo-crawler
 chmod +x seo-crawler</code></pre>
+
+      <h4>Windows</h4>
+      <pre><code># PowerShell
+Invoke-WebRequest -Uri "https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-windows-amd64.exe" -OutFile "seo-crawler.exe"
+
+# Or with curl (available in Windows 10+)
+curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-windows-amd64.exe -o seo-crawler.exe</code></pre>
+      <p>On Windows, use <code>seo-crawler.exe</code> instead of <code>./seo-crawler</code> in all commands below.</p>
 
       <h2>Scan Modes</h2>
 
@@ -100,7 +159,8 @@ ignore:
   - uses_https
   - hsts_header</code></pre>
 
-      <h2>GitHub Actions Example</h2>
+      <h2>GitHub Action</h2>
+      <p>The SDK is available as a GitHub Action. Add it directly to your workflow:</p>
       <pre><code>name: SEO Audit
 on: [pull_request]
 
@@ -109,9 +169,77 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: SEO Audit
+        uses: booltools/booltools-seo-crawler@v1
+        with:
+          mode: full
+          start-cmd: "npm run dev"
+          wait-for: http://localhost:3000
+          url: http://localhost:3000
+          fail-on: high</code></pre>
+
+      <h3>Static mode (no server needed)</h3>
+      <pre><code>      - run: npm run build
+
+      - name: SEO Audit
+        uses: booltools/booltools-seo-crawler@v1
+        with:
+          mode: static
+          dir: ./dist
+          fail-on: high</code></pre>
+
+      <h3>Action Inputs</h3>
+      <table>
+        <thead><tr><th>Input</th><th>Description</th><th>Default</th></tr></thead>
+        <tbody>
+          <tr><td><code>mode</code></td><td><code>static</code> or <code>full</code> (required)</td><td>—</td></tr>
+          <tr><td><code>url</code></td><td>URL to crawl (full mode)</td><td>—</td></tr>
+          <tr><td><code>dir</code></td><td>HTML directory (static mode)</td><td>—</td></tr>
+          <tr><td><code>fail-on</code></td><td>Severity threshold</td><td><code>high</code></td></tr>
+          <tr><td><code>ignore</code></td><td>Comma-separated rule keys to skip</td><td>—</td></tr>
+          <tr><td><code>only</code></td><td>Comma-separated rule keys to run</td><td>—</td></tr>
+          <tr><td><code>start-cmd</code></td><td>Commands to start servers</td><td>—</td></tr>
+          <tr><td><code>wait-for</code></td><td>URLs to poll until ready</td><td>—</td></tr>
+          <tr><td><code>wait-timeout</code></td><td>Max wait time</td><td><code>30s</code></td></tr>
+          <tr><td><code>max-pages</code></td><td>Max pages to crawl</td><td><code>1000</code></td></tr>
+          <tr><td><code>version</code></td><td>SDK version to use</td><td><code>latest</code></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Action Outputs</h3>
+      <table>
+        <thead><tr><th>Output</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><code>passed</code></td><td>Number of rules that passed</td></tr>
+          <tr><td><code>issues</code></td><td>Number of issues found</td></tr>
+          <tr><td><code>exit-code</code></td><td>0 = pass, 1 = fail, 2 = config error</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Manual Setup (without the Action)</h2>
+      <p>If you prefer to download the binary directly:</p>
+      <pre><code>name: SEO Audit
+on: [push, pull_request]
+
+jobs:
+  seo-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
       - run: npm ci
 
       - name: Download SEO Crawler SDK
@@ -158,5 +286,8 @@ jobs:
       </table>
     </article>
   </div>
+  <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">
+    <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:none;">Booltools</a> &bull; MIT License</p>
+  </footer>
 </body>
 </html>

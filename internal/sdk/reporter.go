@@ -207,9 +207,11 @@ func groupRulesByKey(rules []valueobject.AuditRule) []groupedRule {
 	var orderedKeys []string
 
 	for _, rule := range rules {
+		isIssue := rule.Result == valueobject.RuleResultFail || rule.Result == valueobject.RuleResultWarning
+
 		existing, found := ruleMap[rule.Key]
 		if found {
-			if rule.AffectedURL != "" && !containsString(existing.affectedURLs, rule.AffectedURL) {
+			if isIssue && rule.AffectedURL != "" && !containsString(existing.affectedURLs, rule.AffectedURL) {
 				existing.affectedURLs = append(existing.affectedURLs, rule.AffectedURL)
 				existing.affectedCount++
 			}
@@ -218,8 +220,12 @@ func groupRulesByKey(rules []valueobject.AuditRule) []groupedRule {
 			}
 			if rule.Result == valueobject.RuleResultFail {
 				existing.result = valueobject.RuleResultFail
+				existing.message = rule.Message
+				existing.recommendation = rule.Recommendation
 			} else if rule.Result == valueobject.RuleResultWarning && existing.result != valueobject.RuleResultFail {
 				existing.result = valueobject.RuleResultWarning
+				existing.message = rule.Message
+				existing.recommendation = rule.Recommendation
 			}
 		} else {
 			entry := &groupedRule{
@@ -232,7 +238,7 @@ func groupRulesByKey(rules []valueobject.AuditRule) []groupedRule {
 				affectedCount:  0,
 				affectedURLs:   make([]string, 0),
 			}
-			if rule.AffectedURL != "" {
+			if isIssue && rule.AffectedURL != "" {
 				entry.affectedURLs = append(entry.affectedURLs, rule.AffectedURL)
 				entry.affectedCount = 1
 			}

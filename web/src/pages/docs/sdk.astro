@@ -14,13 +14,65 @@ make build-sdk
 # Binary: bin/seo-crawler</code></pre>
 
   <h3>Download release binary</h3>
-  <pre><code># Linux
+
+  <div class="download-buttons">
+    <a href="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-amd64" class="download-btn">
+      <span class="download-icon">🐧</span>
+      <span class="download-info">
+        <strong>Linux</strong>
+        <small>amd64</small>
+      </span>
+    </a>
+    <a href="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-arm64" class="download-btn">
+      <span class="download-icon">🐧</span>
+      <span class="download-info">
+        <strong>Linux</strong>
+        <small>arm64</small>
+      </span>
+    </a>
+    <a href="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-darwin-arm64" class="download-btn">
+      <span class="download-icon">🍎</span>
+      <span class="download-info">
+        <strong>macOS</strong>
+        <small>Apple Silicon</small>
+      </span>
+    </a>
+    <a href="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-darwin-amd64" class="download-btn">
+      <span class="download-icon">🍎</span>
+      <span class="download-info">
+        <strong>macOS</strong>
+        <small>Intel</small>
+      </span>
+    </a>
+    <a href="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-windows-amd64.exe" class="download-btn">
+      <span class="download-icon">🪟</span>
+      <span class="download-info">
+        <strong>Windows</strong>
+        <small>amd64</small>
+      </span>
+    </a>
+  </div>
+
+  <h4>Linux / macOS</h4>
+  <pre><code># Linux (amd64)
 curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-amd64 -o seo-crawler
 chmod +x seo-crawler
 
-# macOS
+# macOS (Apple Silicon)
+curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-darwin-arm64 -o seo-crawler
+chmod +x seo-crawler
+
+# macOS (Intel)
 curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-darwin-amd64 -o seo-crawler
 chmod +x seo-crawler</code></pre>
+
+  <h4>Windows</h4>
+  <pre><code># PowerShell
+Invoke-WebRequest -Uri "https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-windows-amd64.exe" -OutFile "seo-crawler.exe"
+
+# Or with curl (available in Windows 10+)
+curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-windows-amd64.exe -o seo-crawler.exe</code></pre>
+  <p>On Windows, use <code>seo-crawler.exe</code> instead of <code>./seo-crawler</code> in all commands below.</p>
 
   <h2>Scan Modes</h2>
 
@@ -117,7 +169,73 @@ ignore:
     </tbody>
   </table>
 
-  <h2>GitHub Actions Example</h2>
+  <h2>GitHub Action</h2>
+  <p>The SDK is available as a GitHub Action. Add it directly to your workflow:</p>
+  <pre><code>name: SEO Audit
+on: [pull_request]
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: SEO Audit
+        uses: booltools/booltools-seo-crawler@v1
+        with:
+          mode: full
+          start-cmd: "npm run dev"
+          wait-for: http://localhost:3000
+          url: http://localhost:3000
+          fail-on: high</code></pre>
+
+  <h3>Static mode (no server needed)</h3>
+  <pre><code>      - run: npm run build
+
+      - name: SEO Audit
+        uses: booltools/booltools-seo-crawler@v1
+        with:
+          mode: static
+          dir: ./dist
+          fail-on: high</code></pre>
+
+  <h3>Action Inputs</h3>
+  <table>
+    <thead><tr><th>Input</th><th>Description</th><th>Default</th></tr></thead>
+    <tbody>
+      <tr><td><code>mode</code></td><td><code>static</code> or <code>full</code> (required)</td><td>—</td></tr>
+      <tr><td><code>url</code></td><td>URL to crawl (full mode)</td><td>—</td></tr>
+      <tr><td><code>dir</code></td><td>HTML directory (static mode)</td><td>—</td></tr>
+      <tr><td><code>fail-on</code></td><td>Severity threshold</td><td><code>high</code></td></tr>
+      <tr><td><code>ignore</code></td><td>Comma-separated rule keys to skip</td><td>—</td></tr>
+      <tr><td><code>only</code></td><td>Comma-separated rule keys to run</td><td>—</td></tr>
+      <tr><td><code>start-cmd</code></td><td>Commands to start servers</td><td>—</td></tr>
+      <tr><td><code>wait-for</code></td><td>URLs to poll until ready</td><td>—</td></tr>
+      <tr><td><code>wait-timeout</code></td><td>Max wait time</td><td><code>30s</code></td></tr>
+      <tr><td><code>max-pages</code></td><td>Max pages to crawl</td><td><code>1000</code></td></tr>
+      <tr><td><code>version</code></td><td>SDK version to use</td><td><code>latest</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Action Outputs</h3>
+  <table>
+    <thead><tr><th>Output</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>passed</code></td><td>Number of rules that passed</td></tr>
+      <tr><td><code>issues</code></td><td>Number of issues found</td></tr>
+      <tr><td><code>exit-code</code></td><td>0 = pass, 1 = fail, 2 = config error</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Manual Setup (without the Action)</h2>
+  <p>If you prefer to download the binary directly:</p>
   <pre><code>name: SEO Audit
 on: [push, pull_request]
 
@@ -129,7 +247,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - run: npm ci
@@ -154,4 +272,46 @@ jobs:
   - uses_https
   - hsts_header
   - mixed_content</code></pre>
+
+  <style>
+    .download-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 0.6rem;
+      margin: 1rem 0 1.5rem;
+    }
+    .download-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.7rem 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .download-btn:hover {
+      border-color: var(--accent);
+      background: var(--surface-2);
+      text-decoration: none;
+    }
+    .download-icon {
+      font-size: 1.4rem;
+    }
+    .download-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+    .download-info strong {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .download-info small {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+  </style>
 </DocsLayout>

@@ -303,7 +303,7 @@ body {
   color: var(--color-accent);
 }
 
-.category-card h4 {
+.category-card h3 {
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 6px;

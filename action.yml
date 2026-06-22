@@ -1,0 +1,134 @@
+name: 'Booltools SEO Crawler'
+description: 'Run SEO and GEO audit checks on your website. Catches SEO regressions in pull requests before they reach production.'
+author: 'Booltools'
+
+branding:
+  icon: 'search'
+  color: 'purple'
+
+inputs:
+  mode:
+    description: 'Scan mode: "full" (live crawl) or "static" (local HTML files)'
+    required: true
+  url:
+    description: 'URL to crawl (required for full mode)'
+    required: false
+  dir:
+    description: 'Directory with HTML files (required for static mode)'
+    required: false
+  fail-on:
+    description: 'Severity threshold for failure: critical, high, medium, low, info'
+    required: false
+    default: 'high'
+  ignore:
+    description: 'Comma-separated rule keys to skip'
+    required: false
+  only:
+    description: 'Comma-separated rule keys to run exclusively'
+    required: false
+  start-cmd:
+    description: 'Command(s) to start dev server before crawling (comma-separated for multiple)'
+    required: false
+  wait-for:
+    description: 'URL(s) to poll until ready before crawling (comma-separated for multiple)'
+    required: false
+  wait-timeout:
+    description: 'Max wait time per URL (e.g. 30s, 1m)'
+    required: false
+    default: '30s'
+  max-pages:
+    description: 'Maximum number of pages to crawl'
+    required: false
+    default: '1000'
+  format:
+    description: 'Output format: text or json'
+    required: false
+    default: 'text'
+  output:
+    description: 'File path to write JSON report'
+    required: false
+  version:
+    description: 'SDK version to download (e.g. v1.0.0). Defaults to latest.'
+    required: false
+    default: 'latest'
+
+outputs:
+  passed:
+    description: 'Number of rules that passed'
+    value: ${{ steps.audit.outputs.passed }}
+  issues:
+    description: 'Number of issues found'
+    value: ${{ steps.audit.outputs.issues }}
+  exit-code:
+    description: 'Exit code from the SEO crawler (0=pass, 1=fail, 2=config error)'
+    value: ${{ steps.audit.outputs.exit_code }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Download SEO Crawler SDK
+      shell: bash
+      run: |
+        if [ "${{ inputs.version }}" = "latest" ]; then
+          DOWNLOAD_URL="https://github.com/booltools/booltools-seo-crawler/releases/latest/download/seo-crawler-linux-amd64"
+        else
+          DOWNLOAD_URL="https://github.com/booltools/booltools-seo-crawler/releases/download/${{ inputs.version }}/seo-crawler-linux-amd64"
+        fi
+        curl -sL "$DOWNLOAD_URL" -o "${{ github.action_path }}/seo-crawler"
+        chmod +x "${{ github.action_path }}/seo-crawler"
+
+    - name: Run SEO Audit
+      id: audit
+      shell: bash
+      run: |
+        ARGS="--mode=${{ inputs.mode }}"
+
+        if [ -n "${{ inputs.url }}" ]; then
+          ARGS="$ARGS --url=${{ inputs.url }}"
+        fi
+        if [ -n "${{ inputs.dir }}" ]; then
+          ARGS="$ARGS --dir=${{ inputs.dir }}"
+        fi
+        if [ -n "${{ inputs.fail-on }}" ]; then
+          ARGS="$ARGS --fail-on=${{ inputs.fail-on }}"
+        fi
+        if [ -n "${{ inputs.ignore }}" ]; then
+          ARGS="$ARGS --ignore=${{ inputs.ignore }}"
+        fi
+        if [ -n "${{ inputs.only }}" ]; then
+          ARGS="$ARGS --only=${{ inputs.only }}"
+        fi
+        if [ -n "${{ inputs.start-cmd }}" ]; then
+          ARGS="$ARGS --start-cmd=${{ inputs.start-cmd }}"
+        fi
+        if [ -n "${{ inputs.wait-for }}" ]; then
+          ARGS="$ARGS --wait-for=${{ inputs.wait-for }}"
+        fi
+        if [ -n "${{ inputs.wait-timeout }}" ]; then
+          ARGS="$ARGS --wait-timeout=${{ inputs.wait-timeout }}"
+        fi
+        if [ -n "${{ inputs.max-pages }}" ]; then
+          ARGS="$ARGS --max-pages=${{ inputs.max-pages }}"
+        fi
+        if [ -n "${{ inputs.format }}" ]; then
+          ARGS="$ARGS --format=${{ inputs.format }}"
+        fi
+        if [ -n "${{ inputs.output }}" ]; then
+          ARGS="$ARGS --output=${{ inputs.output }}"
+        fi
+
+        set +e
+        OUTPUT=$(${{ github.action_path }}/seo-crawler $ARGS 2>&1)
+        EXIT_CODE=$?
+        set -e
+
+        echo "$OUTPUT"
+
+        PASSED=$(echo "$OUTPUT" | grep -oP 'Passed: \K[0-9]+' || echo "0")
+        ISSUES=$(echo "$OUTPUT" | grep -oP 'Issues: \K[0-9]+' || echo "0")
+
+        echo "passed=$PASSED" >> $GITHUB_OUTPUT
+        echo "issues=$ISSUES" >> $GITHUB_OUTPUT
+        echo "exit_code=$EXIT_CODE" >> $GITHUB_OUTPUT
+
+        exit $EXIT_CODE

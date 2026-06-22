@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web UI Guide — Booltools SEO Crawler</title>
+  <meta name="description" content="Learn how to use the Booltools SEO Crawler web interface. Analyze websites visually with real-time progress, customize rules, read reports, and export results." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/web-ui.html" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="Web UI Guide — Booltools SEO Crawler" />
+  <meta property="og:description" content="Learn how to use the Booltools SEO Crawler web interface. Analyze websites visually with real-time progress, customize rules, and export results." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/web-ui.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Web UI Guide — Booltools SEO Crawler" />
+  <meta name="twitter:description" content="Learn how to use the Booltools SEO Crawler web interface." />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="docs.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Web UI Guide — Booltools SEO Crawler",
+    "url": "https://booltools.github.io/booltools-seo-crawler/docs/web-ui.html",
+    "description": "Learn how to use the Booltools SEO Crawler web interface.",
+    "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": "https://booltools.github.io/booltools-seo-crawler/" },
+    "author": { "@type": "Organization", "name": "Booltools", "url": "https://github.com/booltools" }
+  }
+  </script>
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../">🔍 Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <aside class="docs-sidebar">
+      <nav>
+        <ul>
+          <li><a href="./">Overview</a></li>
+          <li><a href="getting-started.html">Getting Started</a></li>
+          <li><a href="web-ui.html" class="active">Web UI Guide</a></li>
+          <li><a href="sdk.html">CI/CD SDK</a></li>
+          <li><a href="rules.html">Rules Reference</a></li>
+          <li><a href="presets.html">Rule Presets</a></li>
+          <li><a href="localhost.html">Localhost Crawling</a></li>
+          <li><a href="api.html">API Reference</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="docs-content">
+      <h1>Web UI Guide</h1>
+      <p>The web interface lets you audit any website visually with real-time progress.</p>
+
+      <h2>Analyzing a Website</h2>
+      <ol>
+        <li>Enter the domain in the input field (e.g. <code>example.com</code>)</li>
+        <li>Optionally, click <strong>"Customize Rules"</strong> to select specific rules or use a preset</li>
+        <li>Click <strong>"Analyze"</strong> to start the crawl</li>
+        <li>Watch real-time progress as pages are analyzed</li>
+        <li>Review the full report when analysis completes</li>
+      </ol>
+
+      <h2>Using Rule Presets</h2>
+      <p>Presets let you quickly select a group of rules relevant to your site type:</p>
+      <ul>
+        <li><strong>Full Scan</strong> — all 130+ rules for maximum coverage</li>
+        <li><strong>Essential</strong> — core SEO checks every site needs</li>
+        <li><strong>Blog / Article</strong> — optimized for content-heavy sites</li>
+        <li><strong>E-Commerce</strong> — product pages, catalog, and transactional sites</li>
+        <li><strong>Video Platform</strong> — video-centric sites (YouTube-like, courses)</li>
+        <li><strong>Landing Page</strong> — single-page sites and marketing pages</li>
+        <li><strong>Technical SEO</strong> — infrastructure, crawlability, and indexation only</li>
+        <li><strong>GEO / AI Readiness</strong> — AI search engine optimization checks only</li>
+      </ul>
+
+      <h2>Customizing Rules</h2>
+      <p>Click <strong>"Customize Rules"</strong> to expand the rules panel. You can:</p>
+      <ul>
+        <li>Toggle entire categories on/off using category checkboxes</li>
+        <li>Select or deselect individual rules</li>
+        <li>Use "Select All" / "Deselect All" for quick changes</li>
+        <li>Apply a preset then fine-tune individual rules</li>
+      </ul>
+
+      <h2>Reading the Report</h2>
+      <p>The report groups issues by category. Each issue group shows:</p>
+      <ul>
+        <li><strong>Severity badge</strong> (critical, high, medium, low, info)</li>
+        <li><strong>Issue message</strong> — what's wrong</li>
+        <li><strong>Affected URL count</strong> — how many pages are impacted</li>
+        <li><strong>Recommendation</strong> — how to fix it</li>
+        <li><strong>Affected URLs</strong> — clickable links to each affected page</li>
+        <li><strong>Relevant assets</strong> — images, scripts, or other resources related to the issue</li>
+      </ul>
+
+      <h2>Excluding Rules from Export</h2>
+      <p>On the report page, each issue group has a checkbox. Uncheck issues you want to exclude. Unchecked issues will be omitted from CSV and Markdown exports, but remain visible (dimmed) in the report.</p>
+
+      <h2>Exporting Reports</h2>
+      <p>Download reports in two formats:</p>
+      <ul>
+        <li><strong>CSV</strong> — spreadsheet-friendly format for manual review</li>
+        <li><strong>Markdown</strong> — AI-agent-friendly format that can be used with coding assistants to automatically fix issues</li>
+      </ul>
+    </article>
+  </div>
+  <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">
+    <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:none;">Booltools</a> &bull; MIT License</p>
+  </footer>
+</body>
+</html>
