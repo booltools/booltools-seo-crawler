@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Performance Rules — Booltools SEO Crawler</title>
+  <meta name="description" content="All 12 Performance audit rules in the Booltools SEO Crawler." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/performance.html" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="Performance Rules — Booltools SEO Crawler" />
+  <meta property="og:description" content="All 12 Performance audit rules in the Booltools SEO Crawler." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/performance.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Performance Rules — Booltools SEO Crawler" />
+  <meta name="twitter:description" content="All 12 Performance audit rules in the Booltools SEO Crawler." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../../">&#128270; Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
+    <aside class="docs-sidebar">
+      <nav aria-label="Documentation navigation">
+        <ul>
+          <li><a href="../index.html">Overview</a></li>
+          <li><a href="../getting-started.html">Getting Started</a></li>
+          <li><a href="../web-ui.html">Web UI Guide</a></li>
+          <li><a href="../sdk.html">CI/CD SDK</a></li>
+          <li>
+            <a href="../rules.html">Rules Reference</a>
+            <ul class="docs-subnav">
+              <li><a href="../rules/on-page-seo.html">On-Page SEO</a>
+              </li>
+              <li><a href="../rules/content.html">Content Quality</a>
+              </li>
+              <li><a href="../rules/technical-seo.html">Technical SEO</a>
+              </li>
+              <li><a href="../rules/links.html">Links</a>
+              </li>
+              <li><a href="../rules/performance.html" class="active">Performance</a>
+                <ul class="docs-subnav-rules">
+                  <li><a href="../rules/performance/page_size.html" title="Page size is within limits">page_size</a></li>
+                  <li><a href="../rules/performance/html_size.html" title="HTML document size is reasonable">html_size</a></li>
+                  <li><a href="../rules/performance/ttfb.html" title="Time to First Byte is fast">ttfb</a></li>
+                  <li><a href="../rules/performance/compression.html" title="Response uses compression">compression</a></li>
+                  <li><a href="../rules/performance/js_file_count.html" title="JavaScript file count is reasonable">js_file_count</a></li>
+                  <li><a href="../rules/performance/css_file_count.html" title="CSS file count is reasonable">css_file_count</a></li>
+                  <li><a href="../rules/performance/render_blocking.html" title="No render-blocking resources">render_blocking</a></li>
+                  <li><a href="../rules/performance/total_requests.html" title="Total requests are optimized">total_requests</a></li>
+                  <li><a href="../rules/performance/cache_headers.html" title="Cache headers are configured">cache_headers</a></li>
+                  <li><a href="../rules/performance/broken_scripts.html" title="All script files are reachable">broken_scripts</a></li>
+                  <li><a href="../rules/performance/broken_stylesheets.html" title="All CSS files are reachable">broken_stylesheets</a></li>
+                  <li><a href="../rules/performance/broken_images.html" title="All images are reachable">broken_images</a></li>
+                </ul>
+              </li>
+              <li><a href="../rules/structured-data.html">Structured Data</a>
+              </li>
+              <li><a href="../rules/security.html">Security</a>
+              </li>
+              <li><a href="../rules/accessibility.html">Accessibility</a>
+              </li>
+              <li><a href="../rules/social-open-graph.html">Social / Open Graph</a>
+              </li>
+              <li><a href="../rules/mobile.html">Mobile</a>
+              </li>
+              <li><a href="../rules/url-structure.html">URL Structure</a>
+              </li>
+              <li><a href="../rules/internationalization.html">Internationalization</a>
+              </li>
+              <li><a href="../rules/eeat.html">E-E-A-T</a>
+              </li>
+              <li><a href="../rules/duplicate-content.html">Duplicate Content</a>
+              </li>
+              <li><a href="../rules/geo-ai-search.html">GEO (AI Search)</a>
+              </li>
+            </ul>
+          </li>
+          <li><a href="../presets.html">Rule Presets</a></li>
+          <li><a href="../localhost.html">Localhost Guide</a></li>
+          <li><a href="../api.html">API Reference</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <article class="docs-content">
+      <nav class="breadcrumb">
+        <a href="../rules.html">Rules</a>
+        <span class="sep">/</span>
+        <span>Performance</span>
+      </nav>
+
+      <h1>Performance</h1>
+      <p>12 audit rules in this category.</p>
+
+      <div class="rules-grid">
+          <a href="performance/page_size.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>page_size</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Page size is within limits</h3>
+              <p>Checks that total page size is within limits.</p>
+            </div>
+          </a>
+          <a href="performance/html_size.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>html_size</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>HTML document size is reasonable</h3>
+              <p>Checks that the HTML document size is reasonable.</p>
+            </div>
+          </a>
+          <a href="performance/ttfb.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>ttfb</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>Time to First Byte is fast</h3>
+              <p>Checks that Time to First Byte is fast.</p>
+            </div>
+          </a>
+          <a href="performance/compression.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>compression</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Response uses compression</h3>
+              <p>Checks if the response uses gzip or brotli compression.</p>
+            </div>
+          </a>
+          <a href="performance/js_file_count.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>js_file_count</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>JavaScript file count is reasonable</h3>
+              <p>Checks that the number of JavaScript files is reasonable.</p>
+            </div>
+          </a>
+          <a href="performance/css_file_count.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>css_file_count</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>CSS file count is reasonable</h3>
+              <p>Checks that the number of CSS files is reasonable.</p>
+            </div>
+          </a>
+          <a href="performance/render_blocking.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>render_blocking</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>No render-blocking resources</h3>
+              <p>Checks for render-blocking resources in the page head.</p>
+            </div>
+          </a>
+          <a href="performance/total_requests.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>total_requests</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Total requests are optimized</h3>
+              <p>Checks that the total number of HTTP requests is optimized.</p>
+            </div>
+          </a>
+          <a href="performance/cache_headers.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>cache_headers</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Cache headers are configured</h3>
+              <p>Checks that cache headers are properly configured.</p>
+            </div>
+          </a>
+          <a href="performance/broken_scripts.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>broken_scripts</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>All script files are reachable</h3>
+              <p>Checks that all script files are reachable.</p>
+            </div>
+          </a>
+          <a href="performance/broken_stylesheets.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>broken_stylesheets</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>All CSS files are reachable</h3>
+              <p>Checks that all CSS files are reachable.</p>
+            </div>
+          </a>
+          <a href="performance/broken_images.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>broken_images</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>All images are reachable</h3>
+              <p>Checks that all images are reachable.</p>
+            </div>
+          </a>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

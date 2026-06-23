@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical SEO Rules — Booltools SEO Crawler</title>
+  <meta name="description" content="All 27 Technical SEO audit rules in the Booltools SEO Crawler." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/technical-seo.html" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="Technical SEO Rules — Booltools SEO Crawler" />
+  <meta property="og:description" content="All 27 Technical SEO audit rules in the Booltools SEO Crawler." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/technical-seo.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Technical SEO Rules — Booltools SEO Crawler" />
+  <meta name="twitter:description" content="All 27 Technical SEO audit rules in the Booltools SEO Crawler." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../../">&#128270; Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
+    <aside class="docs-sidebar">
+      <nav aria-label="Documentation navigation">
+        <ul>
+          <li><a href="../index.html">Overview</a></li>
+          <li><a href="../getting-started.html">Getting Started</a></li>
+          <li><a href="../web-ui.html">Web UI Guide</a></li>
+          <li><a href="../sdk.html">CI/CD SDK</a></li>
+          <li>
+            <a href="../rules.html">Rules Reference</a>
+            <ul class="docs-subnav">
+              <li><a href="../rules/on-page-seo.html">On-Page SEO</a>
+              </li>
+              <li><a href="../rules/content.html">Content Quality</a>
+              </li>
+              <li><a href="../rules/technical-seo.html" class="active">Technical SEO</a>
+                <ul class="docs-subnav-rules">
+                  <li><a href="../rules/technical-seo/canonical_exists.html" title="Page has a canonical link">canonical_exists</a></li>
+                  <li><a href="../rules/technical-seo/canonical_absolute.html" title="Canonical URL is absolute">canonical_absolute</a></li>
+                  <li><a href="../rules/technical-seo/canonical_self_ref.html" title="Canonical is self-referencing">canonical_self_ref</a></li>
+                  <li><a href="../rules/technical-seo/canonical_conflict.html" title="No conflicting canonical tags">canonical_conflict</a></li>
+                  <li><a href="../rules/technical-seo/meta_robots_noindex.html" title="Page has a noindex directive">meta_robots_noindex</a></li>
+                  <li><a href="../rules/technical-seo/meta_robots_conflict.html" title="No conflicting robots directives">meta_robots_conflict</a></li>
+                  <li><a href="../rules/technical-seo/http_status_ok.html" title="Page returns HTTP 200 status">http_status_ok</a></li>
+                  <li><a href="../rules/technical-seo/crawl_depth.html" title="Page crawl depth is reasonable">crawl_depth</a></li>
+                  <li><a href="../rules/technical-seo/pagination_rel_tags.html" title="Pagination uses rel=next/prev">pagination_rel_tags</a></li>
+                  <li><a href="../rules/technical-seo/robots_txt_exists.html" title="robots.txt file exists">robots_txt_exists</a></li>
+                  <li><a href="../rules/technical-seo/robots_txt_size.html" title="robots.txt is not too large">robots_txt_size</a></li>
+                  <li><a href="../rules/technical-seo/robots_txt_sitemap.html" title="robots.txt references sitemap">robots_txt_sitemap</a></li>
+                  <li><a href="../rules/technical-seo/robots_txt_syntax.html" title="robots.txt has valid syntax">robots_txt_syntax</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_exists.html" title="Sitemap.xml exists">sitemap_exists</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_valid_xml.html" title="Sitemap has valid XML">sitemap_valid_xml</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_index.html" title="Sitemap index detected">sitemap_index</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_size.html" title="Sitemap is within size limits">sitemap_size</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_freshness.html" title="Sitemap URLs have recent lastmod">sitemap_freshness</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_coverage.html" title="Crawled URLs appear in sitemap">sitemap_coverage</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_orphan_urls.html" title="No sitemap-only orphan URLs">sitemap_orphan_urls</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_broken_urls.html" title="No broken URLs in sitemap">sitemap_broken_urls</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_redirect_urls.html" title="No redirect URLs in sitemap">sitemap_redirect_urls</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_robots_conflict.html" title="No sitemap/robots.txt conflicts">sitemap_robots_conflict</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_image.html" title="Sitemap includes image entries">sitemap_image</a></li>
+                  <li><a href="../rules/technical-seo/sitemap_video.html" title="Sitemap includes video entries">sitemap_video</a></li>
+                  <li><a href="../rules/technical-seo/redirect_chains.html" title="No redirect chains detected">redirect_chains</a></li>
+                  <li><a href="../rules/technical-seo/temporary_redirects.html" title="Temporary redirects are intentional">temporary_redirects</a></li>
+                </ul>
+              </li>
+              <li><a href="../rules/links.html">Links</a>
+              </li>
+              <li><a href="../rules/performance.html">Performance</a>
+              </li>
+              <li><a href="../rules/structured-data.html">Structured Data</a>
+              </li>
+              <li><a href="../rules/security.html">Security</a>
+              </li>
+              <li><a href="../rules/accessibility.html">Accessibility</a>
+              </li>
+              <li><a href="../rules/social-open-graph.html">Social / Open Graph</a>
+              </li>
+              <li><a href="../rules/mobile.html">Mobile</a>
+              </li>
+              <li><a href="../rules/url-structure.html">URL Structure</a>
+              </li>
+              <li><a href="../rules/internationalization.html">Internationalization</a>
+              </li>
+              <li><a href="../rules/eeat.html">E-E-A-T</a>
+              </li>
+              <li><a href="../rules/duplicate-content.html">Duplicate Content</a>
+              </li>
+              <li><a href="../rules/geo-ai-search.html">GEO (AI Search)</a>
+              </li>
+            </ul>
+          </li>
+          <li><a href="../presets.html">Rule Presets</a></li>
+          <li><a href="../localhost.html">Localhost Guide</a></li>
+          <li><a href="../api.html">API Reference</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <article class="docs-content">
+      <nav class="breadcrumb">
+        <a href="../rules.html">Rules</a>
+        <span class="sep">/</span>
+        <span>Technical SEO</span>
+      </nav>
+
+      <h1>Technical SEO</h1>
+      <p>27 audit rules in this category.</p>
+
+      <div class="rules-grid">
+          <a href="technical-seo/canonical_exists.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>canonical_exists</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>Page has a canonical link</h3>
+              <p>Checks if the page has a rel=canonical link tag.</p>
+            </div>
+          </a>
+          <a href="technical-seo/canonical_absolute.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>canonical_absolute</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Canonical URL is absolute</h3>
+              <p>Checks that the canonical URL is an absolute URL.</p>
+            </div>
+          </a>
+          <a href="technical-seo/canonical_self_ref.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>canonical_self_ref</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Canonical is self-referencing</h3>
+              <p>Checks that the canonical tag points to the page itself.</p>
+            </div>
+          </a>
+          <a href="technical-seo/canonical_conflict.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>canonical_conflict</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>No conflicting canonical tags</h3>
+              <p>Checks for conflicting canonical signals.</p>
+            </div>
+          </a>
+          <a href="technical-seo/meta_robots_noindex.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>meta_robots_noindex</code>
+                <span class="severity-badge sev-info">info</span>
+              </div>
+              <h3>Page has a noindex directive</h3>
+              <p>Detects pages with a noindex directive.</p>
+            </div>
+          </a>
+          <a href="technical-seo/meta_robots_conflict.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>meta_robots_conflict</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>No conflicting robots directives</h3>
+              <p>Checks for conflicting robots meta directives.</p>
+            </div>
+          </a>
+          <a href="technical-seo/http_status_ok.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>http_status_ok</code>
+                <span class="severity-badge sev-critical">critical</span>
+              </div>
+              <h3>Page returns HTTP 200 status</h3>
+              <p>Checks if the page returns HTTP 200 OK status.</p>
+            </div>
+          </a>
+          <a href="technical-seo/crawl_depth.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>crawl_depth</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Page crawl depth is reasonable</h3>
+              <p>Checks that page crawl depth is reasonable.</p>
+            </div>
+          </a>
+          <a href="technical-seo/pagination_rel_tags.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>pagination_rel_tags</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Pagination uses rel=next/prev</h3>
+              <p>Checks for proper rel=next/prev pagination tags.</p>
+            </div>
+          </a>
+          <a href="technical-seo/robots_txt_exists.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>robots_txt_exists</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>robots.txt file exists</h3>
+              <p>Checks if a robots.txt file exists at the domain root.</p>
+            </div>
+          </a>
+          <a href="technical-seo/robots_txt_size.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>robots_txt_size</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>robots.txt is not too large</h3>
+              <p>Checks that robots.txt file is not too large.</p>
+            </div>
+          </a>
+          <a href="technical-seo/robots_txt_sitemap.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>robots_txt_sitemap</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>robots.txt references sitemap</h3>
+              <p>Checks that robots.txt references the sitemap.</p>
+            </div>
+          </a>
+          <a href="technical-seo/robots_txt_syntax.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>robots_txt_syntax</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>robots.txt has valid syntax</h3>
+              <p>Checks that robots.txt has valid syntax.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_exists.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_exists</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>Sitemap.xml exists</h3>
+              <p>Checks if a sitemap.xml file exists.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_valid_xml.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_valid_xml</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>Sitemap has valid XML</h3>
+              <p>Checks that the sitemap has valid XML syntax.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_index.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_index</code>
+                <span class="severity-badge sev-info">info</span>
+              </div>
+              <h3>Sitemap index detected</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_size.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_size</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Sitemap is within size limits</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_freshness.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_freshness</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Sitemap URLs have recent lastmod</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_coverage.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_coverage</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Crawled URLs appear in sitemap</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_orphan_urls.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_orphan_urls</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>No sitemap-only orphan URLs</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_broken_urls.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_broken_urls</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>No broken URLs in sitemap</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_redirect_urls.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_redirect_urls</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>No redirect URLs in sitemap</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_robots_conflict.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_robots_conflict</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>No sitemap/robots.txt conflicts</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_image.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_image</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Sitemap includes image entries</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/sitemap_video.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>sitemap_video</code>
+                <span class="severity-badge sev-info">info</span>
+              </div>
+              <h3>Sitemap includes video entries</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/redirect_chains.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>redirect_chains</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>No redirect chains detected</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="technical-seo/temporary_redirects.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>temporary_redirects</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Temporary redirects are intentional</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

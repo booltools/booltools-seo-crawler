@@ -1,4 +1,4 @@
-.PHONY: build build-sdk build-all run dev test clean lint tidy web-dev web-build
+.PHONY: build build-sdk build-all run dev test clean lint tidy web-dev web-build landing-rules
 
 BINARY_NAME=booltools-seo-crawler
 SDK_BINARY=seo-crawler
@@ -31,6 +31,9 @@ web-dev:
 
 web-build:
 	cd web && npm run build
+
+landing-rules:
+	cd landing && node generate-rule-pages.js
 
 clean:
 	go clean

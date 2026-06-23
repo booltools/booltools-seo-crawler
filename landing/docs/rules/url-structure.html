@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL Structure Rules — Booltools SEO Crawler</title>
+  <meta name="description" content="All 6 URL Structure audit rules in the Booltools SEO Crawler." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/url-structure.html" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="URL Structure Rules — Booltools SEO Crawler" />
+  <meta property="og:description" content="All 6 URL Structure audit rules in the Booltools SEO Crawler." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/url-structure.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="URL Structure Rules — Booltools SEO Crawler" />
+  <meta name="twitter:description" content="All 6 URL Structure audit rules in the Booltools SEO Crawler." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../../">&#128270; Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
+    <aside class="docs-sidebar">
+      <nav aria-label="Documentation navigation">
+        <ul>
+          <li><a href="../index.html">Overview</a></li>
+          <li><a href="../getting-started.html">Getting Started</a></li>
+          <li><a href="../web-ui.html">Web UI Guide</a></li>
+          <li><a href="../sdk.html">CI/CD SDK</a></li>
+          <li>
+            <a href="../rules.html">Rules Reference</a>
+            <ul class="docs-subnav">
+              <li><a href="../rules/on-page-seo.html">On-Page SEO</a>
+              </li>
+              <li><a href="../rules/content.html">Content Quality</a>
+              </li>
+              <li><a href="../rules/technical-seo.html">Technical SEO</a>
+              </li>
+              <li><a href="../rules/links.html">Links</a>
+              </li>
+              <li><a href="../rules/performance.html">Performance</a>
+              </li>
+              <li><a href="../rules/structured-data.html">Structured Data</a>
+              </li>
+              <li><a href="../rules/security.html">Security</a>
+              </li>
+              <li><a href="../rules/accessibility.html">Accessibility</a>
+              </li>
+              <li><a href="../rules/social-open-graph.html">Social / Open Graph</a>
+              </li>
+              <li><a href="../rules/mobile.html">Mobile</a>
+              </li>
+              <li><a href="../rules/url-structure.html" class="active">URL Structure</a>
+                <ul class="docs-subnav-rules">
+                  <li><a href="../rules/url-structure/url_lowercase.html" title="URL uses lowercase">url_lowercase</a></li>
+                  <li><a href="../rules/url-structure/url_hyphens.html" title="URL uses hyphens for separation">url_hyphens</a></li>
+                  <li><a href="../rules/url-structure/url_length.html" title="URL length is reasonable">url_length</a></li>
+                  <li><a href="../rules/url-structure/url_special_chars.html" title="URL has no special characters">url_special_chars</a></li>
+                  <li><a href="../rules/url-structure/url_double_slash.html" title="URL has no double slashes">url_double_slash</a></li>
+                  <li><a href="../rules/url-structure/url_parameters.html" title="URL parameters are minimal">url_parameters</a></li>
+                </ul>
+              </li>
+              <li><a href="../rules/internationalization.html">Internationalization</a>
+              </li>
+              <li><a href="../rules/eeat.html">E-E-A-T</a>
+              </li>
+              <li><a href="../rules/duplicate-content.html">Duplicate Content</a>
+              </li>
+              <li><a href="../rules/geo-ai-search.html">GEO (AI Search)</a>
+              </li>
+            </ul>
+          </li>
+          <li><a href="../presets.html">Rule Presets</a></li>
+          <li><a href="../localhost.html">Localhost Guide</a></li>
+          <li><a href="../api.html">API Reference</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <article class="docs-content">
+      <nav class="breadcrumb">
+        <a href="../rules.html">Rules</a>
+        <span class="sep">/</span>
+        <span>URL Structure</span>
+      </nav>
+
+      <h1>URL Structure</h1>
+      <p>6 audit rules in this category.</p>
+
+      <div class="rules-grid">
+          <a href="url-structure/url_lowercase.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>url_lowercase</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>URL uses lowercase</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="url-structure/url_hyphens.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>url_hyphens</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>URL uses hyphens for separation</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="url-structure/url_length.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>url_length</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>URL length is reasonable</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="url-structure/url_special_chars.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>url_special_chars</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>URL has no special characters</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="url-structure/url_double_slash.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>url_double_slash</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>URL has no double slashes</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="url-structure/url_parameters.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>url_parameters</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>URL parameters are minimal</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accessibility Rules — Booltools SEO Crawler</title>
+  <meta name="description" content="All 5 Accessibility audit rules in the Booltools SEO Crawler." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/accessibility.html" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="Accessibility Rules — Booltools SEO Crawler" />
+  <meta property="og:description" content="All 5 Accessibility audit rules in the Booltools SEO Crawler." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/accessibility.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Accessibility Rules — Booltools SEO Crawler" />
+  <meta name="twitter:description" content="All 5 Accessibility audit rules in the Booltools SEO Crawler." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../../">&#128270; Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
+    <aside class="docs-sidebar">
+      <nav aria-label="Documentation navigation">
+        <ul>
+          <li><a href="../index.html">Overview</a></li>
+          <li><a href="../getting-started.html">Getting Started</a></li>
+          <li><a href="../web-ui.html">Web UI Guide</a></li>
+          <li><a href="../sdk.html">CI/CD SDK</a></li>
+          <li>
+            <a href="../rules.html">Rules Reference</a>
+            <ul class="docs-subnav">
+              <li><a href="../rules/on-page-seo.html">On-Page SEO</a>
+              </li>
+              <li><a href="../rules/content.html">Content Quality</a>
+              </li>
+              <li><a href="../rules/technical-seo.html">Technical SEO</a>
+              </li>
+              <li><a href="../rules/links.html">Links</a>
+              </li>
+              <li><a href="../rules/performance.html">Performance</a>
+              </li>
+              <li><a href="../rules/structured-data.html">Structured Data</a>
+              </li>
+              <li><a href="../rules/security.html">Security</a>
+              </li>
+              <li><a href="../rules/accessibility.html" class="active">Accessibility</a>
+                <ul class="docs-subnav-rules">
+                  <li><a href="../rules/accessibility/html_lang.html" title="HTML has lang attribute">html_lang</a></li>
+                  <li><a href="../rules/accessibility/viewport_meta.html" title="Viewport meta tag is present">viewport_meta</a></li>
+                  <li><a href="../rules/accessibility/charset_meta.html" title="Character encoding declared">charset_meta</a></li>
+                  <li><a href="../rules/accessibility/empty_links.html" title="Links have accessible text">empty_links</a></li>
+                  <li><a href="../rules/accessibility/aria_landmarks.html" title="Page uses ARIA landmarks">aria_landmarks</a></li>
+                </ul>
+              </li>
+              <li><a href="../rules/social-open-graph.html">Social / Open Graph</a>
+              </li>
+              <li><a href="../rules/mobile.html">Mobile</a>
+              </li>
+              <li><a href="../rules/url-structure.html">URL Structure</a>
+              </li>
+              <li><a href="../rules/internationalization.html">Internationalization</a>
+              </li>
+              <li><a href="../rules/eeat.html">E-E-A-T</a>
+              </li>
+              <li><a href="../rules/duplicate-content.html">Duplicate Content</a>
+              </li>
+              <li><a href="../rules/geo-ai-search.html">GEO (AI Search)</a>
+              </li>
+            </ul>
+          </li>
+          <li><a href="../presets.html">Rule Presets</a></li>
+          <li><a href="../localhost.html">Localhost Guide</a></li>
+          <li><a href="../api.html">API Reference</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <article class="docs-content">
+      <nav class="breadcrumb">
+        <a href="../rules.html">Rules</a>
+        <span class="sep">/</span>
+        <span>Accessibility</span>
+      </nav>
+
+      <h1>Accessibility</h1>
+      <p>5 audit rules in this category.</p>
+
+      <div class="rules-grid">
+          <a href="accessibility/html_lang.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>html_lang</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>HTML has lang attribute</h3>
+              <p>Checks that the HTML element has a lang attribute.</p>
+            </div>
+          </a>
+          <a href="accessibility/viewport_meta.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>viewport_meta</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>Viewport meta tag is present</h3>
+              <p>Checks that the viewport meta tag is present.</p>
+            </div>
+          </a>
+          <a href="accessibility/charset_meta.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>charset_meta</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Character encoding declared</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="accessibility/empty_links.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>empty_links</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Links have accessible text</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="accessibility/aria_landmarks.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>aria_landmarks</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Page uses ARIA landmarks</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Security Rules — Booltools SEO Crawler</title>
+  <meta name="description" content="All 9 Security audit rules in the Booltools SEO Crawler." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/security.html" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="Security Rules — Booltools SEO Crawler" />
+  <meta property="og:description" content="All 9 Security audit rules in the Booltools SEO Crawler." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/security.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Security Rules — Booltools SEO Crawler" />
+  <meta name="twitter:description" content="All 9 Security audit rules in the Booltools SEO Crawler." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../../">&#128270; Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
+    <aside class="docs-sidebar">
+      <nav aria-label="Documentation navigation">
+        <ul>
+          <li><a href="../index.html">Overview</a></li>
+          <li><a href="../getting-started.html">Getting Started</a></li>
+          <li><a href="../web-ui.html">Web UI Guide</a></li>
+          <li><a href="../sdk.html">CI/CD SDK</a></li>
+          <li>
+            <a href="../rules.html">Rules Reference</a>
+            <ul class="docs-subnav">
+              <li><a href="../rules/on-page-seo.html">On-Page SEO</a>
+              </li>
+              <li><a href="../rules/content.html">Content Quality</a>
+              </li>
+              <li><a href="../rules/technical-seo.html">Technical SEO</a>
+              </li>
+              <li><a href="../rules/links.html">Links</a>
+              </li>
+              <li><a href="../rules/performance.html">Performance</a>
+              </li>
+              <li><a href="../rules/structured-data.html">Structured Data</a>
+              </li>
+              <li><a href="../rules/security.html" class="active">Security</a>
+                <ul class="docs-subnav-rules">
+                  <li><a href="../rules/security/uses_https.html" title="Page uses HTTPS">uses_https</a></li>
+                  <li><a href="../rules/security/mixed_content.html" title="No mixed content detected">mixed_content</a></li>
+                  <li><a href="../rules/security/hsts_header.html" title="HSTS header is present">hsts_header</a></li>
+                  <li><a href="../rules/security/security_xcto.html" title="X-Content-Type-Options header">security_xcto</a></li>
+                  <li><a href="../rules/security/security_xfo.html" title="X-Frame-Options header">security_xfo</a></li>
+                  <li><a href="../rules/security/security_csp.html" title="Content-Security-Policy header">security_csp</a></li>
+                  <li><a href="../rules/security/security_referrer.html" title="Referrer-Policy header">security_referrer</a></li>
+                  <li><a href="../rules/security/security_permissions.html" title="Permissions-Policy header">security_permissions</a></li>
+                  <li><a href="../rules/security/security_server_disclosure.html" title="Server version not disclosed">security_server_disclosure</a></li>
+                </ul>
+              </li>
+              <li><a href="../rules/accessibility.html">Accessibility</a>
+              </li>
+              <li><a href="../rules/social-open-graph.html">Social / Open Graph</a>
+              </li>
+              <li><a href="../rules/mobile.html">Mobile</a>
+              </li>
+              <li><a href="../rules/url-structure.html">URL Structure</a>
+              </li>
+              <li><a href="../rules/internationalization.html">Internationalization</a>
+              </li>
+              <li><a href="../rules/eeat.html">E-E-A-T</a>
+              </li>
+              <li><a href="../rules/duplicate-content.html">Duplicate Content</a>
+              </li>
+              <li><a href="../rules/geo-ai-search.html">GEO (AI Search)</a>
+              </li>
+            </ul>
+          </li>
+          <li><a href="../presets.html">Rule Presets</a></li>
+          <li><a href="../localhost.html">Localhost Guide</a></li>
+          <li><a href="../api.html">API Reference</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <article class="docs-content">
+      <nav class="breadcrumb">
+        <a href="../rules.html">Rules</a>
+        <span class="sep">/</span>
+        <span>Security</span>
+      </nav>
+
+      <h1>Security</h1>
+      <p>9 audit rules in this category.</p>
+
+      <div class="rules-grid">
+          <a href="security/uses_https.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>uses_https</code>
+                <span class="severity-badge sev-critical">critical</span>
+              </div>
+              <h3>Page uses HTTPS</h3>
+              <p>Checks if the page is served over HTTPS.</p>
+            </div>
+          </a>
+          <a href="security/mixed_content.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>mixed_content</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>No mixed content detected</h3>
+              <p>Checks for HTTP resources loaded on HTTPS pages.</p>
+            </div>
+          </a>
+          <a href="security/hsts_header.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>hsts_header</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>HSTS header is present</h3>
+              <p>Checks for the Strict-Transport-Security header.</p>
+            </div>
+          </a>
+          <a href="security/security_xcto.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>security_xcto</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>X-Content-Type-Options header</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="security/security_xfo.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>security_xfo</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>X-Frame-Options header</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="security/security_csp.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>security_csp</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Content-Security-Policy header</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="security/security_referrer.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>security_referrer</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Referrer-Policy header</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="security/security_permissions.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>security_permissions</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Permissions-Policy header</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="security/security_server_disclosure.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>security_server_disclosure</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Server version not disclosed</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

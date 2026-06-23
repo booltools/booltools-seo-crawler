@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GEO (AI Search) Rules — Booltools SEO Crawler</title>
+  <meta name="description" content="All 23 GEO (AI Search) audit rules in the Booltools SEO Crawler." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/geo-ai-search.html" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="GEO (AI Search) Rules — Booltools SEO Crawler" />
+  <meta property="og:description" content="All 23 GEO (AI Search) audit rules in the Booltools SEO Crawler." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/geo-ai-search.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="GEO (AI Search) Rules — Booltools SEO Crawler" />
+  <meta name="twitter:description" content="All 23 GEO (AI Search) audit rules in the Booltools SEO Crawler." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../../">&#128270; Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
+    <aside class="docs-sidebar">
+      <nav aria-label="Documentation navigation">
+        <ul>
+          <li><a href="../index.html">Overview</a></li>
+          <li><a href="../getting-started.html">Getting Started</a></li>
+          <li><a href="../web-ui.html">Web UI Guide</a></li>
+          <li><a href="../sdk.html">CI/CD SDK</a></li>
+          <li>
+            <a href="../rules.html">Rules Reference</a>
+            <ul class="docs-subnav">
+              <li><a href="../rules/on-page-seo.html">On-Page SEO</a>
+              </li>
+              <li><a href="../rules/content.html">Content Quality</a>
+              </li>
+              <li><a href="../rules/technical-seo.html">Technical SEO</a>
+              </li>
+              <li><a href="../rules/links.html">Links</a>
+              </li>
+              <li><a href="../rules/performance.html">Performance</a>
+              </li>
+              <li><a href="../rules/structured-data.html">Structured Data</a>
+              </li>
+              <li><a href="../rules/security.html">Security</a>
+              </li>
+              <li><a href="../rules/accessibility.html">Accessibility</a>
+              </li>
+              <li><a href="../rules/social-open-graph.html">Social / Open Graph</a>
+              </li>
+              <li><a href="../rules/mobile.html">Mobile</a>
+              </li>
+              <li><a href="../rules/url-structure.html">URL Structure</a>
+              </li>
+              <li><a href="../rules/internationalization.html">Internationalization</a>
+              </li>
+              <li><a href="../rules/eeat.html">E-E-A-T</a>
+              </li>
+              <li><a href="../rules/duplicate-content.html">Duplicate Content</a>
+              </li>
+              <li><a href="../rules/geo-ai-search.html" class="active">GEO (AI Search)</a>
+                <ul class="docs-subnav-rules">
+                  <li><a href="../rules/geo-ai-search/geo_crawler_oai-searchbot.html" title="OAI-SearchBot is allowed">geo_crawler_oai-searchbot</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_crawler_perplexitybot.html" title="PerplexityBot is allowed">geo_crawler_perplexitybot</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_crawler_claude-searchbot.html" title="Claude-SearchBot is allowed">geo_crawler_claude-searchbot</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_crawler_google-extended.html" title="Google-Extended is allowed">geo_crawler_google-extended</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_crawler_applebot.html" title="Applebot is allowed">geo_crawler_applebot</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_crawler_block_gptbot.html" title="GPTBot (training) is blocked">geo_crawler_block_gptbot</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_crawler_block_ccbot.html" title="CCBot (training) is blocked">geo_crawler_block_ccbot</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_llms_txt_exists.html" title="llms.txt file exists">geo_llms_txt_exists</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_llms_full_txt.html" title="llms-full.txt file exists">geo_llms_full_txt</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_llms_txt_h1.html" title="llms.txt has H1 heading">geo_llms_txt_h1</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_llms_txt_blockquote.html" title="llms.txt has blockquote summary">geo_llms_txt_blockquote</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_llms_txt_sections.html" title="llms.txt has H2 sections">geo_llms_txt_sections</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_llms_txt_links.html" title="llms.txt has markdown links">geo_llms_txt_links</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_entity_org_schema.html" title="Organization schema is present">geo_entity_org_schema</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_entity_social.html" title="Social profile links are present">geo_entity_social</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_citability_statistics.html" title="Content has citable statistics">geo_citability_statistics</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_citability_faq.html" title="FAQ schema is present">geo_citability_faq</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_citability_tables.html" title="Content has data tables">geo_citability_tables</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_citability_lists.html" title="Content has structured lists">geo_citability_lists</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_citability_question_headings.html" title="Content has question-style headings">geo_citability_question_headings</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_ai_descriptive_headings.html" title="Headings are descriptive for AI">geo_ai_descriptive_headings</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_ai_freshness.html" title="Content has freshness indicators">geo_ai_freshness</a></li>
+                  <li><a href="../rules/geo-ai-search/geo_ai_semantic_html.html" title="Page uses semantic HTML elements">geo_ai_semantic_html</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="../presets.html">Rule Presets</a></li>
+          <li><a href="../localhost.html">Localhost Guide</a></li>
+          <li><a href="../api.html">API Reference</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <article class="docs-content">
+      <nav class="breadcrumb">
+        <a href="../rules.html">Rules</a>
+        <span class="sep">/</span>
+        <span>GEO (AI Search)</span>
+      </nav>
+
+      <h1>GEO (AI Search)</h1>
+      <p>23 audit rules in this category.</p>
+
+      <div class="rules-grid">
+          <a href="geo-ai-search/geo_crawler_oai-searchbot.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_crawler_oai-searchbot</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>OAI-SearchBot is allowed</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_crawler_perplexitybot.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_crawler_perplexitybot</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>PerplexityBot is allowed</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_crawler_claude-searchbot.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_crawler_claude-searchbot</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>Claude-SearchBot is allowed</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_crawler_google-extended.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_crawler_google-extended</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>Google-Extended is allowed</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_crawler_applebot.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_crawler_applebot</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>Applebot is allowed</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_crawler_block_gptbot.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_crawler_block_gptbot</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>GPTBot (training) is blocked</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_crawler_block_ccbot.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_crawler_block_ccbot</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>CCBot (training) is blocked</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_llms_txt_exists.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_llms_txt_exists</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>llms.txt file exists</h3>
+              <p>Checks if a llms.txt file exists at the domain root.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_llms_full_txt.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_llms_full_txt</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>llms-full.txt file exists</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_llms_txt_h1.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_llms_txt_h1</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>llms.txt has H1 heading</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_llms_txt_blockquote.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_llms_txt_blockquote</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>llms.txt has blockquote summary</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_llms_txt_sections.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_llms_txt_sections</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>llms.txt has H2 sections</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_llms_txt_links.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_llms_txt_links</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>llms.txt has markdown links</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_entity_org_schema.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_entity_org_schema</code>
+                <span class="severity-badge sev-high">high</span>
+              </div>
+              <h3>Organization schema is present</h3>
+              <p>Checks if Organization schema markup is present.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_entity_social.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_entity_social</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Social profile links are present</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_citability_statistics.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_citability_statistics</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Content has citable statistics</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_citability_faq.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_citability_faq</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>FAQ schema is present</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_citability_tables.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_citability_tables</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Content has data tables</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_citability_lists.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_citability_lists</code>
+                <span class="severity-badge sev-low">low</span>
+              </div>
+              <h3>Content has structured lists</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_citability_question_headings.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_citability_question_headings</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Content has question-style headings</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_ai_descriptive_headings.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_ai_descriptive_headings</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Headings are descriptive for AI</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_ai_freshness.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_ai_freshness</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Content has freshness indicators</h3>
+              <p>This rule checks for an important SEO/GEO factor.</p>
+            </div>
+          </a>
+          <a href="geo-ai-search/geo_ai_semantic_html.html" class="rule-card-link">
+            <div class="rule-card">
+              <div class="rule-card-header">
+                <code>geo_ai_semantic_html</code>
+                <span class="severity-badge sev-medium">medium</span>
+              </div>
+              <h3>Page uses semantic HTML elements</h3>
+              <p>Checks that the page uses semantic HTML elements.</p>
+            </div>
+          </a>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

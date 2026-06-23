@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>No broken internal links — Booltools SEO Crawler</title>
+  <meta name="description" content="Checks for broken internal links that return errors." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/links/broken_internal_links.html" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="No broken internal links — Booltools SEO Crawler" />
+  <meta property="og:description" content="Checks for broken internal links that return errors." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/links/broken_internal_links.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="No broken internal links — Booltools SEO Crawler" />
+  <meta name="twitter:description" content="Checks for broken internal links that return errors." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../../../">&#128270; Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
+    <aside class="docs-sidebar">
+      <nav aria-label="Documentation navigation">
+        <ul>
+          <li><a href="../index.html">Overview</a></li>
+          <li><a href="../getting-started.html">Getting Started</a></li>
+          <li><a href="../web-ui.html">Web UI Guide</a></li>
+          <li><a href="../sdk.html">CI/CD SDK</a></li>
+          <li>
+            <a href="../rules.html">Rules Reference</a>
+            <ul class="docs-subnav">
+              <li><a href="../rules/on-page-seo.html">On-Page SEO</a>
+              </li>
+              <li><a href="../rules/content.html">Content Quality</a>
+              </li>
+              <li><a href="../rules/technical-seo.html">Technical SEO</a>
+              </li>
+              <li><a href="../rules/links.html" class="active">Links</a>
+                <ul class="docs-subnav-rules">
+                  <li><a href="../rules/links/internal_links_present.html" title="Page has internal links">internal_links_present</a></li>
+                  <li><a href="../rules/links/internal_links_count.html" title="Internal link count is reasonable">internal_links_count</a></li>
+                  <li><a href="../rules/links/internal_links_anchor_text.html" title="Internal links have descriptive anchor text">internal_links_anchor_text</a></li>
+                  <li><a href="../rules/links/external_links_rel.html" title="External links have rel attributes">external_links_rel</a></li>
+                  <li><a href="../rules/links/broken_internal_links.html" class="active" title="No broken internal links">broken_internal_links</a></li>
+                  <li><a href="../rules/links/broken_external_links.html" title="No broken external links">broken_external_links</a></li>
+                </ul>
+              </li>
+              <li><a href="../rules/performance.html">Performance</a>
+              </li>
+              <li><a href="../rules/structured-data.html">Structured Data</a>
+              </li>
+              <li><a href="../rules/security.html">Security</a>
+              </li>
+              <li><a href="../rules/accessibility.html">Accessibility</a>
+              </li>
+              <li><a href="../rules/social-open-graph.html">Social / Open Graph</a>
+              </li>
+              <li><a href="../rules/mobile.html">Mobile</a>
+              </li>
+              <li><a href="../rules/url-structure.html">URL Structure</a>
+              </li>
+              <li><a href="../rules/internationalization.html">Internationalization</a>
+              </li>
+              <li><a href="../rules/eeat.html">E-E-A-T</a>
+              </li>
+              <li><a href="../rules/duplicate-content.html">Duplicate Content</a>
+              </li>
+              <li><a href="../rules/geo-ai-search.html">GEO (AI Search)</a>
+              </li>
+            </ul>
+          </li>
+          <li><a href="../presets.html">Rule Presets</a></li>
+          <li><a href="../localhost.html">Localhost Guide</a></li>
+          <li><a href="../api.html">API Reference</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <article class="docs-content">
+      <nav class="breadcrumb">
+        <a href="../../rules.html">Rules</a>
+        <span class="sep">/</span>
+        <a href="../links.html">Links</a>
+        <span class="sep">/</span>
+        <span>No broken internal links</span>
+      </nav>
+
+      <div class="rule-title-row">
+        <h1>No broken internal links</h1>
+        <span class="severity-badge sev-high">high</span>
+      </div>
+
+      <p class="rule-key-display"><code>broken_internal_links</code></p>
+
+      <p class="short-desc">Checks for broken internal links that return errors.</p>
+
+      <h2>What does this rule check?</h2>
+      <p>Broken internal links point to pages that no longer exist (404) or have server errors (5xx). They waste crawl budget, pass no link equity, and create a poor user experience.</p>
+
+      <h2>Why is this important?</h2>
+      <p>Broken links waste crawl budget, create poor user experience, and signal a poorly maintained site to search engines. They also prevent link equity from flowing to the intended pages.</p>
+
+      <h2>How to fix</h2>
+      <p>Find and fix all broken internal links. Either restore the target pages, update the links to point to the correct URLs, or remove the links entirely.</p>
+
+      <h2>Examples</h2>
+      <div class="example-grid">
+        <div class="example-card example-bad">
+          <div class="example-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            Incorrect
+          </div>
+          <pre><code>&lt;a href=&quot;/old-page&quot;&gt;Read more&lt;/a&gt;
+&lt;!-- /old-page returns 404 --&gt;</code></pre>
+        </div>
+        <div class="example-card example-good">
+          <div class="example-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Correct
+          </div>
+          <pre><code>&lt;a href=&quot;/new-page&quot;&gt;Read more&lt;/a&gt;
+&lt;!-- /new-page returns 200 --&gt;</code></pre>
+        </div>
+      </div>
+
+      <h2>Agent fix snippet</h2>
+      <p>Copy this snippet and paste it into your AI coding agent to fix this issue automatically.</p>
+      <div class="snippet-container">
+        <button class="copy-btn" data-snippet-target="agent-snippet" aria-label="Copy snippet">
+          <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="copy-text">Copy</span>
+        </button>
+        <pre id="agent-snippet"><code>Fix broken internal links:
+1. Update the href to the correct URL
+2. If the page was moved, use the new URL
+3. If the page was deleted, link to the closest relevant page
+4. Remove links that are no longer relevant</code></pre>
+      </div>
+
+      <nav class="rule-nav">
+        <div class="nav-links-row">
+          <a href="external_links_rel.html" class="nav-prev">&larr; External links have rel attributes</a>
+          <a href="broken_external_links.html" class="nav-next">No broken external links &rarr;</a>
+        </div>
+      </nav>
+    </article>
+  </div>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function(button) {
+      button.addEventListener('click', function() {
+        var targetId = button.getAttribute('data-snippet-target');
+        if (!targetId) return;
+        var el = document.getElementById(targetId);
+        if (!el) return;
+        navigator.clipboard.writeText(el.textContent || '').then(function() {
+          var span = button.querySelector('.copy-text');
+          if (span) {
+            span.textContent = 'Copied!';
+            setTimeout(function() { span.textContent = 'Copy'; }, 2000);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

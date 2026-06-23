@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Response uses compression — Booltools SEO Crawler</title>
+  <meta name="description" content="Checks if the response uses gzip or brotli compression." />
+  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/performance/compression.html" />
+  <meta name="author" content="Booltools" />
+  <meta property="og:title" content="Response uses compression — Booltools SEO Crawler" />
+  <meta property="og:description" content="Checks if the response uses gzip or brotli compression." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/performance/compression.html" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="Booltools SEO Crawler" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Response uses compression — Booltools SEO Crawler" />
+  <meta name="twitter:description" content="Checks if the response uses gzip or brotli compression." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../../docs.css" />
+</head>
+<body>
+  <header class="docs-header">
+    <a href="../../../">&#128270; Booltools SEO Crawler</a>
+    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </header>
+
+  <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
+    <aside class="docs-sidebar">
+      <nav aria-label="Documentation navigation">
+        <ul>
+          <li><a href="../index.html">Overview</a></li>
+          <li><a href="../getting-started.html">Getting Started</a></li>
+          <li><a href="../web-ui.html">Web UI Guide</a></li>
+          <li><a href="../sdk.html">CI/CD SDK</a></li>
+          <li>
+            <a href="../rules.html">Rules Reference</a>
+            <ul class="docs-subnav">
+              <li><a href="../rules/on-page-seo.html">On-Page SEO</a>
+              </li>
+              <li><a href="../rules/content.html">Content Quality</a>
+              </li>
+              <li><a href="../rules/technical-seo.html">Technical SEO</a>
+              </li>
+              <li><a href="../rules/links.html">Links</a>
+              </li>
+              <li><a href="../rules/performance.html" class="active">Performance</a>
+                <ul class="docs-subnav-rules">
+                  <li><a href="../rules/performance/page_size.html" title="Page size is within limits">page_size</a></li>
+                  <li><a href="../rules/performance/html_size.html" title="HTML document size is reasonable">html_size</a></li>
+                  <li><a href="../rules/performance/ttfb.html" title="Time to First Byte is fast">ttfb</a></li>
+                  <li><a href="../rules/performance/compression.html" class="active" title="Response uses compression">compression</a></li>
+                  <li><a href="../rules/performance/js_file_count.html" title="JavaScript file count is reasonable">js_file_count</a></li>
+                  <li><a href="../rules/performance/css_file_count.html" title="CSS file count is reasonable">css_file_count</a></li>
+                  <li><a href="../rules/performance/render_blocking.html" title="No render-blocking resources">render_blocking</a></li>
+                  <li><a href="../rules/performance/total_requests.html" title="Total requests are optimized">total_requests</a></li>
+                  <li><a href="../rules/performance/cache_headers.html" title="Cache headers are configured">cache_headers</a></li>
+                  <li><a href="../rules/performance/broken_scripts.html" title="All script files are reachable">broken_scripts</a></li>
+                  <li><a href="../rules/performance/broken_stylesheets.html" title="All CSS files are reachable">broken_stylesheets</a></li>
+                  <li><a href="../rules/performance/broken_images.html" title="All images are reachable">broken_images</a></li>
+                </ul>
+              </li>
+              <li><a href="../rules/structured-data.html">Structured Data</a>
+              </li>
+              <li><a href="../rules/security.html">Security</a>
+              </li>
+              <li><a href="../rules/accessibility.html">Accessibility</a>
+              </li>
+              <li><a href="../rules/social-open-graph.html">Social / Open Graph</a>
+              </li>
+              <li><a href="../rules/mobile.html">Mobile</a>
+              </li>
+              <li><a href="../rules/url-structure.html">URL Structure</a>
+              </li>
+              <li><a href="../rules/internationalization.html">Internationalization</a>
+              </li>
+              <li><a href="../rules/eeat.html">E-E-A-T</a>
+              </li>
+              <li><a href="../rules/duplicate-content.html">Duplicate Content</a>
+              </li>
+              <li><a href="../rules/geo-ai-search.html">GEO (AI Search)</a>
+              </li>
+            </ul>
+          </li>
+          <li><a href="../presets.html">Rule Presets</a></li>
+          <li><a href="../localhost.html">Localhost Guide</a></li>
+          <li><a href="../api.html">API Reference</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <article class="docs-content">
+      <nav class="breadcrumb">
+        <a href="../../rules.html">Rules</a>
+        <span class="sep">/</span>
+        <a href="../performance.html">Performance</a>
+        <span class="sep">/</span>
+        <span>Response uses compression</span>
+      </nav>
+
+      <div class="rule-title-row">
+        <h1>Response uses compression</h1>
+        <span class="severity-badge sev-medium">medium</span>
+      </div>
+
+      <p class="rule-key-display"><code>compression</code></p>
+
+      <p class="short-desc">Checks if the response uses gzip or brotli compression.</p>
+
+      <h2>What does this rule check?</h2>
+      <p>HTTP compression reduces the size of transferred data by 60-80%. Gzip is universally supported. Brotli offers even better compression but requires HTTPS.</p>
+
+      <h2>Why is this important?</h2>
+      <p>Without compression, the browser downloads full uncompressed files, significantly slowing page load. Compression is one of the easiest performance wins.</p>
+
+      <h2>How to fix</h2>
+      <p>Enable gzip or brotli compression on your web server or CDN.</p>
+
+      <h2>Examples</h2>
+      <div class="example-grid">
+        <div class="example-card example-bad">
+          <div class="example-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            Incorrect
+          </div>
+          <pre><code>Content-Encoding: (none)
+&lt;!-- 500KB transferred uncompressed --&gt;</code></pre>
+        </div>
+        <div class="example-card example-good">
+          <div class="example-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Correct
+          </div>
+          <pre><code>Content-Encoding: gzip
+&lt;!-- 120KB transferred compressed --&gt;</code></pre>
+        </div>
+      </div>
+
+      <h2>Agent fix snippet</h2>
+      <p>Copy this snippet and paste it into your AI coding agent to fix this issue automatically.</p>
+      <div class="snippet-container">
+        <button class="copy-btn" data-snippet-target="agent-snippet" aria-label="Copy snippet">
+          <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="copy-text">Copy</span>
+        </button>
+        <pre id="agent-snippet"><code>Enable compression on your server:
+
+Nginx: gzip on;
+Apache: AddOutputFilterByType DEFLATE text/html
+Node.js: use compression middleware</code></pre>
+      </div>
+
+      <nav class="rule-nav">
+        <div class="nav-links-row">
+          <a href="ttfb.html" class="nav-prev">&larr; Time to First Byte is fast</a>
+          <a href="js_file_count.html" class="nav-next">JavaScript file count is reasonable &rarr;</a>
+        </div>
+      </nav>
+    </article>
+  </div>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
+  <script>
+    document.querySelectorAll('.copy-btn').forEach(function(button) {
+      button.addEventListener('click', function() {
+        var targetId = button.getAttribute('data-snippet-target');
+        if (!targetId) return;
+        var el = document.getElementById(targetId);
+        if (!el) return;
+        navigator.clipboard.writeText(el.textContent || '').then(function() {
+          var span = button.querySelector('.copy-text');
+          if (span) {
+            span.textContent = 'Copied!';
+            setTimeout(function() { span.textContent = 'Copy'; }, 2000);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

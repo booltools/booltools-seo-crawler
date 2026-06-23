@@ -463,3 +463,226 @@ body {
   font-size: 0.72rem;
   color: #9494a8;
 }
+
+/* Rule subnav (individual rules within a category) */
+.docs-subnav-rules {
+  list-style: none;
+  padding: 0;
+  margin: 0.15rem 0 0 0.75rem;
+}
+.docs-subnav-rules a {
+  display: block;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.68rem;
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  color: #9494a8;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.docs-subnav-rules a:hover {
+  color: #818cf8;
+  background: rgba(129, 140, 248, 0.06);
+}
+.docs-subnav-rules a.active {
+  color: #818cf8;
+  background: rgba(129, 140, 248, 0.1);
+  font-weight: 600;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: #9494a8;
+  margin-bottom: 1rem;
+}
+.breadcrumb a { color: #9494a8; }
+.breadcrumb a:hover { color: #a5b4fc; }
+.breadcrumb .sep { color: #2a2a3a; }
+
+/* Rule title row */
+.rule-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Rule key display */
+.rule-key-display {
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+.rule-key-display code {
+  font-size: 0.78rem;
+}
+
+/* Short description */
+.short-desc {
+  font-size: 1rem;
+  color: #b0b0c0;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  border-left: 3px solid #818cf8;
+  padding-left: 1rem;
+}
+
+/* Example grid */
+.example-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+@media (max-width: 640px) {
+  .example-grid { grid-template-columns: 1fr; }
+}
+.example-card {
+  border-radius: 8px;
+  border: 1px solid #2a2a3a;
+  overflow: hidden;
+}
+.example-card pre {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.example-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.example-bad .example-label {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+.example-good .example-label {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+/* Snippet container with copy button */
+.snippet-container {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+.snippet-container pre {
+  padding-top: 2.5rem;
+}
+.copy-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #22223a;
+  border: 1px solid #2a2a3a;
+  border-radius: 6px;
+  color: #b0b0c0;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.72rem;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  z-index: 2;
+}
+.copy-btn:hover {
+  background: #2a2a3a;
+  color: #e0e0e8;
+  border-color: #818cf8;
+}
+
+/* Rule navigation (prev/next) */
+.rule-nav {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #2a2a3a;
+}
+.nav-links-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.nav-prev, .nav-next {
+  font-size: 0.82rem;
+  font-weight: 500;
+  max-width: 45%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nav-next { margin-left: auto; text-align: right; }
+
+/* Rules grid (category page) */
+.rules-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+.rule-card-link {
+  text-decoration: none;
+  color: inherit;
+}
+.rule-card-link:hover { text-decoration: none; }
+.rule-card {
+  padding: 1rem 1.2rem;
+  background: #1a1a2e;
+  border: 1px solid #2a2a3a;
+  border-radius: 8px;
+  transition: border-color 0.15s;
+}
+.rule-card:hover {
+  border-color: #818cf8;
+}
+.rule-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+}
+.rule-card-header code {
+  font-size: 0.72rem;
+  color: #9494a8;
+}
+.rule-card h3 {
+  margin: 0 0 0.3rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #e0e0e8;
+}
+.rule-card p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #9494a8;
+  line-height: 1.5;
+}
+
+/* Rule links inside lists */
+.rule-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 0.25rem 0;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.rule-link:hover {
+  color: #a5b4fc;
+  text-decoration: none;
+}
+.rule-link:hover code {
+  color: #818cf8;
+}

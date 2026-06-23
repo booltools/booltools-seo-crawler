@@ -8,25 +8,25 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
 
   <h2>Web UI</h2>
   <p>Simply enter your localhost URL in the domain input:</p>
-  <pre><code>localhost:3000</code></pre>
+  <pre><code>localhost:9999</code></pre>
   <p>The crawler automatically uses <code>http://</code> for localhost addresses. You can also use:</p>
   <ul>
-    <li><code>localhost:3000</code></li>
-    <li><code>http://localhost:3000</code></li>
+    <li><code>localhost:9999</code></li>
+    <li><code>http://localhost:9999</code></li>
     <li><code>127.0.0.1:3000</code></li>
     <li><code>http://127.0.0.1:8080</code></li>
   </ul>
 
   <h2>SDK CLI</h2>
   <p>Use the <code>--url</code> flag with a localhost address:</p>
-  <pre><code>seo-crawler --mode=full --url=http://localhost:3000</code></pre>
+  <pre><code>seo-crawler --mode=full --url=http://localhost:9999</code></pre>
 
   <h3>With auto-start</h3>
   <p>The SDK can start your dev server before crawling:</p>
   <pre><code>seo-crawler --mode=full \
   --start-cmd="npm run dev" \
-  --wait-for=http://localhost:3000 \
-  --url=http://localhost:3000 \
+  --wait-for=http://localhost:9999 \
+  --url=http://localhost:9999 \
   --wait-timeout=60s</code></pre>
 
   <h2>Rules to Ignore for Localhost</h2>
@@ -48,9 +48,9 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
   <h3>Example config for localhost testing</h3>
   <pre><code># .seo-crawler.yml
 mode: full
-url: http://localhost:3000
+url: http://localhost:9999
 start_cmd: "npm run dev"
-wait_for: http://localhost:3000
+wait_for: http://localhost:9999
 wait_timeout: 60s
 fail_on: high
 ignore:
@@ -65,13 +65,13 @@ ignore:
 
   <h2>Frameworks</h2>
   <h3>Next.js</h3>
-  <pre><code>seo-crawler --mode=full --start-cmd="npm run dev" --wait-for=http://localhost:3000 --url=http://localhost:3000</code></pre>
+  <pre><code>seo-crawler --mode=full --start-cmd="npm run dev" --wait-for=http://localhost:9999 --url=http://localhost:9999</code></pre>
 
   <h3>Astro</h3>
   <pre><code>seo-crawler --mode=full --start-cmd="npm run dev" --wait-for=http://localhost:4321 --url=http://localhost:4321</code></pre>
 
   <h3>Nuxt</h3>
-  <pre><code>seo-crawler --mode=full --start-cmd="npm run dev" --wait-for=http://localhost:3000 --url=http://localhost:3000</code></pre>
+  <pre><code>seo-crawler --mode=full --start-cmd="npm run dev" --wait-for=http://localhost:9999 --url=http://localhost:9999</code></pre>
 
   <h3>Static sites (Vite, Gatsby, Hugo)</h3>
   <p>For static site generators, use static mode with the output directory:</p>
