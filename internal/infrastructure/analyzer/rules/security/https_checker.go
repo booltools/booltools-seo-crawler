@@ -18,7 +18,9 @@ func (c *HTTPSChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 
 	httpsRule := valueobject.NewAuditRule("uses_https", valueobject.CategorySecurity, valueobject.SeverityCritical)
 	httpsRule.AffectedURL = page.URL
-	if parsedURL != nil && parsedURL.Scheme != "https" {
+	if parsedURL != nil && isLocalhostHost(parsedURL.Hostname()) {
+		httpsRule.Pass("HTTPS check skipped for localhost")
+	} else if parsedURL != nil && parsedURL.Scheme != "https" {
 		httpsRule.Fail(
 			"Page is not served over HTTPS",
 			"Migrate your site to HTTPS. HTTPS is a confirmed ranking factor and required for user trust.",
@@ -63,18 +65,26 @@ func (c *HTTPSChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 
 	hstsRule := valueobject.NewAuditRule("hsts_header", valueobject.CategorySecurity, valueobject.SeverityMedium)
 	hstsRule.AffectedURL = page.URL
-	hsts := page.Headers.Get("Strict-Transport-Security")
-	if hsts == "" {
-		hstsRule.Warn(
-			"HSTS header is missing",
-			"Add a Strict-Transport-Security header to enforce HTTPS connections: Strict-Transport-Security: max-age=31536000; includeSubDomains",
-		)
+	if parsedURL != nil && isLocalhostHost(parsedURL.Hostname()) {
+		hstsRule.Pass("HSTS check skipped for localhost")
 	} else {
-		hstsRule.Pass("HSTS header is present")
+		hsts := page.Headers.Get("Strict-Transport-Security")
+		if hsts == "" {
+			hstsRule.Warn(
+				"HSTS header is missing",
+				"Add a Strict-Transport-Security header to enforce HTTPS connections: Strict-Transport-Security: max-age=31536000; includeSubDomains",
+			)
+		} else {
+			hstsRule.Pass("HSTS header is present")
+		}
 	}
 	rules = append(rules, hstsRule)
 
 	return rules
+}
+
+func isLocalhostHost(hostname string) bool {
+	return hostname == "localhost" || hostname == "127.0.0.1" || hostname == "0.0.0.0" || hostname == "::1"
 }
 
 func formatMixedContentList(assets []string) string {

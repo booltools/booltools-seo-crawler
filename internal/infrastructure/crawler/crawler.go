@@ -40,6 +40,7 @@ type CrawlResult struct {
 	LlmsTxt        string
 	LlmsFullTxt    string
 	Domain         string
+	BaseURL        string
 	URLStatusCache *URLStatusCache
 }
 
@@ -71,6 +72,7 @@ func (sc *SiteCrawler) Crawl(targetDomain string, maxPages int, onPage OnPageCal
 	result := &CrawlResult{
 		Pages:          make([]PageData, 0),
 		Domain:         hostname,
+		BaseURL:        parsedURL.Scheme + "://" + parsedURL.Host,
 		URLStatusCache: NewURLStatusCache(),
 	}
 

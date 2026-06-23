@@ -3,6 +3,7 @@ package technical
 import (
 	"encoding/xml"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
@@ -49,6 +50,10 @@ func (c *SitemapChecker) Check(result crawler.CrawlResult) []valueobject.AuditRu
 	rules = append(rules, existsRule)
 
 	allURLs := c.parseSitemapURLs(result.SitemapXML, &rules)
+
+	if isLocalBaseURL(result.BaseURL) {
+		allURLs = rewriteSitemapURLsToLocal(allURLs, result.BaseURL)
+	}
 
 	c.checkSitemapSize(allURLs, result.SitemapXML, &rules)
 	c.checkLastmodDates(allURLs, &rules)
@@ -331,6 +336,31 @@ func (c *SitemapChecker) checkVideoSitemap(content string, rules *[]valueobject.
 		)
 	}
 	*rules = append(*rules, videoRule)
+}
+
+func isLocalBaseURL(baseURL string) bool {
+	parsed, err := url.Parse(baseURL)
+	if err != nil {
+		return false
+	}
+	hostname := parsed.Hostname()
+	return hostname == "localhost" || hostname == "127.0.0.1" || hostname == "0.0.0.0" || hostname == "::1"
+}
+
+func rewriteSitemapURLsToLocal(sitemapURLs []sitemapURL, localBaseURL string) []sitemapURL {
+	rewritten := make([]sitemapURL, len(sitemapURLs))
+	for index, entry := range sitemapURLs {
+		rewritten[index] = entry
+		parsed, err := url.Parse(entry.Loc)
+		if err != nil {
+			continue
+		}
+		rewritten[index].Loc = localBaseURL + parsed.Path
+		if parsed.RawQuery != "" {
+			rewritten[index].Loc += "?" + parsed.RawQuery
+		}
+	}
+	return rewritten
 }
 
 func parseDisallowedPaths(robotsTxt string) []string {
