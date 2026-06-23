@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rules Reference — Booltools SEO Crawler</title>
-  <meta name="description" content="Complete reference for all 130+ audit rules in the Booltools SEO Crawler. Covers on-page SEO, technical SEO, GEO, performance, security, and more." />
+  <meta name="description" content="Complete reference for all 133 audit rules in the Booltools SEO Crawler. Covers on-page SEO, technical SEO, GEO, performance, security, and more." />
   <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules.html" />
   <meta name="author" content="Booltools" />
   <meta property="og:title" content="Rules Reference — Booltools SEO Crawler" />
-  <meta property="og:description" content="Complete reference for all 130+ audit rules. Covers on-page SEO, technical SEO, GEO, performance, security, and more." />
+  <meta property="og:description" content="Complete reference for all 133 audit rules. Covers on-page SEO, technical SEO, GEO, performance, security, and more." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules.html" />
   <meta property="og:locale" content="en_US" />
@@ -17,33 +17,14 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@booltools" />
   <meta name="twitter:title" content="Rules Reference — Booltools SEO Crawler" />
-  <meta name="twitter:description" content="Complete reference for all 130+ audit rules in the Booltools SEO Crawler." />
+  <meta name="twitter:description" content="Complete reference for all 133 audit rules in the Booltools SEO Crawler." />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="docs.css" />
-  <script type="application/ld+json">
-  [{
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Rules Reference — Booltools SEO Crawler",
-    "url": "https://booltools.github.io/booltools-seo-crawler/docs/rules.html",
-    "description": "Complete reference for all 130+ audit rules in the Booltools SEO Crawler.",
-    "dateModified": "2026-06-22",
-    "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": "https://booltools.github.io/booltools-seo-crawler/" },
-    "author": { "@type": "Organization", "name": "Booltools", "url": "https://github.com/booltools" }
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://booltools.github.io/booltools-seo-crawler/" },
-      { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://booltools.github.io/booltools-seo-crawler/docs/" },
-      { "@type": "ListItem", "position": 3, "name": "Rules Reference", "item": "https://booltools.github.io/booltools-seo-crawler/docs/rules.html" }
-    ]
-  }]
-  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Rules Reference — Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/docs/rules.html","description":"Complete reference for all 133 audit rules in the Booltools SEO Crawler.","dateModified":"2026-06-22","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/"},"author":{"@type":"Organization","name":"Booltools","url":"https://github.com/booltools"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://booltools.github.io/booltools-seo-crawler/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://booltools.github.io/booltools-seo-crawler/docs/"},{"@type":"ListItem","position":3,"name":"Rules Reference","item":"https://booltools.github.io/booltools-seo-crawler/docs/rules.html"}]}</script>
 </head>
 <body>
   <header class="docs-header">
@@ -52,14 +33,43 @@
   </header>
 
   <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
     <aside class="docs-sidebar">
-      <nav>
+      <nav aria-label="Documentation navigation">
         <ul>
           <li><a href="./">Overview</a></li>
           <li><a href="getting-started.html">Getting Started</a></li>
           <li><a href="web-ui.html">Web UI Guide</a></li>
           <li><a href="sdk.html">CI/CD SDK</a></li>
-          <li><a href="rules.html" class="active">Rules Reference</a></li>
+          <li>
+            <a href="rules.html" class="active">Rules Reference</a>
+            <ul class="docs-subnav">
+              <li><a href="#on-page-seo">On-Page SEO</a></li>
+              <li><a href="#content">Content</a></li>
+              <li><a href="#technical-seo">Technical SEO</a></li>
+              <li><a href="#links">Links</a></li>
+              <li><a href="#performance">Performance</a></li>
+              <li><a href="#structured-data">Structured Data</a></li>
+              <li><a href="#security">Security</a></li>
+              <li><a href="#accessibility">Accessibility</a></li>
+              <li><a href="#social-open-graph">Social / Open Graph</a></li>
+              <li><a href="#mobile">Mobile</a></li>
+              <li><a href="#url-structure">URL Structure</a></li>
+              <li><a href="#internationalization">Internationalization</a></li>
+              <li><a href="#e-e-a-t">E-E-A-T</a></li>
+              <li><a href="#duplicate-content">Duplicate Content</a></li>
+              <li><a href="#geo-ai-search">GEO — AI Search</a></li>
+            </ul>
+          </li>
           <li><a href="presets.html">Rule Presets</a></li>
           <li><a href="localhost.html">Localhost Crawling</a></li>
           <li><a href="api.html">API Reference</a></li>
@@ -69,126 +79,408 @@
 
     <article class="docs-content">
       <h1>Rules Reference</h1>
-      <p>Complete reference for all <strong>130+</strong> audit rules grouped by category.</p>
+      <p>Complete reference for all <strong>133</strong> audit rules grouped by category. Click a category to view its rules in detail, or navigate using the sidebar.</p>
 
       <h2>Severity Levels</h2>
       <table>
         <thead><tr><th>Severity</th><th>Description</th></tr></thead>
         <tbody>
-          <tr><td><strong>Critical</strong></td><td>Must fix — blocks indexing or causes major SEO damage</td></tr>
-          <tr><td><strong>High</strong></td><td>Should fix — significant negative impact on SEO</td></tr>
-          <tr><td><strong>Medium</strong></td><td>Recommended — moderate impact, improves rankings</td></tr>
-          <tr><td><strong>Low</strong></td><td>Nice to have — minor improvements</td></tr>
-          <tr><td><strong>Info</strong></td><td>Informational — no direct SEO impact</td></tr>
+          <tr><td><span class="severity-badge sev-critical">critical</span></td><td>Must fix — blocks indexing or causes major SEO damage</td></tr>
+          <tr><td><span class="severity-badge sev-high">high</span></td><td>Should fix — significant negative impact on SEO</td></tr>
+          <tr><td><span class="severity-badge sev-medium">medium</span></td><td>Recommended — moderate impact, improves rankings</td></tr>
+          <tr><td><span class="severity-badge sev-low">low</span></td><td>Nice to have — minor improvements</td></tr>
+          <tr><td><span class="severity-badge sev-info">info</span></td><td>Informational — no direct SEO impact</td></tr>
         </tbody>
       </table>
 
-      <h2>On-Page SEO (15 rules)</h2>
+      <h2>Categories</h2>
+      <div class="category-grid">
+        <a href="#on-page-seo" class="category-card">
+          <h3>On-Page SEO</h3>
+          <p class="rule-count">15 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-critical">1 critical</span>
+            <span class="severity-badge sev-high">5 high</span>
+            <span class="severity-badge sev-medium">5 medium</span>
+            <span class="severity-badge sev-low">4 low</span>
+          </div>
+        </a>
+        <a href="#content" class="category-card">
+          <h3>Content</h3>
+          <p class="rule-count">2 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-medium">2 medium</span>
+          </div>
+        </a>
+        <a href="#technical-seo" class="category-card">
+          <h3>Technical SEO</h3>
+          <p class="rule-count">27 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-critical">1 critical</span>
+            <span class="severity-badge sev-high">8 high</span>
+            <span class="severity-badge sev-medium">9 medium</span>
+            <span class="severity-badge sev-low">6 low</span>
+            <span class="severity-badge sev-info">3 info</span>
+          </div>
+        </a>
+        <a href="#links" class="category-card">
+          <h3>Links</h3>
+          <p class="rule-count">6 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-high">1 high</span>
+            <span class="severity-badge sev-medium">3 medium</span>
+            <span class="severity-badge sev-low">2 low</span>
+          </div>
+        </a>
+        <a href="#performance" class="category-card">
+          <h3>Performance</h3>
+          <p class="rule-count">12 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-high">4 high</span>
+            <span class="severity-badge sev-medium">7 medium</span>
+            <span class="severity-badge sev-low">1 low</span>
+          </div>
+        </a>
+        <a href="#structured-data" class="category-card">
+          <h3>Structured Data</h3>
+          <p class="rule-count">3 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-high">1 high</span>
+            <span class="severity-badge sev-medium">1 medium</span>
+            <span class="severity-badge sev-low">1 low</span>
+          </div>
+        </a>
+        <a href="#security" class="category-card">
+          <h3>Security</h3>
+          <p class="rule-count">9 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-critical">1 critical</span>
+            <span class="severity-badge sev-high">1 high</span>
+            <span class="severity-badge sev-medium">1 medium</span>
+            <span class="severity-badge sev-low">6 low</span>
+          </div>
+        </a>
+        <a href="#accessibility" class="category-card">
+          <h3>Accessibility</h3>
+          <p class="rule-count">5 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-high">2 high</span>
+            <span class="severity-badge sev-medium">2 medium</span>
+            <span class="severity-badge sev-low">1 low</span>
+          </div>
+        </a>
+        <a href="#social-open-graph" class="category-card">
+          <h3>Social / Open Graph</h3>
+          <p class="rule-count">12 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-medium">4 medium</span>
+            <span class="severity-badge sev-low">8 low</span>
+          </div>
+        </a>
+        <a href="#mobile" class="category-card">
+          <h3>Mobile</h3>
+          <p class="rule-count">2 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-critical">1 critical</span>
+            <span class="severity-badge sev-medium">1 medium</span>
+          </div>
+        </a>
+        <a href="#url-structure" class="category-card">
+          <h3>URL Structure</h3>
+          <p class="rule-count">6 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-medium">1 medium</span>
+            <span class="severity-badge sev-low">5 low</span>
+          </div>
+        </a>
+        <a href="#internationalization" class="category-card">
+          <h3>Internationalization</h3>
+          <p class="rule-count">2 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-medium">1 medium</span>
+            <span class="severity-badge sev-low">1 low</span>
+          </div>
+        </a>
+        <a href="#e-e-a-t" class="category-card">
+          <h3>E-E-A-T</h3>
+          <p class="rule-count">6 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-medium">4 medium</span>
+            <span class="severity-badge sev-low">2 low</span>
+          </div>
+        </a>
+        <a href="#duplicate-content" class="category-card">
+          <h3>Duplicate Content</h3>
+          <p class="rule-count">3 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-high">1 high</span>
+            <span class="severity-badge sev-medium">2 medium</span>
+          </div>
+        </a>
+        <a href="#geo-ai-search" class="category-card">
+          <h3>GEO — AI Search Readiness</h3>
+          <p class="rule-count">23 rules</p>
+          <div class="severity-row">
+            <span class="severity-badge sev-high">6 high</span>
+            <span class="severity-badge sev-medium">9 medium</span>
+            <span class="severity-badge sev-low">8 low</span>
+          </div>
+        </a>
+      </div>
+
+      <h2 id="on-page-seo">On-Page SEO (15 rules)</h2>
       <p>Title tags, meta descriptions, heading hierarchy, image alt text, and content optimization.</p>
       <ul>
-        <li><code>title_exists</code> — Page has a title tag</li>
-        <li><code>title_length</code> — Title length is between 30-60 characters</li>
-        <li><code>title_unique</code> — Title is unique across the site</li>
-        <li><code>meta_description_exists</code> — Page has a meta description</li>
-        <li><code>meta_description_length</code> — Meta description is 120-160 characters</li>
-        <li><code>h1_exists</code> — Page has an H1 heading</li>
-        <li><code>h1_single</code> — Only one H1 per page</li>
-        <li><code>heading_hierarchy</code> — Headings follow logical order</li>
-        <li><code>img_alt_text</code> — Images have alt attributes</li>
-        <li><code>img_dimensions</code> — Images specify width/height</li>
-        <li><code>img_lazy_loading</code> — Below-fold images use lazy loading</li>
+        <li><code>title_exists</code> <span class="severity-badge sev-critical">critical</span> — Page has a &lt;title&gt; tag</li>
+        <li><code>title_length</code> <span class="severity-badge sev-medium">medium</span> — Title is between 30-60 characters</li>
+        <li><code>title_multiple</code> <span class="severity-badge sev-high">high</span> — Page has only one title tag</li>
+        <li><code>meta_description_exists</code> <span class="severity-badge sev-high">high</span> — Page has a meta description</li>
+        <li><code>meta_description_length</code> <span class="severity-badge sev-medium">medium</span> — Description is 120-160 characters</li>
+        <li><code>meta_description_multiple</code> <span class="severity-badge sev-medium">medium</span> — Page has only one meta description</li>
+        <li><code>h1_count</code> <span class="severity-badge sev-high">high</span> — Page has exactly one H1</li>
+        <li><code>h1_not_empty</code> <span class="severity-badge sev-high">high</span> — H1 has non-empty text</li>
+        <li><code>heading_hierarchy</code> <span class="severity-badge sev-medium">medium</span> — Headings follow proper hierarchy</li>
+        <li><code>heading_not_empty</code> <span class="severity-badge sev-low">low</span> — Headings have non-empty text</li>
+        <li><code>images_alt_text</code> <span class="severity-badge sev-high">high</span> — All images have alt attributes</li>
+        <li><code>images_alt_descriptive</code> <span class="severity-badge sev-low">low</span> — Image alt text is descriptive</li>
+        <li><code>images_dimensions</code> <span class="severity-badge sev-medium">medium</span> — Images have width/height attributes</li>
+        <li><code>images_modern_format</code> <span class="severity-badge sev-low">low</span> — Images use WebP/AVIF format</li>
+        <li><code>images_lazy_loading</code> <span class="severity-badge sev-low">low</span> — Below-fold images use lazy loading</li>
       </ul>
 
-      <h2>Technical SEO (24 rules)</h2>
+      <h2 id="content">Content (2 rules)</h2>
+      <p>Word count and text-to-HTML ratio.</p>
+      <ul>
+        <li><code>content_word_count</code> <span class="severity-badge sev-medium">medium</span> — Page has sufficient word count</li>
+        <li><code>content_text_html_ratio</code> <span class="severity-badge sev-medium">medium</span> — Text to HTML ratio is healthy</li>
+      </ul>
+
+      <h2 id="technical-seo">Technical SEO (27 rules)</h2>
       <p>Canonical URLs, robots directives, sitemaps, redirects, and HTTP status codes.</p>
       <ul>
-        <li><code>canonical_exists</code> — Page has a canonical URL</li>
-        <li><code>canonical_valid</code> — Canonical URL is valid and accessible</li>
-        <li><code>robots_txt_exists</code> — Site has a robots.txt</li>
-        <li><code>robots_txt_valid</code> — robots.txt is properly formatted</li>
-        <li><code>sitemap_exists</code> — Site has a sitemap.xml</li>
-        <li><code>sitemap_valid</code> — Sitemap is valid XML</li>
-        <li><code>http_status_ok</code> — Page returns 200 status</li>
-        <li><code>no_redirect_chains</code> — No long redirect chains</li>
-        <li><code>meta_robots_index</code> — Page allows indexing</li>
+        <li><code>canonical_exists</code> <span class="severity-badge sev-high">high</span> — Page has a canonical link</li>
+        <li><code>canonical_absolute</code> <span class="severity-badge sev-medium">medium</span> — Canonical URL is absolute</li>
+        <li><code>canonical_self_ref</code> <span class="severity-badge sev-low">low</span> — Canonical is self-referencing</li>
+        <li><code>canonical_conflict</code> <span class="severity-badge sev-high">high</span> — No conflicting canonical tags</li>
+        <li><code>meta_robots_noindex</code> <span class="severity-badge sev-info">info</span> — Page has a noindex directive</li>
+        <li><code>meta_robots_conflict</code> <span class="severity-badge sev-high">high</span> — No conflicting robots directives</li>
+        <li><code>http_status_ok</code> <span class="severity-badge sev-critical">critical</span> — Page returns HTTP 200 status</li>
+        <li><code>crawl_depth</code> <span class="severity-badge sev-medium">medium</span> — Page crawl depth is reasonable</li>
+        <li><code>pagination_rel_tags</code> <span class="severity-badge sev-low">low</span> — Pagination uses rel=next/prev</li>
+        <li><code>robots_txt_exists</code> <span class="severity-badge sev-high">high</span> — robots.txt file exists</li>
+        <li><code>robots_txt_size</code> <span class="severity-badge sev-low">low</span> — robots.txt is not too large</li>
+        <li><code>robots_txt_sitemap</code> <span class="severity-badge sev-medium">medium</span> — robots.txt references sitemap</li>
+        <li><code>robots_txt_syntax</code> <span class="severity-badge sev-medium">medium</span> — robots.txt has valid syntax</li>
+        <li><code>sitemap_exists</code> <span class="severity-badge sev-high">high</span> — Sitemap.xml exists</li>
+        <li><code>sitemap_valid_xml</code> <span class="severity-badge sev-high">high</span> — Sitemap has valid XML</li>
+        <li><code>sitemap_index</code> <span class="severity-badge sev-info">info</span> — Sitemap index detected</li>
+        <li><code>sitemap_size</code> <span class="severity-badge sev-medium">medium</span> — Sitemap is within size limits</li>
+        <li><code>sitemap_freshness</code> <span class="severity-badge sev-low">low</span> — Sitemap URLs have recent lastmod</li>
+        <li><code>sitemap_coverage</code> <span class="severity-badge sev-medium">medium</span> — Crawled URLs appear in sitemap</li>
+        <li><code>sitemap_orphan_urls</code> <span class="severity-badge sev-medium">medium</span> — No sitemap-only orphan URLs</li>
+        <li><code>sitemap_broken_urls</code> <span class="severity-badge sev-high">high</span> — No broken URLs in sitemap</li>
+        <li><code>sitemap_redirect_urls</code> <span class="severity-badge sev-medium">medium</span> — No redirect URLs in sitemap</li>
+        <li><code>sitemap_robots_conflict</code> <span class="severity-badge sev-high">high</span> — No sitemap/robots.txt conflicts</li>
+        <li><code>sitemap_image</code> <span class="severity-badge sev-low">low</span> — Sitemap includes image entries</li>
+        <li><code>sitemap_video</code> <span class="severity-badge sev-info">info</span> — Sitemap includes video entries</li>
+        <li><code>redirect_chains</code> <span class="severity-badge sev-medium">medium</span> — No redirect chains detected</li>
+        <li><code>temporary_redirects</code> <span class="severity-badge sev-low">low</span> — Temporary redirects are intentional</li>
       </ul>
 
-      <h2>GEO — AI Search Readiness (24 rules)</h2>
-      <p>Generative Engine Optimization checks for AI crawler access, content citability, and entity authority.</p>
-      <ul>
-        <li><code>ai_crawler_not_blocked</code> — AI crawlers are not blocked in robots.txt</li>
-        <li><code>llms_txt_exists</code> — Site has llms.txt</li>
-        <li><code>llms_txt_valid</code> — llms.txt is properly formatted</li>
-        <li><code>content_citability</code> — Content is structured for citation</li>
-        <li><code>entity_authority</code> — Clear entity ownership signals</li>
-        <li><code>ai_friendly_headings</code> — Headings are descriptive for AI parsing</li>
-        <li><code>ai_friendly_structure</code> — Content uses AI-parseable structure</li>
-        <li><code>factual_claims_sourced</code> — Claims have supporting sources</li>
-      </ul>
-
-      <h2>Performance (9 rules)</h2>
-      <p>Page size, response time, compression, and resource optimization.</p>
-      <ul>
-        <li><code>page_size</code> — Total page size under threshold</li>
-        <li><code>ttfb</code> — Time to first byte under 600ms</li>
-        <li><code>compression</code> — Response uses gzip/brotli</li>
-        <li><code>render_blocking_resources</code> — No render-blocking scripts in head</li>
-        <li><code>http_requests</code> — Reasonable number of HTTP requests</li>
-      </ul>
-
-      <h2>Security (9 rules)</h2>
-      <p>HTTPS, security headers, and secure configuration.</p>
-      <ul>
-        <li><code>uses_https</code> — Site uses HTTPS</li>
-        <li><code>hsts_header</code> — HSTS header present</li>
-        <li><code>security_csp</code> — Content-Security-Policy header</li>
-        <li><code>security_xfo</code> — X-Frame-Options header</li>
-        <li><code>security_xcto</code> — X-Content-Type-Options header</li>
-      </ul>
-
-      <h2>Links (6 rules)</h2>
+      <h2 id="links">Links (6 rules)</h2>
       <p>Internal linking, external links, and broken link detection.</p>
       <ul>
-        <li><code>internal_links_exist</code> — Page has internal links</li>
-        <li><code>no_broken_links</code> — No broken internal links</li>
-        <li><code>external_links_nofollow</code> — External links use appropriate rel</li>
+        <li><code>internal_links_present</code> <span class="severity-badge sev-medium">medium</span> — Page has internal links</li>
+        <li><code>internal_links_count</code> <span class="severity-badge sev-low">low</span> — Internal link count is reasonable</li>
+        <li><code>internal_links_anchor_text</code> <span class="severity-badge sev-low">low</span> — Internal links have descriptive anchor text</li>
+        <li><code>external_links_rel</code> <span class="severity-badge sev-medium">medium</span> — External links have rel attributes</li>
+        <li><code>broken_internal_links</code> <span class="severity-badge sev-high">high</span> — No broken internal links</li>
+        <li><code>broken_external_links</code> <span class="severity-badge sev-medium">medium</span> — No broken external links</li>
       </ul>
 
-      <h2>Structured Data (3 rules)</h2>
+      <h2 id="performance">Performance (12 rules)</h2>
+      <p>Page size, response time, compression, and resource optimization.</p>
+      <ul>
+        <li><code>page_size</code> <span class="severity-badge sev-medium">medium</span> — Page size is within limits</li>
+        <li><code>html_size</code> <span class="severity-badge sev-medium">medium</span> — HTML document size is reasonable</li>
+        <li><code>ttfb</code> <span class="severity-badge sev-high">high</span> — Time to First Byte is fast</li>
+        <li><code>compression</code> <span class="severity-badge sev-medium">medium</span> — Response uses compression</li>
+        <li><code>js_file_count</code> <span class="severity-badge sev-medium">medium</span> — JavaScript file count is reasonable</li>
+        <li><code>css_file_count</code> <span class="severity-badge sev-medium">medium</span> — CSS file count is reasonable</li>
+        <li><code>render_blocking</code> <span class="severity-badge sev-high">high</span> — No render-blocking resources</li>
+        <li><code>total_requests</code> <span class="severity-badge sev-medium">medium</span> — Total requests are optimized</li>
+        <li><code>cache_headers</code> <span class="severity-badge sev-low">low</span> — Cache headers are configured</li>
+        <li><code>broken_scripts</code> <span class="severity-badge sev-high">high</span> — All script files are reachable</li>
+        <li><code>broken_stylesheets</code> <span class="severity-badge sev-high">high</span> — All CSS files are reachable</li>
+        <li><code>broken_images</code> <span class="severity-badge sev-medium">medium</span> — All images are reachable</li>
+      </ul>
+
+      <h2 id="structured-data">Structured Data (3 rules)</h2>
       <p>JSON-LD, breadcrumbs, and schema.org validation.</p>
       <ul>
-        <li><code>jsonld_exists</code> — Page has JSON-LD structured data</li>
-        <li><code>jsonld_valid</code> — JSON-LD is valid</li>
-        <li><code>breadcrumb_schema</code> — Breadcrumb structured data present</li>
+        <li><code>jsonld_exists</code> <span class="severity-badge sev-medium">medium</span> — Page has JSON-LD structured data</li>
+        <li><code>jsonld_valid</code> <span class="severity-badge sev-high">high</span> — JSON-LD is valid JSON</li>
+        <li><code>jsonld_breadcrumb</code> <span class="severity-badge sev-low">low</span> — BreadcrumbList schema is present</li>
       </ul>
 
-      <h2>Social / Open Graph (12 rules)</h2>
+      <h2 id="security">Security (9 rules)</h2>
+      <p>HTTPS, security headers, and secure configuration.</p>
+      <ul>
+        <li><code>uses_https</code> <span class="severity-badge sev-critical">critical</span> — Page uses HTTPS</li>
+        <li><code>mixed_content</code> <span class="severity-badge sev-high">high</span> — No mixed content detected</li>
+        <li><code>hsts_header</code> <span class="severity-badge sev-medium">medium</span> — HSTS header is present</li>
+        <li><code>security_xcto</code> <span class="severity-badge sev-low">low</span> — X-Content-Type-Options header</li>
+        <li><code>security_xfo</code> <span class="severity-badge sev-low">low</span> — X-Frame-Options header</li>
+        <li><code>security_csp</code> <span class="severity-badge sev-low">low</span> — Content-Security-Policy header</li>
+        <li><code>security_referrer</code> <span class="severity-badge sev-low">low</span> — Referrer-Policy header</li>
+        <li><code>security_permissions</code> <span class="severity-badge sev-low">low</span> — Permissions-Policy header</li>
+        <li><code>security_server_disclosure</code> <span class="severity-badge sev-low">low</span> — Server version not disclosed</li>
+      </ul>
+
+      <h2 id="accessibility">Accessibility (5 rules)</h2>
+      <p>Language, viewport, character encoding, and ARIA landmarks.</p>
+      <ul>
+        <li><code>html_lang</code> <span class="severity-badge sev-high">high</span> — HTML has lang attribute</li>
+        <li><code>viewport_meta</code> <span class="severity-badge sev-high">high</span> — Viewport meta tag is present</li>
+        <li><code>charset_meta</code> <span class="severity-badge sev-medium">medium</span> — Character encoding declared</li>
+        <li><code>empty_links</code> <span class="severity-badge sev-medium">medium</span> — Links have accessible text</li>
+        <li><code>aria_landmarks</code> <span class="severity-badge sev-low">low</span> — Page uses ARIA landmarks</li>
+      </ul>
+
+      <h2 id="social-open-graph">Social / Open Graph (12 rules)</h2>
       <p>Open Graph tags and Twitter Card metadata.</p>
       <ul>
-        <li><code>og_title</code> — og:title present</li>
-        <li><code>og_description</code> — og:description present</li>
-        <li><code>og_image</code> — og:image present</li>
-        <li><code>twitter_card</code> — Twitter card meta tag</li>
+        <li><code>og_title</code> <span class="severity-badge sev-medium">medium</span> — og:title meta tag is present</li>
+        <li><code>og_description</code> <span class="severity-badge sev-medium">medium</span> — og:description meta tag is present</li>
+        <li><code>og_image</code> <span class="severity-badge sev-medium">medium</span> — og:image meta tag is present</li>
+        <li><code>og_url</code> <span class="severity-badge sev-low">low</span> — og:url meta tag is present</li>
+        <li><code>og_type</code> <span class="severity-badge sev-low">low</span> — og:type meta tag is present</li>
+        <li><code>og_site_name</code> <span class="severity-badge sev-low">low</span> — og:site_name meta tag is present</li>
+        <li><code>og_locale</code> <span class="severity-badge sev-low">low</span> — og:locale meta tag is present</li>
+        <li><code>twitter_card</code> <span class="severity-badge sev-medium">medium</span> — twitter:card meta tag is present</li>
+        <li><code>twitter_title</code> <span class="severity-badge sev-low">low</span> — twitter:title meta tag is present</li>
+        <li><code>twitter_description</code> <span class="severity-badge sev-low">low</span> — twitter:description meta tag is present</li>
+        <li><code>twitter_image</code> <span class="severity-badge sev-low">low</span> — twitter:image meta tag is present</li>
+        <li><code>twitter_site</code> <span class="severity-badge sev-low">low</span> — twitter:site meta tag is present</li>
       </ul>
 
-      <h2>Other Categories</h2>
+      <h2 id="mobile">Mobile (2 rules)</h2>
+      <p>Viewport configuration for mobile devices.</p>
       <ul>
-        <li><strong>Content</strong> (2 rules) — Word count, text-to-HTML ratio</li>
-        <li><strong>Accessibility</strong> (5 rules) — Language, viewport, ARIA</li>
-        <li><strong>Mobile</strong> (2 rules) — Viewport, touch targets</li>
-        <li><strong>URL Structure</strong> (6 rules) — Lowercase, length, special characters</li>
-        <li><strong>Internationalization</strong> (2 rules) — Hreflang validation</li>
-        <li><strong>E-E-A-T</strong> (6 rules) — Author, about, contact, privacy pages</li>
-        <li><strong>Duplicate Content</strong> (3 rules) — Duplicate titles, descriptions, body</li>
+        <li><code>mobile_viewport</code> <span class="severity-badge sev-critical">critical</span> — Viewport meta tag exists</li>
+        <li><code>mobile_viewport_config</code> <span class="severity-badge sev-medium">medium</span> — Viewport uses device-width config</li>
       </ul>
 
-      <blockquote>
-        <p>For detailed rule documentation with examples and fix instructions, run the app locally and visit <code>/docs/rules</code>.</p>
-      </blockquote>
+      <h2 id="url-structure">URL Structure (6 rules)</h2>
+      <p>URL format, length, and special characters.</p>
+      <ul>
+        <li><code>url_lowercase</code> <span class="severity-badge sev-low">low</span> — URL uses lowercase</li>
+        <li><code>url_hyphens</code> <span class="severity-badge sev-low">low</span> — URL uses hyphens for separation</li>
+        <li><code>url_length</code> <span class="severity-badge sev-low">low</span> — URL length is reasonable</li>
+        <li><code>url_special_chars</code> <span class="severity-badge sev-low">low</span> — URL has no special characters</li>
+        <li><code>url_double_slash</code> <span class="severity-badge sev-medium">medium</span> — URL has no double slashes</li>
+        <li><code>url_parameters</code> <span class="severity-badge sev-low">low</span> — URL parameters are minimal</li>
+      </ul>
+
+      <h2 id="internationalization">Internationalization (2 rules)</h2>
+      <p>Hreflang validation for multi-language sites.</p>
+      <ul>
+        <li><code>hreflang_valid</code> <span class="severity-badge sev-medium">medium</span> — Hreflang tags are valid</li>
+        <li><code>hreflang_x_default</code> <span class="severity-badge sev-low">low</span> — Hreflang x-default is present</li>
+      </ul>
+
+      <h2 id="e-e-a-t">E-E-A-T (6 rules)</h2>
+      <p>Experience, Expertise, Authoritativeness, and Trustworthiness signals.</p>
+      <ul>
+        <li><code>eeat_author</code> <span class="severity-badge sev-medium">medium</span> — Content has author attribution</li>
+        <li><code>eeat_copyright</code> <span class="severity-badge sev-low">low</span> — Page has copyright notice</li>
+        <li><code>eeat_about_page</code> <span class="severity-badge sev-medium">medium</span> — Site has an About page</li>
+        <li><code>eeat_contact_page</code> <span class="severity-badge sev-medium">medium</span> — Site has a Contact page</li>
+        <li><code>eeat_privacy_policy</code> <span class="severity-badge sev-medium">medium</span> — Site has a Privacy Policy</li>
+        <li><code>eeat_terms</code> <span class="severity-badge sev-low">low</span> — Site has Terms of Service</li>
+      </ul>
+
+      <h2 id="duplicate-content">Duplicate Content (3 rules)</h2>
+      <p>Detects duplicate titles, descriptions, and body content across pages.</p>
+      <ul>
+        <li><code>duplicate_content_body</code> <span class="severity-badge sev-high">high</span> — No duplicate body content</li>
+        <li><code>duplicate_titles</code> <span class="severity-badge sev-medium">medium</span> — No duplicate page titles</li>
+        <li><code>duplicate_descriptions</code> <span class="severity-badge sev-medium">medium</span> — No duplicate meta descriptions</li>
+      </ul>
+
+      <h2 id="geo-ai-search">GEO — AI Search Readiness (23 rules)</h2>
+      <p>Generative Engine Optimization checks for AI crawler access, content citability, and entity authority.</p>
+      <ul>
+        <li><code>geo_crawler_oai-searchbot</code> <span class="severity-badge sev-high">high</span> — OAI-SearchBot is allowed</li>
+        <li><code>geo_crawler_perplexitybot</code> <span class="severity-badge sev-high">high</span> — PerplexityBot is allowed</li>
+        <li><code>geo_crawler_claude-searchbot</code> <span class="severity-badge sev-high">high</span> — Claude-SearchBot is allowed</li>
+        <li><code>geo_crawler_google-extended</code> <span class="severity-badge sev-high">high</span> — Google-Extended is allowed</li>
+        <li><code>geo_crawler_applebot</code> <span class="severity-badge sev-high">high</span> — Applebot is allowed</li>
+        <li><code>geo_crawler_block_gptbot</code> <span class="severity-badge sev-low">low</span> — GPTBot (training) is blocked</li>
+        <li><code>geo_crawler_block_ccbot</code> <span class="severity-badge sev-low">low</span> — CCBot (training) is blocked</li>
+        <li><code>geo_llms_txt_exists</code> <span class="severity-badge sev-medium">medium</span> — llms.txt file exists</li>
+        <li><code>geo_llms_full_txt</code> <span class="severity-badge sev-low">low</span> — llms-full.txt file exists</li>
+        <li><code>geo_llms_txt_h1</code> <span class="severity-badge sev-medium">medium</span> — llms.txt has H1 heading</li>
+        <li><code>geo_llms_txt_blockquote</code> <span class="severity-badge sev-medium">medium</span> — llms.txt has blockquote summary</li>
+        <li><code>geo_llms_txt_sections</code> <span class="severity-badge sev-low">low</span> — llms.txt has H2 sections</li>
+        <li><code>geo_llms_txt_links</code> <span class="severity-badge sev-low">low</span> — llms.txt has markdown links</li>
+        <li><code>geo_entity_org_schema</code> <span class="severity-badge sev-high">high</span> — Organization schema is present</li>
+        <li><code>geo_entity_social</code> <span class="severity-badge sev-medium">medium</span> — Social profile links are present</li>
+        <li><code>geo_citability_statistics</code> <span class="severity-badge sev-medium">medium</span> — Content has citable statistics</li>
+        <li><code>geo_citability_faq</code> <span class="severity-badge sev-low">low</span> — FAQ schema is present</li>
+        <li><code>geo_citability_tables</code> <span class="severity-badge sev-low">low</span> — Content has data tables</li>
+        <li><code>geo_citability_lists</code> <span class="severity-badge sev-low">low</span> — Content has structured lists</li>
+        <li><code>geo_citability_question_headings</code> <span class="severity-badge sev-medium">medium</span> — Content has question-style headings</li>
+        <li><code>geo_ai_descriptive_headings</code> <span class="severity-badge sev-medium">medium</span> — Headings are descriptive for AI</li>
+        <li><code>geo_ai_freshness</code> <span class="severity-badge sev-medium">medium</span> — Content has freshness indicators</li>
+        <li><code>geo_ai_semantic_html</code> <span class="severity-badge sev-medium">medium</span> — Page uses semantic HTML elements</li>
+      </ul>
     </article>
   </div>
   <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">
     <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:none;">Booltools</a> &bull; MIT License</p>
   </footer>
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+
+      var subnavLinks = sidebar.querySelectorAll('.docs-subnav a');
+      function updateActiveSubnav() {
+        var scrollPosition = window.scrollY + 120;
+        var sections = document.querySelectorAll('h2[id]');
+        var activeId = '';
+        sections.forEach(function(section) {
+          if (section.offsetTop <= scrollPosition) {
+            activeId = section.id;
+          }
+        });
+        subnavLinks.forEach(function(link) {
+          var href = link.getAttribute('href');
+          if (href === '#' + activeId) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        });
+      }
+      window.addEventListener('scroll', updateActiveSubnav);
+      updateActiveSubnav();
+    })();
+  </script>
 </body>
 </html>

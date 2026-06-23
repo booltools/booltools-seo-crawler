@@ -23,27 +23,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="docs.css" />
-  <script type="application/ld+json">
-  [{
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Web UI Guide — Booltools SEO Crawler",
-    "url": "https://booltools.github.io/booltools-seo-crawler/docs/web-ui.html",
-    "description": "Learn how to use the Booltools SEO Crawler web interface.",
-    "dateModified": "2026-06-22",
-    "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": "https://booltools.github.io/booltools-seo-crawler/" },
-    "author": { "@type": "Organization", "name": "Booltools", "url": "https://github.com/booltools" }
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://booltools.github.io/booltools-seo-crawler/" },
-      { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://booltools.github.io/booltools-seo-crawler/docs/" },
-      { "@type": "ListItem", "position": 3, "name": "Web UI Guide", "item": "https://booltools.github.io/booltools-seo-crawler/docs/web-ui.html" }
-    ]
-  }]
-  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Web UI Guide — Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/docs/web-ui.html","description":"Learn how to use the Booltools SEO Crawler web interface.","dateModified":"2026-06-22","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/"},"author":{"@type":"Organization","name":"Booltools","url":"https://github.com/booltools"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://booltools.github.io/booltools-seo-crawler/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://booltools.github.io/booltools-seo-crawler/docs/"},{"@type":"ListItem","position":3,"name":"Web UI Guide","item":"https://booltools.github.io/booltools-seo-crawler/docs/web-ui.html"}]}</script>
 </head>
 <body>
   <header class="docs-header">
@@ -52,8 +33,18 @@
   </header>
 
   <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
     <aside class="docs-sidebar">
-      <nav>
+      <nav aria-label="Documentation navigation">
         <ul>
           <li><a href="./">Overview</a></li>
           <li><a href="getting-started.html">Getting Started</a></li>
@@ -127,5 +118,25 @@
   <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">
     <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:none;">Booltools</a> &bull; MIT License</p>
   </footer>
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

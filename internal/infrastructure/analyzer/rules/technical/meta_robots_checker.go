@@ -17,14 +17,14 @@ func (c *MetaRobotsChecker) Check(page crawler.PageData) []valueobject.AuditRule
 
 	xRobotsTag := strings.ToLower(strings.TrimSpace(page.Headers.Get("X-Robots-Tag")))
 
-	noindexRule := valueobject.NewAuditRule("meta_robots_noindex", valueobject.CategoryTechnical, valueobject.SeverityCritical)
+	noindexRule := valueobject.NewAuditRule("meta_robots_noindex", valueobject.CategoryTechnical, valueobject.SeverityInfo)
 	noindexRule.AffectedURL = page.URL
 
 	hasNoindex := strings.Contains(metaRobots, "noindex") || strings.Contains(xRobotsTag, "noindex")
 	if hasNoindex {
 		noindexRule.Warn(
-			"Page has a noindex directive",
-			"Verify that this page should be excluded from search results. Remove the noindex directive if this page should be indexed.",
+			"Page has a noindex directive — it will not appear in search results",
+			"This page is intentionally excluded from search engine indexing. If this is unintentional, remove the noindex directive from the meta robots tag or X-Robots-Tag header.",
 		)
 	} else {
 		noindexRule.Pass("Page is indexable (no noindex directive)")

@@ -23,27 +23,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="docs.css" />
-  <script type="application/ld+json">
-  [{
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "API Reference — Booltools SEO Crawler",
-    "url": "https://booltools.github.io/booltools-seo-crawler/docs/api.html",
-    "description": "REST API endpoints for the Booltools SEO Crawler.",
-    "dateModified": "2026-06-22",
-    "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": "https://booltools.github.io/booltools-seo-crawler/" },
-    "author": { "@type": "Organization", "name": "Booltools", "url": "https://github.com/booltools" }
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://booltools.github.io/booltools-seo-crawler/" },
-      { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://booltools.github.io/booltools-seo-crawler/docs/" },
-      { "@type": "ListItem", "position": 3, "name": "API Reference", "item": "https://booltools.github.io/booltools-seo-crawler/docs/api.html" }
-    ]
-  }]
-  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"API Reference — Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/docs/api.html","description":"REST API endpoints for the Booltools SEO Crawler.","dateModified":"2026-06-22","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/"},"author":{"@type":"Organization","name":"Booltools","url":"https://github.com/booltools"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://booltools.github.io/booltools-seo-crawler/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://booltools.github.io/booltools-seo-crawler/docs/"},{"@type":"ListItem","position":3,"name":"API Reference","item":"https://booltools.github.io/booltools-seo-crawler/docs/api.html"}]}</script>
 </head>
 <body>
   <header class="docs-header">
@@ -52,8 +33,18 @@
   </header>
 
   <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
     <aside class="docs-sidebar">
-      <nav>
+      <nav aria-label="Documentation navigation">
         <ul>
           <li><a href="./">Overview</a></li>
           <li><a href="getting-started.html">Getting Started</a></li>
@@ -69,67 +60,81 @@
 
     <article class="docs-content">
       <h1>API Reference</h1>
-      <p>The backend exposes a REST API on port <code>8080</code> by default.</p>
+      <p>The backend exposes a REST API at <code>http://localhost:8080</code> (default). All endpoints return JSON.</p>
 
       <h2>Endpoints</h2>
+
+      <h3>GET /api/rules</h3>
+      <p>Returns all available audit rules grouped by category, and all rule presets.</p>
+      <pre><code>curl http://localhost:8080/api/rules | jq</code></pre>
+      <p><strong>Response:</strong></p>
+      <pre><code>{
+  "categories": [
+    {
+      "key": "on-page",
+      "label": "On-Page SEO",
+      "rules": [
+        { "key": "title_exists", "label": "Page has a &lt;title&gt; tag", "severity": "critical" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "key": "full_scan",
+      "label": "Full Scan",
+      "description": "All 130+ checks for maximum coverage",
+      "ruleKeys": ["title_exists", "..."]
+    }
+  ]
+}</code></pre>
+
+      <h3>POST /api/crawl</h3>
+      <p>Start a new crawl job for a domain.</p>
+      <pre><code>curl -X POST http://localhost:8080/api/crawl \
+  -H "Content-Type: application/json" \
+  -d '{
+    "domain": "example.com",
+    "maxPages": 100,
+    "selectedRules": ["title_exists", "h1_count"]
+  }'</code></pre>
+      <p><strong>Request body:</strong></p>
       <table>
-        <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+        <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
         <tbody>
-          <tr><td><code>POST</code></td><td><code>/api/crawl</code></td><td>Start a new crawl</td></tr>
-          <tr><td><code>GET</code></td><td><code>/api/crawl/:id/progress</code></td><td>SSE progress stream</td></tr>
-          <tr><td><code>GET</code></td><td><code>/api/report/:id</code></td><td>Full audit report</td></tr>
-          <tr><td><code>GET</code></td><td><code>/api/report/:id/export/csv</code></td><td>Export as CSV</td></tr>
-          <tr><td><code>GET</code></td><td><code>/api/report/:id/export/md</code></td><td>Export as Markdown</td></tr>
-          <tr><td><code>GET</code></td><td><code>/api/rules</code></td><td>List rules and presets</td></tr>
-          <tr><td><code>GET</code></td><td><code>/api/health</code></td><td>Health check</td></tr>
+          <tr><td><code>domain</code></td><td>string</td><td>Required. Domain to crawl (e.g. <code>example.com</code> or <code>localhost:3000</code>)</td></tr>
+          <tr><td><code>maxPages</code></td><td>number</td><td>Optional. Max pages to crawl. <code>0</code> = unlimited.</td></tr>
+          <tr><td><code>selectedRules</code></td><td>string[]</td><td>Optional. Rule keys to run. Empty = all rules.</td></tr>
         </tbody>
       </table>
-
-      <h2>Start a Crawl</h2>
-      <pre><code>POST /api/crawl
-Content-Type: application/json
-
-{
-  "domain": "example.com",
-  "maxPages": 100,
-  "selectedRules": ["title_exists", "meta_description_exists"]
-}</code></pre>
-
-      <p>Response:</p>
+      <p><strong>Response:</strong></p>
       <pre><code>{
-  "id": "uuid-here",
-  "domain": "example.com",
-  "status": "pending",
-  "maxPages": 100,
-  "pagesCrawled": 0,
-  "issuesFound": 0,
-  "createdAt": "2026-06-22T12:00:00Z"
+  "id": "uuid-of-the-crawl-job",
+  "status": "queued"
 }</code></pre>
 
-      <h2>Progress Stream (SSE)</h2>
-      <pre><code>GET /api/crawl/:id/progress
-Accept: text/event-stream</code></pre>
-      <p>Returns a Server-Sent Events stream with real-time updates:</p>
-      <pre><code>data: {"jobId":"...","status":"crawling","pagesCrawled":5,"totalDiscovered":12,"currentUrl":"...","pageIssues":[...]}</code></pre>
+      <h3>GET /api/crawl/:id/progress</h3>
+      <p>Server-Sent Events stream for real-time crawl progress.</p>
+      <pre><code>curl -N http://localhost:8080/api/crawl/&lt;job-id&gt;/progress</code></pre>
+      <p>Events include page completion, page count, and final result data.</p>
 
-      <h2>Get Report</h2>
-      <pre><code>GET /api/report/:id</code></pre>
-      <p>Returns the full audit report with SEO score, GEO score, issues grouped by severity, page-by-page breakdown, and links to change.</p>
+      <h3>GET /api/report/:id</h3>
+      <p>Get the full audit report for a completed crawl job.</p>
+      <pre><code>curl http://localhost:8080/api/report/&lt;job-id&gt; | jq</code></pre>
 
-      <h2>Export Report</h2>
-      <pre><code># CSV format
-GET /api/report/:id/export/csv
+      <h3>GET /api/report/:id/export/csv</h3>
+      <p>Download the report as a CSV file.</p>
+      <pre><code>curl -o report.csv http://localhost:8080/api/report/&lt;job-id&gt;/export/csv</code></pre>
+      <p><strong>Query params:</strong> <code>?exclude=rule_key1,rule_key2</code> to omit specific rules.</p>
 
-# Markdown format (AI-agent-friendly)
-GET /api/report/:id/export/md</code></pre>
+      <h3>GET /api/report/:id/export/md</h3>
+      <p>Download the report as a Markdown file (AI-agent-friendly format).</p>
+      <pre><code>curl -o report.md http://localhost:8080/api/report/&lt;job-id&gt;/export/md</code></pre>
+      <p><strong>Query params:</strong> <code>?exclude=rule_key1,rule_key2</code> to omit specific rules.</p>
 
-      <h2>List Rules</h2>
-      <pre><code>GET /api/rules</code></pre>
-      <p>Returns all available audit rules grouped by category, including severity and description for each rule. Also returns preset definitions.</p>
-
-      <h2>Health Check</h2>
-      <pre><code>GET /api/health</code></pre>
-      <p>Response: <code>{"status":"ok"}</code></p>
+      <h3>GET /api/health</h3>
+      <p>Health check endpoint.</p>
+      <pre><code>curl http://localhost:8080/api/health</code></pre>
+      <p><strong>Response:</strong> <code>{"status":"ok"}</code></p>
 
       <h2>Authentication</h2>
       <p>The API does not require authentication when running locally. All endpoints are accessible without tokens or API keys. If you deploy the server publicly, consider adding authentication middleware or placing it behind a reverse proxy with access controls.</p>
@@ -160,5 +165,25 @@ curl http://localhost:8080/api/report/YOUR_JOB_ID/export/md -o report.md</code><
   <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">
     <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:none;">Booltools</a> &bull; MIT License</p>
   </footer>
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -25,6 +25,7 @@ func main() {
 	formatFlag := flag.String("format", "", "Output format: text or json (default: text)")
 	outputFlag := flag.String("output", "", "Write JSON report to file")
 	maxPagesFlag := flag.Int("max-pages", 0, "Max pages to crawl in full mode (default: 1000)")
+	portFlag := flag.Int("port", 0, "Port to set as PORT env var for --start-cmd processes (avoids port conflicts)")
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: seo-crawler [flags]\n\n")
@@ -47,7 +48,7 @@ func main() {
 	}
 
 	applyFlagOverrides(&config, modeFlag, dirFlag, urlFlag, failOnFlag, ignoreFlag,
-		onlyFlag, startCmdFlag, waitForFlag, waitTimeoutFlag, formatFlag, outputFlag, maxPagesFlag)
+		onlyFlag, startCmdFlag, waitForFlag, waitTimeoutFlag, formatFlag, outputFlag, maxPagesFlag, portFlag)
 
 	if err := config.Validate(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
@@ -83,7 +84,7 @@ func applyFlagOverrides(
 	config *sdk.Config,
 	modeFlag, dirFlag, urlFlag, failOnFlag, ignoreFlag, onlyFlag,
 	startCmdFlag, waitForFlag, waitTimeoutFlag, formatFlag, outputFlag *string,
-	maxPagesFlag *int,
+	maxPagesFlag, portFlag *int,
 ) {
 	flagWasSet := make(map[string]bool)
 	flag.Visit(func(f *flag.Flag) {
@@ -128,5 +129,8 @@ func applyFlagOverrides(
 	}
 	if flagWasSet["max-pages"] && *maxPagesFlag > 0 {
 		config.MaxPages = *maxPagesFlag
+	}
+	if flagWasSet["port"] && *portFlag > 0 {
+		config.Port = *portFlag
 	}
 }

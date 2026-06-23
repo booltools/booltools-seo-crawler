@@ -37,7 +37,7 @@ func AllRuleDefinitions() []RuleInfo {
 		{Key: "canonical_absolute", Category: valueobject.CategoryTechnical, Label: "Canonical URL is absolute", Severity: "medium"},
 		{Key: "canonical_self_ref", Category: valueobject.CategoryTechnical, Label: "Canonical is self-referencing", Severity: "low"},
 		{Key: "canonical_conflict", Category: valueobject.CategoryTechnical, Label: "No conflicting canonical tags", Severity: "high"},
-		{Key: "meta_robots_noindex", Category: valueobject.CategoryTechnical, Label: "No accidental noindex directive", Severity: "critical"},
+		{Key: "meta_robots_noindex", Category: valueobject.CategoryTechnical, Label: "Page has a noindex directive", Severity: "info"},
 		{Key: "meta_robots_conflict", Category: valueobject.CategoryTechnical, Label: "No conflicting robots directives", Severity: "high"},
 		{Key: "http_status_ok", Category: valueobject.CategoryTechnical, Label: "Page returns HTTP 200 status", Severity: "critical"},
 		{Key: "crawl_depth", Category: valueobject.CategoryTechnical, Label: "Page crawl depth is reasonable", Severity: "medium"},

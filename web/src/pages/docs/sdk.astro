@@ -118,12 +118,13 @@ fail_on: high</code></pre>
   <h2>Configuration File</h2>
   <p>Create a <code>.seo-crawler.yml</code> in your project root:</p>
   <pre><code>mode: full
-url: http://localhost:3000
+url: http://localhost:9999
 start_cmd: "npm run dev"
-wait_for: http://localhost:3000
+wait_for: http://localhost:9999
 wait_timeout: 60s
 fail_on: high
 max_pages: 100
+port: 9999
 format: text
 ignore:
   - uses_https
@@ -153,6 +154,7 @@ ignore:
       <tr><td><code>--format</code></td><td><code>text</code> or <code>json</code></td><td><code>text</code></td></tr>
       <tr><td><code>--output</code></td><td>Write JSON report to file path</td><td>—</td></tr>
       <tr><td><code>--max-pages</code></td><td>Max pages to crawl</td><td><code>1000</code></td></tr>
+      <tr><td><code>--port</code></td><td>Port to set as <code>PORT</code> env var for <code>--start-cmd</code> processes</td><td>—</td></tr>
       <tr><td><code>--config</code></td><td>Path to config file</td><td><code>.seo-crawler.yml</code></td></tr>
     </tbody>
   </table>
@@ -220,6 +222,7 @@ jobs:
       <tr><td><code>wait-for</code></td><td>URLs to poll until ready</td><td>—</td></tr>
       <tr><td><code>wait-timeout</code></td><td>Max wait time</td><td><code>30s</code></td></tr>
       <tr><td><code>max-pages</code></td><td>Max pages to crawl</td><td><code>1000</code></td></tr>
+      <tr><td><code>port</code></td><td>Port for <code>--start-cmd</code> processes</td><td>—</td></tr>
       <tr><td><code>version</code></td><td>SDK version to use</td><td><code>latest</code></td></tr>
     </tbody>
   </table>

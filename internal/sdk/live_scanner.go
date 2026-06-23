@@ -29,8 +29,13 @@ func NewLiveScanner(siteAnalyzer *analyzer.SiteAnalyzer, siteCrawler *crawler.Si
 func (scanner *LiveScanner) Scan(config Config) (*ScanResult, error) {
 	var serverProcesses []*exec.Cmd
 
+	var extraEnv []string
+	if config.Port != 0 {
+		extraEnv = append(extraEnv, fmt.Sprintf("PORT=%d", config.Port))
+	}
+
 	for _, command := range config.StartCmd {
-		process, err := startServerProcess(command)
+		process, err := startServerProcess(command, extraEnv)
 		if err != nil {
 			stopAllServerProcesses(serverProcesses)
 			return nil, fmt.Errorf("failed to start server with '%s': %w", command, err)
@@ -88,7 +93,7 @@ func (scanner *LiveScanner) Scan(config Config) (*ScanResult, error) {
 	return result, nil
 }
 
-func startServerProcess(command string) (*exec.Cmd, error) {
+func startServerProcess(command string, extraEnv []string) (*exec.Cmd, error) {
 	fmt.Fprintf(os.Stderr, "Starting server: %s\n", command)
 
 	var cmd *exec.Cmd
@@ -100,6 +105,10 @@ func startServerProcess(command string) (*exec.Cmd, error) {
 
 	cmd.Stdout = os.Stderr
 	cmd.Stderr = os.Stderr
+
+	if len(extraEnv) > 0 {
+		cmd.Env = append(os.Environ(), extraEnv...)
+	}
 
 	if err := cmd.Start(); err != nil {
 		return nil, err

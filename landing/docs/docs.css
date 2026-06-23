@@ -225,23 +225,196 @@ body {
   margin-bottom: 0;
 }
 
+/* Mobile menu toggle */
+.docs-menu-toggle {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.docs-menu-toggle:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary);
+}
+
+.docs-drawer-overlay {
+  display: none;
+}
+
+/* Sidebar subnav (rule categories) */
+.docs-subnav {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-left: 0.75rem;
+  margin-top: 0.15rem;
+  border-left: 1px solid var(--color-border-subtle);
+  margin-left: 0.75rem;
+}
+
+.docs-subnav a {
+  display: block;
+  padding: 4px 10px;
+  font-size: 0.74rem;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+
+.docs-subnav a:hover {
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+}
+
+.docs-subnav a.active {
+  color: var(--color-primary-hover);
+  background: rgba(99, 102, 241, 0.1);
+  font-weight: 500;
+}
+
+/* Severity badges */
+.severity-badge {
+  display: inline-block;
+  padding: 0.15em 0.45em;
+  font-size: 0.65rem;
+  font-weight: 600;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.sev-critical { background: rgba(239, 68, 68, 0.12); color: #ef4444; }
+.sev-high { background: rgba(249, 115, 22, 0.1); color: #f97316; }
+.sev-medium { background: rgba(234, 179, 8, 0.1); color: #eab308; }
+.sev-low { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+.sev-info { background: rgba(161, 161, 170, 0.1); color: #9494a8; }
+
+/* Category card grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.category-card {
+  display: block;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.15s;
+}
+
+.category-card:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface-hover);
+  text-decoration: none;
+}
+
+.category-card h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 0.25rem;
+}
+
+.category-card .rule-count {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+.category-card .severity-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+/* Preset cards */
+.preset-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.preset-card h3 {
+  margin-top: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.preset-card .rule-count {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.preset-card p {
+  margin-bottom: 0.5rem;
+}
+
+/* Description list for FAQ / troubleshooting */
+.docs-content dt {
+  font-weight: 600;
+  margin-top: 0.75rem;
+  color: var(--color-text);
+}
+
+.docs-content dd {
+  color: var(--color-text-secondary);
+  margin-left: 1rem;
+  margin-top: 0.25rem;
+}
+
 @media (max-width: 768px) {
   .docs-page {
     grid-template-columns: 1fr;
     padding-top: 70px;
   }
 
-  .docs-sidebar {
-    position: static;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
+  .docs-menu-toggle {
+    display: flex;
   }
 
-  .docs-sidebar nav ul {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 4px;
+  .docs-sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 260px;
+    height: 100vh;
+    background: var(--color-bg);
+    border-right: 1px solid var(--color-border);
+    padding: 1.5rem 1rem;
+    z-index: 100;
+    transition: left 0.25s ease;
+    overflow-y: auto;
+  }
+
+  .docs-sidebar.open {
+    left: 0;
+  }
+
+  .docs-drawer-overlay.visible {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
   }
 }
 

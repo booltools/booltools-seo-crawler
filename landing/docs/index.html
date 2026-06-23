@@ -23,26 +23,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="docs.css" />
-  <script type="application/ld+json">
-  [{
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Documentation — Booltools SEO Crawler",
-    "url": "https://booltools.github.io/booltools-seo-crawler/docs/",
-    "description": "Documentation for the Booltools SEO Crawler — getting started, SDK usage, API reference, and more.",
-    "dateModified": "2026-06-22",
-    "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": "https://booltools.github.io/booltools-seo-crawler/" },
-    "author": { "@type": "Organization", "name": "Booltools", "url": "https://github.com/booltools" }
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://booltools.github.io/booltools-seo-crawler/" },
-      { "@type": "ListItem", "position": 2, "name": "Documentation", "item": "https://booltools.github.io/booltools-seo-crawler/docs/" }
-    ]
-  }]
-  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Documentation — Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/docs/","description":"Documentation for the Booltools SEO Crawler — getting started, SDK usage, API reference, and more.","dateModified":"2026-06-22","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/"},"author":{"@type":"Organization","name":"Booltools","url":"https://github.com/booltools"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://booltools.github.io/booltools-seo-crawler/"},{"@type":"ListItem","position":2,"name":"Documentation","item":"https://booltools.github.io/booltools-seo-crawler/docs/"}]}</script>
 </head>
 <body>
   <header class="docs-header">
@@ -51,8 +33,18 @@
   </header>
 
   <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
     <aside class="docs-sidebar">
-      <nav>
+      <nav aria-label="Documentation navigation">
         <ul>
           <li><a href="./" class="active">Overview</a></li>
           <li><a href="getting-started.html">Getting Started</a></li>
@@ -67,17 +59,33 @@
     </aside>
 
     <article class="docs-content">
-      <h1>Documentation</h1>
-      <p>Welcome to the Booltools SEO Crawler documentation. This tool analyzes websites for 130+ SEO and GEO checks, providing actionable reports with fix instructions.</p>
+      <h1>Free SEO & GEO Crawler</h1>
+      <p>A comprehensive, open-source SEO and AI search (GEO) auditing tool. Analyze any website for 130+ checks across technical SEO, on-page optimization, performance, security, structured data, and generative engine optimization.</p>
 
-      <h2>What is Booltools SEO Crawler?</h2>
-      <p>A free, open-source website auditor built with Go and Astro. It covers:</p>
+      <div style="margin:1.5rem 0;border:1px solid #2a2a3a;border-radius:12px;overflow:hidden;background:#1a1a2e;">
+        <img src="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" alt="Booltools Seo Crawler — Home page" loading="lazy" style="width:100%;display:block;" />
+        <p style="padding:0.5rem 0.75rem;font-size:0.78rem;color:#9494a8;text-align:center;margin:0;">Home page — enter a domain, pick a rule preset, and start analyzing.</p>
+      </div>
+
+      <h2>Features</h2>
       <ul>
-        <li><strong>15 audit categories</strong> — from technical SEO to AI search readiness</li>
-        <li><strong>130+ individual rules</strong> — each with severity levels and fix instructions</li>
-        <li><strong>Real-time analysis</strong> — see issues appear live as pages are crawled</li>
-        <li><strong>CI/CD integration</strong> — catch regressions before production</li>
+        <li><strong>130+ audit rules</strong> covering 15 categories</li>
+        <li><strong>GEO (Generative Engine Optimization)</strong> checks for AI search readiness</li>
+        <li><strong>Real-time progress</strong> with Server-Sent Events during analysis</li>
+        <li><strong>Rule presets</strong> — Blog, E-Commerce, Video, Landing Page, Technical-only, GEO-only, and more</li>
+        <li><strong>Customizable rules</strong> — select/deselect individual rules before analysis</li>
+        <li><strong>Export reports</strong> as CSV or Markdown (including AI-agent-friendly format)</li>
+        <li><strong>CI/CD SDK</strong> — run SEO checks in your deployment pipeline</li>
+        <li><strong>Localhost crawling</strong> — test your development server before deploying</li>
+        <li><strong>Sitemap analysis</strong> — validates all URLs in your sitemap, detects orphan pages</li>
       </ul>
+
+      <h2>Audit Report</h2>
+      <p>After analysis, you get a detailed report with issues grouped by category, severity indicators, and actionable fix recommendations.</p>
+      <div style="margin:1.5rem 0;border:1px solid #2a2a3a;border-radius:12px;overflow:hidden;background:#1a1a2e;">
+        <img src="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/report.png" alt="Audit report with SEO and GEO scores" loading="lazy" style="width:100%;display:block;" />
+        <p style="padding:0.5rem 0.75rem;font-size:0.78rem;color:#9494a8;text-align:center;margin:0;">Audit report — scores, issues by category, affected URLs, and export options.</p>
+      </div>
 
       <h2>Architecture</h2>
       <table>
@@ -118,5 +126,25 @@
   <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">
     <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:none;">Booltools</a> &bull; MIT License</p>
   </footer>
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

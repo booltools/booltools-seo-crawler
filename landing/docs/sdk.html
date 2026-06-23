@@ -23,27 +23,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="docs.css" />
-  <script type="application/ld+json">
-  [{
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "CI/CD SDK — Booltools SEO Crawler",
-    "url": "https://booltools.github.io/booltools-seo-crawler/docs/sdk.html",
-    "description": "Standalone CLI binary to catch SEO regressions in your deployment pipeline.",
-    "dateModified": "2026-06-22",
-    "isPartOf": { "@type": "WebSite", "name": "Booltools SEO Crawler", "url": "https://booltools.github.io/booltools-seo-crawler/" },
-    "author": { "@type": "Organization", "name": "Booltools", "url": "https://github.com/booltools" }
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://booltools.github.io/booltools-seo-crawler/" },
-      { "@type": "ListItem", "position": 2, "name": "Docs", "item": "https://booltools.github.io/booltools-seo-crawler/docs/" },
-      { "@type": "ListItem", "position": 3, "name": "CI/CD SDK", "item": "https://booltools.github.io/booltools-seo-crawler/docs/sdk.html" }
-    ]
-  }]
-  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"CI/CD SDK — Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/docs/sdk.html","description":"Standalone CLI binary to catch SEO regressions in your deployment pipeline.","dateModified":"2026-06-22","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/"},"author":{"@type":"Organization","name":"Booltools","url":"https://github.com/booltools"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://booltools.github.io/booltools-seo-crawler/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://booltools.github.io/booltools-seo-crawler/docs/"},{"@type":"ListItem","position":3,"name":"CI/CD SDK","item":"https://booltools.github.io/booltools-seo-crawler/docs/sdk.html"}]}</script>
 </head>
 <body>
   <header class="docs-header">
@@ -52,8 +33,18 @@
   </header>
 
   <div class="docs-page">
+    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+      <span>Menu</span>
+    </button>
+    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+
     <aside class="docs-sidebar">
-      <nav>
+      <nav aria-label="Documentation navigation">
         <ul>
           <li><a href="./">Overview</a></li>
           <li><a href="getting-started.html">Getting Started</a></li>
@@ -141,19 +132,17 @@ curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/down
   --mode=full \
   --start-cmd="npm run dev" \
   --wait-for=http://localhost:3000 \
-  --url=http://localhost:3000 \
-  --fail-on=high</code></pre>
+  --url=http://localhost:3000</code></pre>
 
       <h2>Multiple Servers</h2>
-      <p>When your app depends on both a frontend and a backend:</p>
-      <pre><code>seo-crawler \
+      <p>When your app depends on both a frontend and a backend (or other services), pass multiple commands and URLs:</p>
+      <pre><code># Via CLI flags (comma-separated)
+seo-crawler \
   --mode=full \
   --start-cmd="go run ./cmd/server,npm run dev" \
   --wait-for="http://localhost:8080/api/health,http://localhost:3000" \
   --url=http://localhost:3000</code></pre>
-
-      <h2>Configuration File</h2>
-      <p>Create <code>.seo-crawler.yml</code> in your project root:</p>
+      <p>Or as an array in the YAML config:</p>
       <pre><code>mode: full
 url: http://localhost:3000
 start_cmd:
@@ -163,12 +152,56 @@ wait_for:
   - http://localhost:8080/api/health
   - http://localhost:3000
 wait_timeout: 90s
+fail_on: high</code></pre>
+      <p>All commands are started in parallel. The crawler waits for every URL in <code>wait_for</code> before starting. All processes are stopped when the scan finishes.</p>
+      <p>Both fields accept a single string or an array in YAML. On the CLI, use comma-separated values.</p>
+
+      <h2>Configuration File</h2>
+      <p>Create <code>.seo-crawler.yml</code> in your project root:</p>
+      <pre><code>mode: full
+url: http://localhost:9999
+start_cmd: "npm run dev"
+wait_for: http://localhost:9999
+wait_timeout: 60s
 fail_on: high
 max_pages: 100
+port: 9999
 format: text
 ignore:
   - uses_https
   - hsts_header</code></pre>
+      <p>CLI flags override config file values.</p>
+
+      <h2>CLI Flags</h2>
+      <table>
+        <thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead>
+        <tbody>
+          <tr><td><code>--mode</code></td><td><code>static</code> or <code>full</code></td><td>—</td></tr>
+          <tr><td><code>--dir</code></td><td>Directory with HTML files (static mode)</td><td>—</td></tr>
+          <tr><td><code>--url</code></td><td>Server URL to crawl (full mode)</td><td>—</td></tr>
+          <tr><td><code>--fail-on</code></td><td>Severity threshold for exit code 1</td><td><code>high</code></td></tr>
+          <tr><td><code>--ignore</code></td><td>Comma-separated rule keys to skip</td><td>—</td></tr>
+          <tr><td><code>--only</code></td><td>Comma-separated rule keys to run exclusively</td><td>—</td></tr>
+          <tr><td><code>--start-cmd</code></td><td>Commands to start servers (comma-separated for multiple)</td><td>—</td></tr>
+          <tr><td><code>--wait-for</code></td><td>URLs to poll until ready (comma-separated for multiple)</td><td>—</td></tr>
+          <tr><td><code>--wait-timeout</code></td><td>Max wait time per URL (e.g. <code>30s</code>, <code>1m</code>)</td><td><code>30s</code></td></tr>
+          <tr><td><code>--format</code></td><td><code>text</code> or <code>json</code></td><td><code>text</code></td></tr>
+          <tr><td><code>--output</code></td><td>Write JSON report to file path</td><td>—</td></tr>
+          <tr><td><code>--max-pages</code></td><td>Max pages to crawl</td><td><code>1000</code></td></tr>
+          <tr><td><code>--port</code></td><td>Port to set as <code>PORT</code> env var for <code>--start-cmd</code> processes</td><td>—</td></tr>
+          <tr><td><code>--config</code></td><td>Path to config file</td><td><code>.seo-crawler.yml</code></td></tr>
+        </tbody>
+      </table>
+
+      <h2>Exit Codes</h2>
+      <table>
+        <thead><tr><th>Code</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>0</code></td><td>All checks pass (no issues at or above threshold)</td></tr>
+          <tr><td><code>1</code></td><td>Issues found at or above <code>--fail-on</code> severity</td></tr>
+          <tr><td><code>2</code></td><td>Configuration error</td></tr>
+        </tbody>
+      </table>
 
       <h2>GitHub Action</h2>
       <p>The SDK is available as a GitHub Action. Add it directly to your workflow:</p>
@@ -221,6 +254,7 @@ jobs:
           <tr><td><code>wait-for</code></td><td>URLs to poll until ready</td><td>—</td></tr>
           <tr><td><code>wait-timeout</code></td><td>Max wait time</td><td><code>30s</code></td></tr>
           <tr><td><code>max-pages</code></td><td>Max pages to crawl</td><td><code>1000</code></td></tr>
+          <tr><td><code>port</code></td><td>Port for <code>--start-cmd</code> processes</td><td>—</td></tr>
           <tr><td><code>version</code></td><td>SDK version to use</td><td><code>latest</code></td></tr>
         </tbody>
       </table>
@@ -267,38 +301,36 @@ jobs:
             --url=http://localhost:3000 \
             --fail-on=high</code></pre>
 
-      <h2>CLI Flags</h2>
-      <table>
-        <thead><tr><th>Flag</th><th>Description</th><th>Default</th></tr></thead>
-        <tbody>
-          <tr><td><code>--mode</code></td><td><code>static</code> or <code>full</code></td><td>—</td></tr>
-          <tr><td><code>--dir</code></td><td>HTML directory (static mode)</td><td>—</td></tr>
-          <tr><td><code>--url</code></td><td>Server URL (full mode)</td><td>—</td></tr>
-          <tr><td><code>--fail-on</code></td><td>Severity threshold</td><td><code>high</code></td></tr>
-          <tr><td><code>--ignore</code></td><td>Comma-separated rule keys to skip</td><td>—</td></tr>
-          <tr><td><code>--only</code></td><td>Comma-separated rule keys to run</td><td>—</td></tr>
-          <tr><td><code>--start-cmd</code></td><td>Commands to start servers</td><td>—</td></tr>
-          <tr><td><code>--wait-for</code></td><td>URLs to poll until ready</td><td>—</td></tr>
-          <tr><td><code>--wait-timeout</code></td><td>Max wait time per URL</td><td><code>30s</code></td></tr>
-          <tr><td><code>--format</code></td><td><code>text</code> or <code>json</code></td><td><code>text</code></td></tr>
-          <tr><td><code>--output</code></td><td>Write JSON report to file</td><td>—</td></tr>
-          <tr><td><code>--max-pages</code></td><td>Max pages to crawl</td><td><code>1000</code></td></tr>
-        </tbody>
-      </table>
-
-      <h2>Exit Codes</h2>
-      <table>
-        <thead><tr><th>Code</th><th>Meaning</th></tr></thead>
-        <tbody>
-          <tr><td><code>0</code></td><td>All checks pass</td></tr>
-          <tr><td><code>1</code></td><td>Issues at or above <code>--fail-on</code> severity</td></tr>
-          <tr><td><code>2</code></td><td>Configuration error</td></tr>
-        </tbody>
-      </table>
+      <h2>Ignoring Rules for Localhost</h2>
+      <p>When testing localhost, some rules will always fail (e.g. HTTPS, HSTS). Ignore them in your config:</p>
+      <pre><code>ignore:
+  - uses_https
+  - hsts_header
+  - mixed_content</code></pre>
     </article>
   </div>
   <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">
     <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:none;">Booltools</a> &bull; MIT License</p>
   </footer>
+  <script>
+    (function() {
+      var toggle = document.getElementById('docs-menu-toggle');
+      var sidebar = document.querySelector('.docs-sidebar');
+      var overlay = document.getElementById('docs-drawer-overlay');
+      function toggleDrawer() {
+        var isOpen = sidebar.classList.contains('open');
+        sidebar.classList.toggle('open', !isOpen);
+        overlay.classList.toggle('visible', !isOpen);
+        document.body.style.overflow = !isOpen ? 'hidden' : '';
+      }
+      toggle.addEventListener('click', toggleDrawer);
+      overlay.addEventListener('click', toggleDrawer);
+      sidebar.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (sidebar.classList.contains('open')) toggleDrawer();
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

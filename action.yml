@@ -47,6 +47,9 @@ inputs:
   output:
     description: 'File path to write JSON report'
     required: false
+  port:
+    description: 'Port to set as PORT env var for --start-cmd processes (avoids port conflicts)'
+    required: false
   version:
     description: 'SDK version to download (e.g. v1.0.0). Defaults to latest.'
     required: false
@@ -109,6 +112,9 @@ runs:
         fi
         if [ -n "${{ inputs.max-pages }}" ]; then
           ARGS="$ARGS --max-pages=${{ inputs.max-pages }}"
+        fi
+        if [ -n "${{ inputs.port }}" ]; then
+          ARGS="$ARGS --port=${{ inputs.port }}"
         fi
         if [ -n "${{ inputs.format }}" ]; then
           ARGS="$ARGS --format=${{ inputs.format }}"

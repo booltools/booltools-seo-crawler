@@ -3,6 +3,7 @@ package sdk
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -45,6 +46,7 @@ type Config struct {
 	Format      string        `yaml:"format"`
 	Output      string        `yaml:"output"`
 	MaxPages    int           `yaml:"max_pages"`
+	Port        int           `yaml:"port"`
 }
 
 func DefaultConfig() Config {
@@ -115,6 +117,10 @@ func (c *Config) Validate() error {
 		return fmt.Errorf("--format must be 'text' or 'json'")
 	}
 
+	if c.Port != 0 && (c.Port < 1 || c.Port > 65535) {
+		return fmt.Errorf("--port must be between 1 and 65535")
+	}
+
 	return nil
 }
 
@@ -144,6 +150,10 @@ func (c *Config) MergeFlag(name string, value string) {
 		c.Format = value
 	case "output":
 		c.Output = value
+	case "port":
+		if parsed, err := strconv.Atoi(value); err == nil {
+			c.Port = parsed
+		}
 	}
 }
 
