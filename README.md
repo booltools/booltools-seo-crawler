@@ -318,7 +318,7 @@ jobs:
 | `--wait-timeout` | Max wait time per URL (e.g. `30s`, `1m`)                 | `30s`   |
 | `--format`       | `text` or `json`                                         | `text`  |
 | `--output`       | Write JSON report to file                                | —       |
-| `--max-pages`    | Max pages to crawl                                       | `1000`  |
+| `--max-pages`    | Max pages to crawl (0 = unlimited)                       | `0`     |
 
 ### Exit Codes
 

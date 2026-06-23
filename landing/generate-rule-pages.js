@@ -216,19 +216,19 @@ function groupRulesByCategory() {
   return grouped;
 }
 
-function buildSidebar(activeCategorySlug, activeRuleKey) {
+function buildSidebar(activeCategorySlug, activeRuleKey, docsBase) {
   const grouped = groupRulesByCategory();
   const categoryOrder = Object.keys(CATEGORIES);
 
   let sidebarHtml = `    <aside class="docs-sidebar">
       <nav aria-label="Documentation navigation">
         <ul>
-          <li><a href="../index.html">Overview</a></li>
-          <li><a href="../getting-started.html">Getting Started</a></li>
-          <li><a href="../web-ui.html">Web UI Guide</a></li>
-          <li><a href="../sdk.html">CI/CD SDK</a></li>
+          <li><a href="${docsBase}/index.html">Overview</a></li>
+          <li><a href="${docsBase}/getting-started.html">Getting Started</a></li>
+          <li><a href="${docsBase}/web-ui.html">Web UI Guide</a></li>
+          <li><a href="${docsBase}/sdk.html">CI/CD SDK</a></li>
           <li>
-            <a href="../rules.html">Rules Reference</a>
+            <a href="${docsBase}/rules.html">Rules Reference</a>
             <ul class="docs-subnav">`;
 
   for (const catKey of categoryOrder) {
@@ -236,7 +236,7 @@ function buildSidebar(activeCategorySlug, activeRuleKey) {
     const isActive = catInfo.slug === activeCategorySlug;
     const activeClass = isActive ? ' class="active"' : '';
     sidebarHtml += `
-              <li><a href="../rules/${catInfo.slug}.html"${activeClass}>${catInfo.label}</a>`;
+              <li><a href="${docsBase}/rules/${catInfo.slug}.html"${activeClass}>${catInfo.label}</a>`;
 
     if (isActive && grouped[catKey]) {
       sidebarHtml += `
@@ -244,7 +244,7 @@ function buildSidebar(activeCategorySlug, activeRuleKey) {
       for (const rule of grouped[catKey]) {
         const ruleActive = rule.key === activeRuleKey ? ' class="active"' : '';
         sidebarHtml += `
-                  <li><a href="../rules/${catInfo.slug}/${rule.key}.html"${ruleActive} title="${escapeHtml(rule.label)}">${rule.key}</a></li>`;
+                  <li><a href="${docsBase}/rules/${catInfo.slug}/${rule.key}.html"${ruleActive} title="${escapeHtml(rule.label)}">${rule.key}</a></li>`;
       }
       sidebarHtml += `
                 </ul>`;
@@ -257,9 +257,9 @@ function buildSidebar(activeCategorySlug, activeRuleKey) {
   sidebarHtml += `
             </ul>
           </li>
-          <li><a href="../presets.html">Rule Presets</a></li>
-          <li><a href="../localhost.html">Localhost Guide</a></li>
-          <li><a href="../api.html">API Reference</a></li>
+          <li><a href="${docsBase}/presets.html">Rule Presets</a></li>
+          <li><a href="${docsBase}/localhost.html">Localhost Guide</a></li>
+          <li><a href="${docsBase}/api.html">API Reference</a></li>
         </ul>
       </nav>
     </aside>`;
@@ -376,7 +376,7 @@ function generateCategoryPage(categoryKey) {
   const rules = grouped[categoryKey] || [];
   const title = `${catInfo.label} Rules`;
   const description = `Browse all ${rules.length} ${catInfo.label} audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet.`;
-  const sidebar = buildSidebar(catInfo.slug, null);
+  const sidebar = buildSidebar(catInfo.slug, null, '..');
 
   const baseUrl = 'https://booltools.github.io/booltools-seo-crawler';
   const canonicalPath = `docs/rules/${catInfo.slug}.html`;
@@ -453,7 +453,7 @@ function generateRulePage(rule, categoryKey) {
   const desc = getDescription(rule.key, rule.label);
   const title = escapeHtml(rule.label);
   const description = `${escapeHtml(desc.short)} Learn what this rule checks, why it matters, and how to fix it with examples and an AI-agent snippet.`;
-  const sidebar = buildSidebar(catInfo.slug, rule.key);
+  const sidebar = buildSidebar(catInfo.slug, rule.key, '../..');
 
   const baseUrl = 'https://booltools.github.io/booltools-seo-crawler';
   const canonicalPath = `docs/rules/${catInfo.slug}/${rule.key}.html`;

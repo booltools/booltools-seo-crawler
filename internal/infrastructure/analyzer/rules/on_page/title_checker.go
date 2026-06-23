@@ -3,6 +3,7 @@ package on_page
 import (
 	"fmt"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
@@ -33,7 +34,7 @@ func (c *TitleChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 
 	lengthRule := valueobject.NewAuditRule("title_length", valueobject.CategoryOnPage, valueobject.SeverityMedium)
 	lengthRule.AffectedURL = page.URL
-	titleLen := len(titleText)
+	titleLen := utf8.RuneCountInString(titleText)
 	if titleLen < 30 {
 		lengthRule.Fail(
 			fmt.Sprintf("Title is too short (%d characters)", titleLen),

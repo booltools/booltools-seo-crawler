@@ -23,7 +23,7 @@ dir: ./dist
 # wait_timeout: 30s
 #
 # Optional: max pages to crawl (default: 1000)
-# max_pages: 1000
+# max_pages: 0  # 0 = unlimited (default)
 
 # Minimum severity that causes a non-zero exit code.
 # Options: critical, high, medium, low, info

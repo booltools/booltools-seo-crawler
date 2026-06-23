@@ -37,9 +37,8 @@ inputs:
     required: false
     default: '30s'
   max-pages:
-    description: 'Maximum number of pages to crawl'
+    description: 'Maximum number of pages to crawl (0 = unlimited)'
     required: false
-    default: '1000'
   format:
     description: 'Output format: text or json'
     required: false
@@ -50,6 +49,10 @@ inputs:
   port:
     description: 'Port to set as PORT env var for --start-cmd processes (avoids port conflicts)'
     required: false
+  exclude-noindex:
+    description: 'Skip SEO rules on noindex pages (only technical/performance/security rules apply)'
+    required: false
+    default: 'false'
   version:
     description: 'SDK version to download (e.g. v1.0.0). Defaults to latest.'
     required: false
@@ -115,6 +118,9 @@ runs:
         fi
         if [ -n "${{ inputs.port }}" ]; then
           ARGS="$ARGS --port=${{ inputs.port }}"
+        fi
+        if [ "${{ inputs.exclude-noindex }}" = "true" ]; then
+          ARGS="$ARGS --exclude-noindex"
         fi
         if [ -n "${{ inputs.format }}" ]; then
           ARGS="$ARGS --format=${{ inputs.format }}"

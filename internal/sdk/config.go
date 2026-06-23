@@ -46,14 +46,15 @@ type Config struct {
 	Format      string        `yaml:"format"`
 	Output      string        `yaml:"output"`
 	MaxPages    int           `yaml:"max_pages"`
-	Port        int           `yaml:"port"`
+	Port            int           `yaml:"port"`
+	ExcludeNoindex  bool          `yaml:"exclude_noindex"`
 }
 
 func DefaultConfig() Config {
 	return Config{
 		FailOn:      "high",
 		Format:      "text",
-		MaxPages:    1000,
+		MaxPages:    0,
 		WaitTimeout: 30 * time.Second,
 	}
 }
@@ -79,8 +80,8 @@ func LoadConfig(configPath string) (Config, error) {
 	if config.Format == "" {
 		config.Format = "text"
 	}
-	if config.MaxPages <= 0 {
-		config.MaxPages = 1000
+	if config.MaxPages < 0 {
+		config.MaxPages = 0
 	}
 	if config.WaitTimeout <= 0 {
 		config.WaitTimeout = 30 * time.Second
@@ -154,6 +155,8 @@ func (c *Config) MergeFlag(name string, value string) {
 		if parsed, err := strconv.Atoi(value); err == nil {
 			c.Port = parsed
 		}
+	case "exclude-noindex":
+		c.ExcludeNoindex = value == "true" || value == "1" || value == "yes"
 	}
 }
 

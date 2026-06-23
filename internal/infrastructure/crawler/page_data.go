@@ -25,6 +25,7 @@ type PageData struct {
 	Images          []ImageData
 	Scripts         []ResourceData
 	Stylesheets     []ResourceData
+	IsNoindex       bool
 }
 
 type LinkData struct {

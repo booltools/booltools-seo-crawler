@@ -164,7 +164,6 @@ start_cmd: "npm run dev"
 wait_for: http://localhost:3000
 wait_timeout: 60s
 fail_on: high
-max_pages: 100
 format: text
 ignore:
   - uses_https
@@ -194,7 +193,7 @@ port: 9999</code></pre>
           <tr><td><code>--wait-timeout</code></td><td>Max wait time per URL (e.g. <code>30s</code>, <code>1m</code>)</td><td><code>30s</code></td></tr>
           <tr><td><code>--format</code></td><td><code>text</code> or <code>json</code></td><td><code>text</code></td></tr>
           <tr><td><code>--output</code></td><td>Write JSON report to file path</td><td>—</td></tr>
-          <tr><td><code>--max-pages</code></td><td>Max pages to crawl</td><td><code>1000</code></td></tr>
+          <tr><td><code>--max-pages</code></td><td>Max pages to crawl (0 = unlimited)</td><td><code>0</code></td></tr>
           <tr><td><code>--port</code></td><td>Port to set as <code>PORT</code> env var for <code>--start-cmd</code> processes</td><td>—</td></tr>
           <tr><td><code>--config</code></td><td>Path to config file</td><td><code>.seo-crawler.yml</code></td></tr>
         </tbody>
@@ -260,7 +259,7 @@ jobs:
           <tr><td><code>start-cmd</code></td><td>Commands to start servers</td><td>—</td></tr>
           <tr><td><code>wait-for</code></td><td>URLs to poll until ready</td><td>—</td></tr>
           <tr><td><code>wait-timeout</code></td><td>Max wait time</td><td><code>30s</code></td></tr>
-          <tr><td><code>max-pages</code></td><td>Max pages to crawl</td><td><code>1000</code></td></tr>
+          <tr><td><code>max-pages</code></td><td>Max pages to crawl (0 = unlimited)</td><td><code>0</code></td></tr>
           <tr><td><code>port</code></td><td>Port for <code>--start-cmd</code> processes</td><td>—</td></tr>
           <tr><td><code>version</code></td><td>SDK version to use</td><td><code>latest</code></td></tr>
         </tbody>

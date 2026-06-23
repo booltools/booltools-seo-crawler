@@ -47,15 +47,15 @@ func (c *PageSpeedChecker) Check(page crawler.PageData) []valueobject.AuditRule 
 	ttfbRule := valueobject.NewAuditRule("ttfb", valueobject.CategoryPerformance, valueobject.SeverityHigh)
 	ttfbRule.AffectedURL = page.URL
 	ttfbMs := page.ResponseTime.Milliseconds()
-	if ttfbMs > 600 {
+	if ttfbMs > 1200 {
 		ttfbRule.Fail(
 			fmt.Sprintf("Slow server response time (TTFB: %dms)", ttfbMs),
-			"Improve server response time to under 600ms. Consider caching, CDN, and server optimization.",
+			"Improve server response time to under 1200ms. Consider caching, CDN, and server optimization. Note: synthetic crawlers may trigger cold starts that inflate TTFB compared to real user traffic.",
 		)
-	} else if ttfbMs > 400 {
+	} else if ttfbMs > 800 {
 		ttfbRule.Warn(
 			fmt.Sprintf("Server response time could be improved (TTFB: %dms)", ttfbMs),
-			"Consider optimizing server response time for better user experience.",
+			"Consider optimizing server response time for better user experience. Note: crawler-measured TTFB may be higher than real user TTFB due to cold starts and concurrent requests.",
 		)
 	} else {
 		ttfbRule.Pass(fmt.Sprintf("Server response time is fast (TTFB: %dms)", ttfbMs))

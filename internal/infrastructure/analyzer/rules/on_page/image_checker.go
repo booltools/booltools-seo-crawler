@@ -139,9 +139,45 @@ func isNonDescriptiveAlt(alt string) bool {
 	return false
 }
 
+var imageOptimizationPatterns = []string{
+	"/_next/image",
+	"res.cloudinary.com",
+	"imgix.net",
+	"imagekit.io",
+	"cdn.shopify.com",
+	"images.unsplash.com",
+	"img.clerk.com",
+	"twimg.com",
+	"googleusercontent.com",
+	"wp.com/",
+	"i0.wp.com",
+	"i1.wp.com",
+	"i2.wp.com",
+	"cdn.sanity.io",
+	"images.ctfassets.net",
+	"storyblok.com/f/",
+	"cloudfront.net",
+	"fastly.net",
+	"akamaized.net",
+	"imagedelivery.net",
+}
+
+func isImageOptimizationURL(imageURL string) bool {
+	lowered := strings.ToLower(imageURL)
+	for _, pattern := range imageOptimizationPatterns {
+		if strings.Contains(lowered, pattern) {
+			return true
+		}
+	}
+	return false
+}
+
 func isModernImageFormat(imageURL string) bool {
 	extension := strings.ToLower(path.Ext(imageURL))
-	return extension == ".webp" || extension == ".avif"
+	if extension == ".webp" || extension == ".avif" {
+		return true
+	}
+	return isImageOptimizationURL(imageURL)
 }
 
 func formatAssetList(assets []string) string {

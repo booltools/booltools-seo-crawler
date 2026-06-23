@@ -144,6 +144,8 @@ func (sc *SiteCrawler) Crawl(targetDomain string, maxPages int, onPage OnPageCal
 			ContentType:   contentType,
 		}
 
+		pageData.IsNoindex = detectNoindex(document, response.Headers)
+
 		ExtractLinks(document, response.Request.URL, hostname, &pageData)
 		ExtractImages(document, response.Request.URL, &pageData)
 		ExtractResources(document, response.Request.URL, &pageData)
@@ -343,6 +345,25 @@ func ExtractBodyText(document *goquery.Document) string {
 	cloned := document.Clone()
 	cloned.Find("script, style, noscript").Remove()
 	return strings.TrimSpace(cloned.Find("body").Text())
+}
+
+func detectNoindex(document *goquery.Document, headers *http.Header) bool {
+	robotsMeta := document.Find(`meta[name="robots"]`)
+	if robotsMeta.Length() > 0 {
+		content, exists := robotsMeta.First().Attr("content")
+		if exists && strings.Contains(strings.ToLower(content), "noindex") {
+			return true
+		}
+	}
+
+	if headers != nil {
+		xRobotsTag := headers.Get("X-Robots-Tag")
+		if strings.Contains(strings.ToLower(xRobotsTag), "noindex") {
+			return true
+		}
+	}
+
+	return false
 }
 
 func cloneHeaders(headers *http.Header) http.Header {

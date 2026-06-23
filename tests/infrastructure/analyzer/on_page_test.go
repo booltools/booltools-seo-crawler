@@ -132,6 +132,107 @@ func TestHeadingChecker_SkippedHierarchy(t *testing.T) {
 	}
 }
 
+func TestTitleChecker_UnicodeLength(t *testing.T) {
+	arabicTitle := "مرحبا بكم في موقعنا الإلكتروني الرسمي"
+	page := makePageData(`<html><head><title>` + arabicTitle + `</title></head><body>Hello</body></html>`)
+	checker := &on_page.TitleChecker{}
+	rules := checker.Check(page)
+
+	titleLength := findRule(rules, "title_length")
+	if titleLength == nil {
+		t.Fatal("expected title_length rule")
+	}
+	if titleLength.Result != valueobject.RuleResultPass {
+		t.Errorf("expected title_length to pass for 37-char Arabic title, got %s (message: %s)", titleLength.Result, titleLength.Message)
+	}
+}
+
+func TestTitleChecker_UnicodeTooShort(t *testing.T) {
+	shortArabic := "مرحبا بكم"
+	page := makePageData(`<html><head><title>` + shortArabic + `</title></head><body>Hello</body></html>`)
+	checker := &on_page.TitleChecker{}
+	rules := checker.Check(page)
+
+	titleLength := findRule(rules, "title_length")
+	if titleLength == nil {
+		t.Fatal("expected title_length rule")
+	}
+	if titleLength.Result != valueobject.RuleResultFail {
+		t.Errorf("expected title_length to fail for 9-char Arabic title, got %s", titleLength.Result)
+	}
+}
+
+func TestMetaDescriptionChecker_UnicodeLength(t *testing.T) {
+	arabicDesc := strings.Repeat("مرحبا بكم في موقعنا. ", 7)
+	page := makePageData(`<html><head><meta name="description" content="` + arabicDesc + `"></head><body>Hello</body></html>`)
+	checker := &on_page.MetaDescriptionChecker{}
+	rules := checker.Check(page)
+
+	descLength := findRule(rules, "meta_description_length")
+	if descLength == nil {
+		t.Fatal("expected meta_description_length rule")
+	}
+	if descLength.Result != valueobject.RuleResultPass {
+		t.Errorf("expected meta_description_length to pass for Arabic description, got %s (message: %s)", descLength.Result, descLength.Message)
+	}
+}
+
+func TestImageChecker_CDNOptimizedImage(t *testing.T) {
+	page := makePageData(`<html><head></head><body></body></html>`)
+	page.Images = []crawler.ImageData{
+		{URL: "https://example.com/_next/image?url=/photo.jpg&w=640&q=75", Alt: "Photo"},
+	}
+	checker := &on_page.ImageChecker{}
+	rules := checker.Check(page)
+
+	formatRule := findRule(rules, "images_modern_format")
+	if formatRule == nil || formatRule.Result != valueobject.RuleResultPass {
+		t.Error("expected images_modern_format to pass for Next.js Image URL")
+	}
+}
+
+func TestImageChecker_CloudinaryImage(t *testing.T) {
+	page := makePageData(`<html><head></head><body></body></html>`)
+	page.Images = []crawler.ImageData{
+		{URL: "https://res.cloudinary.com/demo/image/upload/photo.jpg", Alt: "Photo"},
+	}
+	checker := &on_page.ImageChecker{}
+	rules := checker.Check(page)
+
+	formatRule := findRule(rules, "images_modern_format")
+	if formatRule == nil || formatRule.Result != valueobject.RuleResultPass {
+		t.Error("expected images_modern_format to pass for Cloudinary URL")
+	}
+}
+
+func TestImageChecker_ImgixImage(t *testing.T) {
+	page := makePageData(`<html><head></head><body></body></html>`)
+	page.Images = []crawler.ImageData{
+		{URL: "https://mysite.imgix.net/photo.jpg?auto=format", Alt: "Photo"},
+	}
+	checker := &on_page.ImageChecker{}
+	rules := checker.Check(page)
+
+	formatRule := findRule(rules, "images_modern_format")
+	if formatRule == nil || formatRule.Result != valueobject.RuleResultPass {
+		t.Error("expected images_modern_format to pass for imgix URL")
+	}
+}
+
+func TestImageChecker_PlainJpgStillWarns(t *testing.T) {
+	page := makePageData(`<html><head></head><body></body></html>`)
+	page.Images = []crawler.ImageData{
+		{URL: "https://example.com/images/photo.jpg", Alt: "Photo"},
+	}
+	checker := &on_page.ImageChecker{}
+	rules := checker.Check(page)
+
+	formatRule := findRule(rules, "images_modern_format")
+	if formatRule == nil || formatRule.Result != valueobject.RuleResultWarning {
+		t.Error("expected images_modern_format to warn for plain .jpg URL without CDN")
+	}
+}
+
 func TestImageChecker_MissingAlt(t *testing.T) {
 	page := makePageData(`<html><head></head><body><img src="test.jpg"></body></html>`)
 	page.Images = []crawler.ImageData{

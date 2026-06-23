@@ -18,8 +18,8 @@ func TestDefaultConfig(t *testing.T) {
 	if config.Format != "text" {
 		t.Errorf("expected default Format to be 'text', got '%s'", config.Format)
 	}
-	if config.MaxPages != 1000 {
-		t.Errorf("expected default MaxPages to be 1000, got %d", config.MaxPages)
+	if config.MaxPages != 0 {
+		t.Errorf("expected default MaxPages to be 0 (unlimited), got %d", config.MaxPages)
 	}
 	if config.WaitTimeout != 30*time.Second {
 		t.Errorf("expected default WaitTimeout to be 30s, got %s", config.WaitTimeout)
@@ -155,5 +155,47 @@ func TestConfig_MergeFlag(t *testing.T) {
 	config.MergeFlag("ignore", "rule_a, rule_b, rule_c")
 	if len(config.Ignore) != 3 {
 		t.Errorf("expected 3 ignore rules, got %d", len(config.Ignore))
+	}
+}
+
+func TestConfig_MergeFlag_ExcludeNoindex(t *testing.T) {
+	config := sdk.DefaultConfig()
+
+	config.MergeFlag("exclude-noindex", "true")
+	if !config.ExcludeNoindex {
+		t.Error("expected ExcludeNoindex to be true after merge with 'true'")
+	}
+
+	config.MergeFlag("exclude-noindex", "false")
+	if config.ExcludeNoindex {
+		t.Error("expected ExcludeNoindex to be false after merge with 'false'")
+	}
+}
+
+func TestLoadConfig_ExcludeNoindex(t *testing.T) {
+	tempDir := t.TempDir()
+	configPath := filepath.Join(tempDir, ".seo-crawler.yml")
+	configContent := `mode: full
+url: http://localhost:3000
+exclude_noindex: true
+`
+	if err := os.WriteFile(configPath, []byte(configContent), 0644); err != nil {
+		t.Fatalf("failed to write config: %v", err)
+	}
+
+	config, err := sdk.LoadConfig(configPath)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if !config.ExcludeNoindex {
+		t.Error("expected ExcludeNoindex to be true from config file")
+	}
+}
+
+func TestDefaultConfig_ExcludeNoindexDefault(t *testing.T) {
+	config := sdk.DefaultConfig()
+	if config.ExcludeNoindex {
+		t.Error("expected ExcludeNoindex to default to false")
 	}
 }

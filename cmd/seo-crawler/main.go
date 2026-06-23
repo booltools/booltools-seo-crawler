@@ -24,8 +24,9 @@ func main() {
 	waitTimeoutFlag := flag.String("wait-timeout", "", "Max time to wait for each server (e.g. 30s, 1m)")
 	formatFlag := flag.String("format", "", "Output format: text or json (default: text)")
 	outputFlag := flag.String("output", "", "Write JSON report to file")
-	maxPagesFlag := flag.Int("max-pages", 0, "Max pages to crawl in full mode (default: 1000)")
+	maxPagesFlag := flag.Int("max-pages", 0, "Max pages to crawl in full mode (0 = unlimited)")
 	portFlag := flag.Int("port", 0, "Port to set as PORT env var for --start-cmd processes (avoids port conflicts)")
+	excludeNoindexFlag := flag.Bool("exclude-noindex", false, "Skip SEO rules on noindex pages (only technical/performance/security rules apply)")
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: seo-crawler [flags]\n\n")
@@ -48,7 +49,7 @@ func main() {
 	}
 
 	applyFlagOverrides(&config, modeFlag, dirFlag, urlFlag, failOnFlag, ignoreFlag,
-		onlyFlag, startCmdFlag, waitForFlag, waitTimeoutFlag, formatFlag, outputFlag, maxPagesFlag, portFlag)
+		onlyFlag, startCmdFlag, waitForFlag, waitTimeoutFlag, formatFlag, outputFlag, maxPagesFlag, portFlag, excludeNoindexFlag)
 
 	if err := config.Validate(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
@@ -57,6 +58,7 @@ func main() {
 	}
 
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
+	siteAnalyzer.ExcludeNoindex = config.ExcludeNoindex
 	reporter := sdk.NewReporter(os.Stdout)
 
 	var result *sdk.ScanResult
@@ -85,6 +87,7 @@ func applyFlagOverrides(
 	modeFlag, dirFlag, urlFlag, failOnFlag, ignoreFlag, onlyFlag,
 	startCmdFlag, waitForFlag, waitTimeoutFlag, formatFlag, outputFlag *string,
 	maxPagesFlag, portFlag *int,
+	excludeNoindexFlag *bool,
 ) {
 	flagWasSet := make(map[string]bool)
 	flag.Visit(func(f *flag.Flag) {
@@ -132,5 +135,8 @@ func applyFlagOverrides(
 	}
 	if flagWasSet["port"] && *portFlag > 0 {
 		config.Port = *portFlag
+	}
+	if flagWasSet["exclude-noindex"] {
+		config.ExcludeNoindex = *excludeNoindexFlag
 	}
 }

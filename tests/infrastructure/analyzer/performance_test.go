@@ -3,6 +3,7 @@ package analyzer_test
 import (
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/analyzer/rules/performance"
@@ -109,5 +110,53 @@ func TestResourceChecker_CacheHeaderPresent(t *testing.T) {
 	cacheRule := findRule(rules, "cache_headers")
 	if cacheRule == nil || cacheRule.Result != valueobject.RuleResultPass {
 		t.Error("expected cache_headers to pass when present")
+	}
+}
+
+func TestPageSpeedChecker_TTFBFast(t *testing.T) {
+	page := makePageData(`<html><head></head><body></body></html>`)
+	page.ResponseTime = 300 * time.Millisecond
+	checker := &performance.PageSpeedChecker{}
+	rules := checker.Check(page)
+
+	ttfbRule := findRule(rules, "ttfb")
+	if ttfbRule == nil || ttfbRule.Result != valueobject.RuleResultPass {
+		t.Error("expected ttfb to pass for 300ms response time")
+	}
+}
+
+func TestPageSpeedChecker_TTFBWarn(t *testing.T) {
+	page := makePageData(`<html><head></head><body></body></html>`)
+	page.ResponseTime = 900 * time.Millisecond
+	checker := &performance.PageSpeedChecker{}
+	rules := checker.Check(page)
+
+	ttfbRule := findRule(rules, "ttfb")
+	if ttfbRule == nil || ttfbRule.Result != valueobject.RuleResultWarning {
+		t.Errorf("expected ttfb to warn for 900ms response time, got %v", ttfbRule)
+	}
+}
+
+func TestPageSpeedChecker_TTFBFail(t *testing.T) {
+	page := makePageData(`<html><head></head><body></body></html>`)
+	page.ResponseTime = 1500 * time.Millisecond
+	checker := &performance.PageSpeedChecker{}
+	rules := checker.Check(page)
+
+	ttfbRule := findRule(rules, "ttfb")
+	if ttfbRule == nil || ttfbRule.Result != valueobject.RuleResultFail {
+		t.Errorf("expected ttfb to fail for 1500ms response time, got %v", ttfbRule)
+	}
+}
+
+func TestPageSpeedChecker_TTFBOldThresholdNowPasses(t *testing.T) {
+	page := makePageData(`<html><head></head><body></body></html>`)
+	page.ResponseTime = 500 * time.Millisecond
+	checker := &performance.PageSpeedChecker{}
+	rules := checker.Check(page)
+
+	ttfbRule := findRule(rules, "ttfb")
+	if ttfbRule == nil || ttfbRule.Result != valueobject.RuleResultPass {
+		t.Error("expected ttfb to pass for 500ms (previously would have warned at 400ms)")
 	}
 }

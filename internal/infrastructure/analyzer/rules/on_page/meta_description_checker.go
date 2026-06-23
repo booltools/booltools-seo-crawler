@@ -3,6 +3,7 @@ package on_page
 import (
 	"fmt"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
@@ -37,7 +38,7 @@ func (c *MetaDescriptionChecker) Check(page crawler.PageData) []valueobject.Audi
 
 	lengthRule := valueobject.NewAuditRule("meta_description_length", valueobject.CategoryOnPage, valueobject.SeverityMedium)
 	lengthRule.AffectedURL = page.URL
-	descLen := len(descContent)
+	descLen := utf8.RuneCountInString(descContent)
 	if descLen < 120 {
 		lengthRule.Warn(
 			fmt.Sprintf("Meta description is short (%d characters)", descLen),

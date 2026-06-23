@@ -21,7 +21,14 @@ import (
 )
 
 type SiteAnalyzer struct {
-	registry *Registry
+	registry        *Registry
+	ExcludeNoindex  bool
+}
+
+var noindexAllowedCategories = map[valueobject.Category]bool{
+	valueobject.CategoryTechnical:   true,
+	valueobject.CategoryPerformance: true,
+	valueobject.CategorySecurity:    true,
 }
 
 func NewSiteAnalyzer() *SiteAnalyzer {
@@ -76,7 +83,21 @@ func (a *SiteAnalyzer) AnalyzePage(page crawler.PageData) []valueobject.AuditRul
 		allRules = append(allRules, rules...)
 	}
 
+	if a.ExcludeNoindex && page.IsNoindex {
+		return filterNoindexRules(allRules)
+	}
+
 	return allRules
+}
+
+func filterNoindexRules(rules []valueobject.AuditRule) []valueobject.AuditRule {
+	filtered := make([]valueobject.AuditRule, 0, len(rules))
+	for _, rule := range rules {
+		if noindexAllowedCategories[rule.Category] {
+			filtered = append(filtered, rule)
+		}
+	}
+	return filtered
 }
 
 func (a *SiteAnalyzer) AnalyzeSite(result crawler.CrawlResult) []valueobject.AuditRule {
