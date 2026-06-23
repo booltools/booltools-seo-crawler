@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Security Rules — Booltools SEO Crawler</title>
-  <meta name="description" content="All 9 Security audit rules in the Booltools SEO Crawler." />
+  <title>Security Rules — Booltools</title>
+  <meta name="description" content="Browse all 9 Security audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
   <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/security.html" />
   <meta name="author" content="Booltools" />
-  <meta property="og:title" content="Security Rules — Booltools SEO Crawler" />
-  <meta property="og:description" content="All 9 Security audit rules in the Booltools SEO Crawler." />
+  <meta property="og:title" content="Security Rules — Booltools" />
+  <meta property="og:description" content="Browse all 9 Security audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/security.html" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Booltools SEO Crawler" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Security Rules — Booltools SEO Crawler" />
-  <meta name="twitter:description" content="All 9 Security audit rules in the Booltools SEO Crawler." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@booltools" />
+  <meta name="twitter:title" content="Security Rules — Booltools" />
+  <meta name="twitter:description" content="Browse all 9 Security audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../docs.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Security Rules","description":"Browse all 9 Security audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet.","url":"https://booltools.github.io/booltools-seo-crawler/docs/rules/security.html","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Rules","item":"https://booltools.github.io/booltools-seo-crawler/docs/rules.html"},{"@type":"ListItem","position":2,"name":"Security","item":"https://booltools.github.io/booltools-seo-crawler/docs/rules/security.html"}]},"dateModified":"2026-06-23"}</script>
 </head>
 <body>
   <header class="docs-header">
@@ -97,15 +101,16 @@
         </ul>
       </nav>
     </aside>
-    <article class="docs-content">
-      <nav class="breadcrumb">
+    <main class="docs-content" role="main">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="../rules.html">Rules</a>
         <span class="sep">/</span>
         <span>Security</span>
       </nav>
 
       <h1>Security</h1>
-      <p>9 audit rules in this category.</p>
+      <p>9 audit rules in this category. Click any rule to see the full description, examples, and an AI-agent fix snippet.</p>
+      <time datetime="2026-06-23" class="freshness-date">Last updated: 2026-06-23</time>
 
       <div class="rules-grid">
           <a href="security/uses_https.html" class="rule-card-link">
@@ -114,7 +119,7 @@
                 <code>uses_https</code>
                 <span class="severity-badge sev-critical">critical</span>
               </div>
-              <h3>Page uses HTTPS</h3>
+              <h2 class="rule-card-title">Page uses HTTPS</h2>
               <p>Checks if the page is served over HTTPS.</p>
             </div>
           </a>
@@ -124,7 +129,7 @@
                 <code>mixed_content</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>No mixed content detected</h3>
+              <h2 class="rule-card-title">No mixed content detected</h2>
               <p>Checks for HTTP resources loaded on HTTPS pages.</p>
             </div>
           </a>
@@ -134,7 +139,7 @@
                 <code>hsts_header</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>HSTS header is present</h3>
+              <h2 class="rule-card-title">HSTS header is present</h2>
               <p>Checks for the Strict-Transport-Security header.</p>
             </div>
           </a>
@@ -144,8 +149,8 @@
                 <code>security_xcto</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>X-Content-Type-Options header</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">X-Content-Type-Options header</h2>
+              <p>X-Content-Type-Options header. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="security/security_xfo.html" class="rule-card-link">
@@ -154,8 +159,8 @@
                 <code>security_xfo</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>X-Frame-Options header</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">X-Frame-Options header</h2>
+              <p>X-Frame-Options header. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="security/security_csp.html" class="rule-card-link">
@@ -164,8 +169,8 @@
                 <code>security_csp</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Content-Security-Policy header</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Content-Security-Policy header</h2>
+              <p>Content-Security-Policy header. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="security/security_referrer.html" class="rule-card-link">
@@ -174,8 +179,8 @@
                 <code>security_referrer</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Referrer-Policy header</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Referrer-Policy header</h2>
+              <p>Referrer-Policy header. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="security/security_permissions.html" class="rule-card-link">
@@ -184,8 +189,8 @@
                 <code>security_permissions</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Permissions-Policy header</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Permissions-Policy header</h2>
+              <p>Permissions-Policy header. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="security/security_server_disclosure.html" class="rule-card-link">
@@ -194,14 +199,17 @@
                 <code>security_server_disclosure</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Server version not disclosed</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Server version not disclosed</h2>
+              <p>Server version not disclosed. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
       </div>
-    </article>
+    </main>
   </div>
 
+  <footer class="docs-footer" role="contentinfo">
+    <p>&copy; 2026 Booltools. All rights reserved. Open-source under MIT License.</p>
+  </footer>
   <script>
     (function() {
       var toggle = document.getElementById('docs-menu-toggle');

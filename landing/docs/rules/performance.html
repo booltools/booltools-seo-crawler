@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Performance Rules — Booltools SEO Crawler</title>
-  <meta name="description" content="All 12 Performance audit rules in the Booltools SEO Crawler." />
+  <title>Performance Rules — Booltools</title>
+  <meta name="description" content="Browse all 12 Performance audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
   <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/performance.html" />
   <meta name="author" content="Booltools" />
-  <meta property="og:title" content="Performance Rules — Booltools SEO Crawler" />
-  <meta property="og:description" content="All 12 Performance audit rules in the Booltools SEO Crawler." />
+  <meta property="og:title" content="Performance Rules — Booltools" />
+  <meta property="og:description" content="Browse all 12 Performance audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/performance.html" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Booltools SEO Crawler" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Performance Rules — Booltools SEO Crawler" />
-  <meta name="twitter:description" content="All 12 Performance audit rules in the Booltools SEO Crawler." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@booltools" />
+  <meta name="twitter:title" content="Performance Rules — Booltools" />
+  <meta name="twitter:description" content="Browse all 12 Performance audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../docs.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Performance Rules","description":"Browse all 12 Performance audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet.","url":"https://booltools.github.io/booltools-seo-crawler/docs/rules/performance.html","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Rules","item":"https://booltools.github.io/booltools-seo-crawler/docs/rules.html"},{"@type":"ListItem","position":2,"name":"Performance","item":"https://booltools.github.io/booltools-seo-crawler/docs/rules/performance.html"}]},"dateModified":"2026-06-23"}</script>
 </head>
 <body>
   <header class="docs-header">
@@ -100,15 +104,16 @@
         </ul>
       </nav>
     </aside>
-    <article class="docs-content">
-      <nav class="breadcrumb">
+    <main class="docs-content" role="main">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="../rules.html">Rules</a>
         <span class="sep">/</span>
         <span>Performance</span>
       </nav>
 
       <h1>Performance</h1>
-      <p>12 audit rules in this category.</p>
+      <p>12 audit rules in this category. Click any rule to see the full description, examples, and an AI-agent fix snippet.</p>
+      <time datetime="2026-06-23" class="freshness-date">Last updated: 2026-06-23</time>
 
       <div class="rules-grid">
           <a href="performance/page_size.html" class="rule-card-link">
@@ -117,7 +122,7 @@
                 <code>page_size</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>Page size is within limits</h3>
+              <h2 class="rule-card-title">Page size is within limits</h2>
               <p>Checks that total page size is within limits.</p>
             </div>
           </a>
@@ -127,7 +132,7 @@
                 <code>html_size</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>HTML document size is reasonable</h3>
+              <h2 class="rule-card-title">HTML document size is reasonable</h2>
               <p>Checks that the HTML document size is reasonable.</p>
             </div>
           </a>
@@ -137,7 +142,7 @@
                 <code>ttfb</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>Time to First Byte is fast</h3>
+              <h2 class="rule-card-title">Time to First Byte is fast</h2>
               <p>Checks that Time to First Byte is fast.</p>
             </div>
           </a>
@@ -147,7 +152,7 @@
                 <code>compression</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>Response uses compression</h3>
+              <h2 class="rule-card-title">Response uses compression</h2>
               <p>Checks if the response uses gzip or brotli compression.</p>
             </div>
           </a>
@@ -157,7 +162,7 @@
                 <code>js_file_count</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>JavaScript file count is reasonable</h3>
+              <h2 class="rule-card-title">JavaScript file count is reasonable</h2>
               <p>Checks that the number of JavaScript files is reasonable.</p>
             </div>
           </a>
@@ -167,7 +172,7 @@
                 <code>css_file_count</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>CSS file count is reasonable</h3>
+              <h2 class="rule-card-title">CSS file count is reasonable</h2>
               <p>Checks that the number of CSS files is reasonable.</p>
             </div>
           </a>
@@ -177,7 +182,7 @@
                 <code>render_blocking</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>No render-blocking resources</h3>
+              <h2 class="rule-card-title">No render-blocking resources</h2>
               <p>Checks for render-blocking resources in the page head.</p>
             </div>
           </a>
@@ -187,7 +192,7 @@
                 <code>total_requests</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>Total requests are optimized</h3>
+              <h2 class="rule-card-title">Total requests are optimized</h2>
               <p>Checks that the total number of HTTP requests is optimized.</p>
             </div>
           </a>
@@ -197,7 +202,7 @@
                 <code>cache_headers</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Cache headers are configured</h3>
+              <h2 class="rule-card-title">Cache headers are configured</h2>
               <p>Checks that cache headers are properly configured.</p>
             </div>
           </a>
@@ -207,7 +212,7 @@
                 <code>broken_scripts</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>All script files are reachable</h3>
+              <h2 class="rule-card-title">All script files are reachable</h2>
               <p>Checks that all script files are reachable.</p>
             </div>
           </a>
@@ -217,7 +222,7 @@
                 <code>broken_stylesheets</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>All CSS files are reachable</h3>
+              <h2 class="rule-card-title">All CSS files are reachable</h2>
               <p>Checks that all CSS files are reachable.</p>
             </div>
           </a>
@@ -227,14 +232,17 @@
                 <code>broken_images</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>All images are reachable</h3>
+              <h2 class="rule-card-title">All images are reachable</h2>
               <p>Checks that all images are reachable.</p>
             </div>
           </a>
       </div>
-    </article>
+    </main>
   </div>
 
+  <footer class="docs-footer" role="contentinfo">
+    <p>&copy; 2026 Booltools. All rights reserved. Open-source under MIT License.</p>
+  </footer>
   <script>
     (function() {
       var toggle = document.getElementById('docs-menu-toggle');

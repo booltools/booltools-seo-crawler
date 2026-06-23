@@ -11,13 +11,13 @@ dir: ./dist
 # --- Full mode options ---
 # Uncomment below for full mode (live server crawl)
 # mode: full
-# url: http://localhost:9999
+# url: http://localhost:3000
 #
 # Optional: command to start the dev/preview server
 # start_cmd: "npm run preview"
 #
 # Optional: URL to poll until the server is ready
-# wait_for: http://localhost:9999
+# wait_for: http://localhost:3000
 #
 # Optional: max time to wait for the server (default: 30s)
 # wait_timeout: 30s

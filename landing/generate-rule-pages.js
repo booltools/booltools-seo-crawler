@@ -177,17 +177,12 @@ function escapeHtml(text) {
     .replace(/"/g, '&quot;');
 }
 
-const DEFAULT_DESCRIPTION = {
-  short: 'This rule checks for an important SEO/GEO factor.',
-  full: 'This rule verifies that your page follows best practices for search engine optimization and generative engine optimization.',
-  why: 'Following this best practice improves your page\'s visibility in search engines and AI-powered search systems.',
-  fix: 'Check each affected URL in the audit report and apply the recommendation provided.',
-  bad: '<!-- See the audit report for specific examples -->',
-  good: '<!-- Follow the rule label guidance for correct implementation -->',
-  snippet: 'Review the affected URLs in the audit report and apply the fix recommendation.',
-};
+const OG_IMAGE_URL = 'https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png';
+const TWITTER_SITE = '@booltools';
+const COPYRIGHT_YEAR = new Date().getFullYear();
+const LAST_UPDATED_ISO = new Date().toISOString().split('T')[0];
 
-function getDescription(key) {
+function getDescription(key, ruleLabel) {
   const source = ruleDescriptionsFromSource[key];
   if (source) {
     return {
@@ -200,7 +195,16 @@ function getDescription(key) {
       snippet: source.agentSnippet,
     };
   }
-  return DEFAULT_DESCRIPTION;
+  const label = ruleLabel || key;
+  return {
+    short: `${label}. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.`,
+    full: `This rule verifies that your page follows the "${label}" best practice for search engine optimization and generative engine optimization (GEO). It is checked automatically by the Booltools SEO Crawler.`,
+    why: `Following the "${label}" best practice improves your page's visibility in search engines and AI-powered search systems. Failing this check can negatively impact your SEO score.`,
+    fix: 'Check each affected URL in the audit report and apply the recommendation provided. See the examples below for guidance.',
+    bad: '<!-- See the audit report for specific examples -->',
+    good: '<!-- Follow the rule label guidance for correct implementation -->',
+    snippet: 'Review the affected URLs in the audit report and apply the fix recommendation.',
+  };
 }
 
 function groupRulesByCategory() {
@@ -298,6 +302,12 @@ function buildMobileScript() {
   </script>`;
 }
 
+function buildFooter() {
+  return `  <footer class="docs-footer" role="contentinfo">
+    <p>&copy; ${COPYRIGHT_YEAR} Booltools. All rights reserved. Open-source under MIT License.</p>
+  </footer>`;
+}
+
 function buildCopyScript() {
   return `  <script>
     document.querySelectorAll('.copy-btn').forEach(function(button) {
@@ -318,30 +328,37 @@ function buildCopyScript() {
   </script>`;
 }
 
-function buildPageHead(title, description, canonicalPath, cssPath) {
+function buildPageHead(title, description, canonicalPath, cssPath, jsonLd) {
   const baseUrl = 'https://booltools.github.io/booltools-seo-crawler';
+  const fullUrl = `${baseUrl}/${canonicalPath}`;
+  const fullTitle = `${escapeHtml(title)} — Booltools`;
+  const escapedDescription = escapeHtml(description);
+  const jsonLdTag = jsonLd ? `\n  <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : '';
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${escapeHtml(title)} — Booltools SEO Crawler</title>
-  <meta name="description" content="${escapeHtml(description)}" />
-  <link rel="canonical" href="${baseUrl}/${canonicalPath}" />
+  <title>${fullTitle}</title>
+  <meta name="description" content="${escapedDescription}" />
+  <link rel="canonical" href="${fullUrl}" />
   <meta name="author" content="Booltools" />
-  <meta property="og:title" content="${escapeHtml(title)} — Booltools SEO Crawler" />
-  <meta property="og:description" content="${escapeHtml(description)}" />
+  <meta property="og:title" content="${fullTitle}" />
+  <meta property="og:description" content="${escapedDescription}" />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="${baseUrl}/${canonicalPath}" />
+  <meta property="og:url" content="${fullUrl}" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Booltools SEO Crawler" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="${escapeHtml(title)} — Booltools SEO Crawler" />
-  <meta name="twitter:description" content="${escapeHtml(description)}" />
+  <meta property="og:image" content="${OG_IMAGE_URL}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="${TWITTER_SITE}" />
+  <meta name="twitter:title" content="${fullTitle}" />
+  <meta name="twitter:description" content="${escapedDescription}" />
+  <meta name="twitter:image" content="${OG_IMAGE_URL}" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="${cssPath}" />
+  <link rel="stylesheet" href="${cssPath}" />${jsonLdTag}
 </head>`;
 }
 
@@ -358,12 +375,31 @@ function generateCategoryPage(categoryKey) {
   const grouped = groupRulesByCategory();
   const rules = grouped[categoryKey] || [];
   const title = `${catInfo.label} Rules`;
-  const description = `All ${rules.length} ${catInfo.label} audit rules in the Booltools SEO Crawler.`;
+  const description = `Browse all ${rules.length} ${catInfo.label} audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet.`;
   const sidebar = buildSidebar(catInfo.slug, null);
+
+  const baseUrl = 'https://booltools.github.io/booltools-seo-crawler';
+  const canonicalPath = `docs/rules/${catInfo.slug}.html`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: title,
+    description: description,
+    url: `${baseUrl}/${canonicalPath}`,
+    isPartOf: { '@type': 'WebSite', name: 'Booltools SEO Crawler', url: baseUrl },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Rules', item: `${baseUrl}/docs/rules.html` },
+        { '@type': 'ListItem', position: 2, name: catInfo.label, item: `${baseUrl}/${canonicalPath}` },
+      ],
+    },
+    dateModified: LAST_UPDATED_ISO,
+  };
 
   let rulesListHtml = '';
   for (const rule of rules) {
-    const desc = getDescription(rule.key);
+    const desc = getDescription(rule.key, rule.label);
     rulesListHtml += `
           <a href="${catInfo.slug}/${rule.key}.html" class="rule-card-link">
             <div class="rule-card">
@@ -371,34 +407,36 @@ function generateCategoryPage(categoryKey) {
                 <code>${rule.key}</code>
                 <span class="severity-badge sev-${rule.severity}">${rule.severity}</span>
               </div>
-              <h3>${rule.label}</h3>
+              <h2 class="rule-card-title">${escapeHtml(rule.label)}</h2>
               <p>${escapeHtml(desc.short)}</p>
             </div>
           </a>`;
   }
 
-  return `${buildPageHead(title, description, `docs/rules/${catInfo.slug}.html`, '../docs.css')}
+  return `${buildPageHead(title, description, canonicalPath, '../docs.css', jsonLd)}
 ${buildHeader('../../')}
 
   <div class="docs-page">
 ${buildMobileMenu()}
 
 ${sidebar}
-    <article class="docs-content">
-      <nav class="breadcrumb">
+    <main class="docs-content" role="main">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="../rules.html">Rules</a>
         <span class="sep">/</span>
         <span>${catInfo.label}</span>
       </nav>
 
       <h1>${catInfo.label}</h1>
-      <p>${rules.length} audit rules in this category.</p>
+      <p>${rules.length} audit rules in this category. Click any rule to see the full description, examples, and an AI-agent fix snippet.</p>
+      <time datetime="${LAST_UPDATED_ISO}" class="freshness-date">Last updated: ${LAST_UPDATED_ISO}</time>
 
       <div class="rules-grid">${rulesListHtml}
       </div>
-    </article>
+    </main>
   </div>
 
+${buildFooter()}
 ${buildMobileScript()}
 </body>
 </html>`;
@@ -412,15 +450,37 @@ function generateRulePage(rule, categoryKey) {
   const previousRule = currentIndex > 0 ? rulesInCategory[currentIndex - 1] : null;
   const nextRule = currentIndex < rulesInCategory.length - 1 ? rulesInCategory[currentIndex + 1] : null;
 
-  const desc = getDescription(rule.key);
-  const title = rule.label;
-  const description = desc.short;
+  const desc = getDescription(rule.key, rule.label);
+  const title = escapeHtml(rule.label);
+  const description = `${escapeHtml(desc.short)} Learn what this rule checks, why it matters, and how to fix it with examples and an AI-agent snippet.`;
   const sidebar = buildSidebar(catInfo.slug, rule.key);
+
+  const baseUrl = 'https://booltools.github.io/booltools-seo-crawler';
+  const canonicalPath = `docs/rules/${catInfo.slug}/${rule.key}.html`;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: rule.label,
+    description: desc.short,
+    url: `${baseUrl}/${canonicalPath}`,
+    author: { '@type': 'Organization', name: 'Booltools' },
+    publisher: { '@type': 'Organization', name: 'Booltools' },
+    dateModified: LAST_UPDATED_ISO,
+    isPartOf: { '@type': 'WebSite', name: 'Booltools SEO Crawler', url: baseUrl },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Rules', item: `${baseUrl}/docs/rules.html` },
+        { '@type': 'ListItem', position: 2, name: catInfo.label, item: `${baseUrl}/docs/rules/${catInfo.slug}.html` },
+        { '@type': 'ListItem', position: 3, name: rule.label, item: `${baseUrl}/${canonicalPath}` },
+      ],
+    },
+  };
 
   let prevNextHtml = '';
   if (previousRule || nextRule) {
     prevNextHtml = `
-      <nav class="rule-nav">
+      <nav class="rule-nav" aria-label="Rule navigation">
         <div class="nav-links-row">`;
     if (previousRule) {
       prevNextHtml += `
@@ -435,15 +495,16 @@ function generateRulePage(rule, categoryKey) {
       </nav>`;
   }
 
-  return `${buildPageHead(title, description, `docs/rules/${catInfo.slug}/${rule.key}.html`, '../../docs.css')}
+  return `${buildPageHead(title, description, canonicalPath, '../../docs.css', jsonLd)}
 ${buildHeader('../../../')}
 
   <div class="docs-page">
 ${buildMobileMenu()}
 
 ${sidebar}
-    <article class="docs-content">
-      <nav class="breadcrumb">
+    <main class="docs-content" role="main">
+      <article>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="../../rules.html">Rules</a>
         <span class="sep">/</span>
         <a href="../${catInfo.slug}.html">${catInfo.label}</a>
@@ -457,6 +518,7 @@ ${sidebar}
       </div>
 
       <p class="rule-key-display"><code>${rule.key}</code></p>
+      <time datetime="${LAST_UPDATED_ISO}" class="freshness-date">Last updated: ${LAST_UPDATED_ISO}</time>
 
       <p class="short-desc">${escapeHtml(desc.short)}</p>
 
@@ -497,9 +559,11 @@ ${sidebar}
         <pre id="agent-snippet"><code>${escapeHtml(desc.snippet)}</code></pre>
       </div>
 ${prevNextHtml}
-    </article>
+      </article>
+    </main>
   </div>
 
+${buildFooter()}
 ${buildMobileScript()}
 ${buildCopyScript()}
 </body>

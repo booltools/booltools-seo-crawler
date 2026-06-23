@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Technical SEO Rules — Booltools SEO Crawler</title>
-  <meta name="description" content="All 27 Technical SEO audit rules in the Booltools SEO Crawler." />
+  <title>Technical SEO Rules — Booltools</title>
+  <meta name="description" content="Browse all 27 Technical SEO audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
   <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/technical-seo.html" />
   <meta name="author" content="Booltools" />
-  <meta property="og:title" content="Technical SEO Rules — Booltools SEO Crawler" />
-  <meta property="og:description" content="All 27 Technical SEO audit rules in the Booltools SEO Crawler." />
+  <meta property="og:title" content="Technical SEO Rules — Booltools" />
+  <meta property="og:description" content="Browse all 27 Technical SEO audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/technical-seo.html" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Booltools SEO Crawler" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Technical SEO Rules — Booltools SEO Crawler" />
-  <meta name="twitter:description" content="All 27 Technical SEO audit rules in the Booltools SEO Crawler." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@booltools" />
+  <meta name="twitter:title" content="Technical SEO Rules — Booltools" />
+  <meta name="twitter:description" content="Browse all 27 Technical SEO audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../docs.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Technical SEO Rules","description":"Browse all 27 Technical SEO audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet.","url":"https://booltools.github.io/booltools-seo-crawler/docs/rules/technical-seo.html","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Rules","item":"https://booltools.github.io/booltools-seo-crawler/docs/rules.html"},{"@type":"ListItem","position":2,"name":"Technical SEO","item":"https://booltools.github.io/booltools-seo-crawler/docs/rules/technical-seo.html"}]},"dateModified":"2026-06-23"}</script>
 </head>
 <body>
   <header class="docs-header">
@@ -115,15 +119,16 @@
         </ul>
       </nav>
     </aside>
-    <article class="docs-content">
-      <nav class="breadcrumb">
+    <main class="docs-content" role="main">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="../rules.html">Rules</a>
         <span class="sep">/</span>
         <span>Technical SEO</span>
       </nav>
 
       <h1>Technical SEO</h1>
-      <p>27 audit rules in this category.</p>
+      <p>27 audit rules in this category. Click any rule to see the full description, examples, and an AI-agent fix snippet.</p>
+      <time datetime="2026-06-23" class="freshness-date">Last updated: 2026-06-23</time>
 
       <div class="rules-grid">
           <a href="technical-seo/canonical_exists.html" class="rule-card-link">
@@ -132,7 +137,7 @@
                 <code>canonical_exists</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>Page has a canonical link</h3>
+              <h2 class="rule-card-title">Page has a canonical link</h2>
               <p>Checks if the page has a rel=canonical link tag.</p>
             </div>
           </a>
@@ -142,7 +147,7 @@
                 <code>canonical_absolute</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>Canonical URL is absolute</h3>
+              <h2 class="rule-card-title">Canonical URL is absolute</h2>
               <p>Checks that the canonical URL is an absolute URL.</p>
             </div>
           </a>
@@ -152,7 +157,7 @@
                 <code>canonical_self_ref</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Canonical is self-referencing</h3>
+              <h2 class="rule-card-title">Canonical is self-referencing</h2>
               <p>Checks that the canonical tag points to the page itself.</p>
             </div>
           </a>
@@ -162,7 +167,7 @@
                 <code>canonical_conflict</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>No conflicting canonical tags</h3>
+              <h2 class="rule-card-title">No conflicting canonical tags</h2>
               <p>Checks for conflicting canonical signals.</p>
             </div>
           </a>
@@ -172,7 +177,7 @@
                 <code>meta_robots_noindex</code>
                 <span class="severity-badge sev-info">info</span>
               </div>
-              <h3>Page has a noindex directive</h3>
+              <h2 class="rule-card-title">Page has a noindex directive</h2>
               <p>Detects pages with a noindex directive.</p>
             </div>
           </a>
@@ -182,7 +187,7 @@
                 <code>meta_robots_conflict</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>No conflicting robots directives</h3>
+              <h2 class="rule-card-title">No conflicting robots directives</h2>
               <p>Checks for conflicting robots meta directives.</p>
             </div>
           </a>
@@ -192,7 +197,7 @@
                 <code>http_status_ok</code>
                 <span class="severity-badge sev-critical">critical</span>
               </div>
-              <h3>Page returns HTTP 200 status</h3>
+              <h2 class="rule-card-title">Page returns HTTP 200 status</h2>
               <p>Checks if the page returns HTTP 200 OK status.</p>
             </div>
           </a>
@@ -202,7 +207,7 @@
                 <code>crawl_depth</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>Page crawl depth is reasonable</h3>
+              <h2 class="rule-card-title">Page crawl depth is reasonable</h2>
               <p>Checks that page crawl depth is reasonable.</p>
             </div>
           </a>
@@ -212,7 +217,7 @@
                 <code>pagination_rel_tags</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Pagination uses rel=next/prev</h3>
+              <h2 class="rule-card-title">Pagination uses rel=next/prev</h2>
               <p>Checks for proper rel=next/prev pagination tags.</p>
             </div>
           </a>
@@ -222,7 +227,7 @@
                 <code>robots_txt_exists</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>robots.txt file exists</h3>
+              <h2 class="rule-card-title">robots.txt file exists</h2>
               <p>Checks if a robots.txt file exists at the domain root.</p>
             </div>
           </a>
@@ -232,7 +237,7 @@
                 <code>robots_txt_size</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>robots.txt is not too large</h3>
+              <h2 class="rule-card-title">robots.txt is not too large</h2>
               <p>Checks that robots.txt file is not too large.</p>
             </div>
           </a>
@@ -242,7 +247,7 @@
                 <code>robots_txt_sitemap</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>robots.txt references sitemap</h3>
+              <h2 class="rule-card-title">robots.txt references sitemap</h2>
               <p>Checks that robots.txt references the sitemap.</p>
             </div>
           </a>
@@ -252,7 +257,7 @@
                 <code>robots_txt_syntax</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>robots.txt has valid syntax</h3>
+              <h2 class="rule-card-title">robots.txt has valid syntax</h2>
               <p>Checks that robots.txt has valid syntax.</p>
             </div>
           </a>
@@ -262,7 +267,7 @@
                 <code>sitemap_exists</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>Sitemap.xml exists</h3>
+              <h2 class="rule-card-title">Sitemap.xml exists</h2>
               <p>Checks if a sitemap.xml file exists.</p>
             </div>
           </a>
@@ -272,7 +277,7 @@
                 <code>sitemap_valid_xml</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>Sitemap has valid XML</h3>
+              <h2 class="rule-card-title">Sitemap has valid XML</h2>
               <p>Checks that the sitemap has valid XML syntax.</p>
             </div>
           </a>
@@ -282,8 +287,8 @@
                 <code>sitemap_index</code>
                 <span class="severity-badge sev-info">info</span>
               </div>
-              <h3>Sitemap index detected</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Sitemap index detected</h2>
+              <p>Sitemap index detected. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/sitemap_size.html" class="rule-card-link">
@@ -292,8 +297,8 @@
                 <code>sitemap_size</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>Sitemap is within size limits</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Sitemap is within size limits</h2>
+              <p>Sitemap is within size limits. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/sitemap_freshness.html" class="rule-card-link">
@@ -302,8 +307,8 @@
                 <code>sitemap_freshness</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Sitemap URLs have recent lastmod</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Sitemap URLs have recent lastmod</h2>
+              <p>Sitemap URLs have recent lastmod. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/sitemap_coverage.html" class="rule-card-link">
@@ -312,8 +317,8 @@
                 <code>sitemap_coverage</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>Crawled URLs appear in sitemap</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Crawled URLs appear in sitemap</h2>
+              <p>Crawled URLs appear in sitemap. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/sitemap_orphan_urls.html" class="rule-card-link">
@@ -322,8 +327,8 @@
                 <code>sitemap_orphan_urls</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>No sitemap-only orphan URLs</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">No sitemap-only orphan URLs</h2>
+              <p>No sitemap-only orphan URLs. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/sitemap_broken_urls.html" class="rule-card-link">
@@ -332,8 +337,8 @@
                 <code>sitemap_broken_urls</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>No broken URLs in sitemap</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">No broken URLs in sitemap</h2>
+              <p>No broken URLs in sitemap. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/sitemap_redirect_urls.html" class="rule-card-link">
@@ -342,8 +347,8 @@
                 <code>sitemap_redirect_urls</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>No redirect URLs in sitemap</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">No redirect URLs in sitemap</h2>
+              <p>No redirect URLs in sitemap. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/sitemap_robots_conflict.html" class="rule-card-link">
@@ -352,8 +357,8 @@
                 <code>sitemap_robots_conflict</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>No sitemap/robots.txt conflicts</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">No sitemap/robots.txt conflicts</h2>
+              <p>No sitemap/robots.txt conflicts. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/sitemap_image.html" class="rule-card-link">
@@ -362,8 +367,8 @@
                 <code>sitemap_image</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Sitemap includes image entries</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Sitemap includes image entries</h2>
+              <p>Sitemap includes image entries. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/sitemap_video.html" class="rule-card-link">
@@ -372,8 +377,8 @@
                 <code>sitemap_video</code>
                 <span class="severity-badge sev-info">info</span>
               </div>
-              <h3>Sitemap includes video entries</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Sitemap includes video entries</h2>
+              <p>Sitemap includes video entries. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/redirect_chains.html" class="rule-card-link">
@@ -382,8 +387,8 @@
                 <code>redirect_chains</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>No redirect chains detected</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">No redirect chains detected</h2>
+              <p>No redirect chains detected. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
           <a href="technical-seo/temporary_redirects.html" class="rule-card-link">
@@ -392,14 +397,17 @@
                 <code>temporary_redirects</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Temporary redirects are intentional</h3>
-              <p>This rule checks for an important SEO/GEO factor.</p>
+              <h2 class="rule-card-title">Temporary redirects are intentional</h2>
+              <p>Temporary redirects are intentional. This audit rule is part of the Booltools SEO Crawler rule set for optimizing search engine visibility.</p>
             </div>
           </a>
       </div>
-    </article>
+    </main>
   </div>
 
+  <footer class="docs-footer" role="contentinfo">
+    <p>&copy; 2026 Booltools. All rights reserved. Open-source under MIT License.</p>
+  </footer>
   <script>
     (function() {
       var toggle = document.getElementById('docs-menu-toggle');

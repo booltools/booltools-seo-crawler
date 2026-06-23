@@ -686,3 +686,29 @@ body {
 .rule-link:hover code {
   color: #818cf8;
 }
+
+.docs-footer {
+  text-align: center;
+  padding: 1.5rem 2rem;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  border-top: 1px solid #1e293b;
+  margin-top: 2rem;
+}
+.docs-footer p {
+  margin: 0;
+}
+
+.freshness-date {
+  display: block;
+  color: #64748b;
+  font-size: 0.82rem;
+  margin-bottom: 1rem;
+}
+
+.rule-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.5rem 0 0.4rem;
+  color: #e2e8f0;
+}

@@ -78,7 +78,7 @@ curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/down
 
   <h3>Full mode (live crawl)</h3>
   <p>Crawls a running server, following links and checking all pages.</p>
-  <pre><code>seo-crawler --mode=full --url=http://localhost:9999</code></pre>
+  <pre><code>seo-crawler --mode=full --url=http://localhost:3000</code></pre>
 
   <h3>Static mode (local HTML files)</h3>
   <p>Analyzes built HTML files directly — no server needed.</p>
@@ -89,8 +89,8 @@ curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/down
   <pre><code>seo-crawler \
   --mode=full \
   --start-cmd="npm run dev" \
-  --wait-for=http://localhost:9999 \
-  --url=http://localhost:9999</code></pre>
+  --wait-for=http://localhost:3000 \
+  --url=http://localhost:3000</code></pre>
 
   <h2>Multiple Servers</h2>
   <p>When your app depends on both a frontend and a backend (or other services), pass multiple commands and URLs:</p>
@@ -98,18 +98,18 @@ curl -sL https://github.com/booltools/booltools-seo-crawler/releases/latest/down
 seo-crawler \
   --mode=full \
   --start-cmd="go run ./cmd/server,npm run dev" \
-  --wait-for="http://localhost:8080/api/health,http://localhost:9999" \
-  --url=http://localhost:9999</code></pre>
+  --wait-for="http://localhost:8080/api/health,http://localhost:3000" \
+  --url=http://localhost:3000</code></pre>
 
   <p>Or as an array in the YAML config:</p>
   <pre><code>mode: full
-url: http://localhost:9999
+url: http://localhost:3000
 start_cmd:
   - "go run ./cmd/server"
   - "cd web && npm run dev"
 wait_for:
   - http://localhost:8080/api/health
-  - http://localhost:9999
+  - http://localhost:3000
 wait_timeout: 90s
 fail_on: high</code></pre>
   <p>All commands are started in parallel. The crawler waits for every URL in <code>wait_for</code> before starting. All processes are stopped when the scan finishes.</p>
@@ -118,19 +118,26 @@ fail_on: high</code></pre>
   <h2>Configuration File</h2>
   <p>Create a <code>.seo-crawler.yml</code> in your project root:</p>
   <pre><code>mode: full
-url: http://localhost:9999
+url: http://localhost:3000
 start_cmd: "npm run dev"
-wait_for: http://localhost:9999
+wait_for: http://localhost:3000
 wait_timeout: 60s
 fail_on: high
 max_pages: 100
-port: 9999
 format: text
 ignore:
   - uses_https
   - hsts_header</code></pre>
 
   <p>CLI flags override config file values.</p>
+
+  <h3>Avoiding port conflicts</h3>
+  <p>If port 3000 is already in use on your machine, use <code>--port</code> to inject a <code>PORT</code> environment variable into the <code>--start-cmd</code> process. Make sure <code>--url</code> and <code>--wait-for</code> match the chosen port:</p>
+  <pre><code>mode: full
+url: http://localhost:9999
+start_cmd: "npm run dev"
+wait_for: http://localhost:9999
+port: 9999</code></pre>
 
   <h2>CLI Flags</h2>
   <table>
@@ -194,8 +201,8 @@ jobs:
         with:
           mode: full
           start-cmd: "npm run dev"
-          wait-for: http://localhost:9999
-          url: http://localhost:9999
+          wait-for: http://localhost:3000
+          url: http://localhost:3000
           fail-on: high</code></pre>
 
   <h3>Static mode (no server needed)</h3>
@@ -265,8 +272,8 @@ jobs:
           ./seo-crawler \
             --mode=full \
             --start-cmd="npm run dev" \
-            --wait-for=http://localhost:9999 \
-            --url=http://localhost:9999 \
+            --wait-for=http://localhost:3000 \
+            --url=http://localhost:3000 \
             --fail-on=high</code></pre>
 
   <h2>Ignoring Rules for Localhost</h2>

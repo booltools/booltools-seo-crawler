@@ -55,7 +55,6 @@ func DefaultConfig() Config {
 		Format:      "text",
 		MaxPages:    1000,
 		WaitTimeout: 30 * time.Second,
-		Port:        9999,
 	}
 }
 

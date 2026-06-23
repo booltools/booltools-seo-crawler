@@ -3,23 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Links Rules — Booltools SEO Crawler</title>
-  <meta name="description" content="All 6 Links audit rules in the Booltools SEO Crawler." />
+  <title>Links Rules — Booltools</title>
+  <meta name="description" content="Browse all 6 Links audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
   <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/rules/links.html" />
   <meta name="author" content="Booltools" />
-  <meta property="og:title" content="Links Rules — Booltools SEO Crawler" />
-  <meta property="og:description" content="All 6 Links audit rules in the Booltools SEO Crawler." />
+  <meta property="og:title" content="Links Rules — Booltools" />
+  <meta property="og:description" content="Browse all 6 Links audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/rules/links.html" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:site_name" content="Booltools SEO Crawler" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Links Rules — Booltools SEO Crawler" />
-  <meta name="twitter:description" content="All 6 Links audit rules in the Booltools SEO Crawler." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@booltools" />
+  <meta name="twitter:title" content="Links Rules — Booltools" />
+  <meta name="twitter:description" content="Browse all 6 Links audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet." />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../docs.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Links Rules","description":"Browse all 6 Links audit rules in the Booltools SEO Crawler. Each rule includes severity, description, examples, and an AI-agent fix snippet.","url":"https://booltools.github.io/booltools-seo-crawler/docs/rules/links.html","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Rules","item":"https://booltools.github.io/booltools-seo-crawler/docs/rules.html"},{"@type":"ListItem","position":2,"name":"Links","item":"https://booltools.github.io/booltools-seo-crawler/docs/rules/links.html"}]},"dateModified":"2026-06-23"}</script>
 </head>
 <body>
   <header class="docs-header">
@@ -94,15 +98,16 @@
         </ul>
       </nav>
     </aside>
-    <article class="docs-content">
-      <nav class="breadcrumb">
+    <main class="docs-content" role="main">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
         <a href="../rules.html">Rules</a>
         <span class="sep">/</span>
         <span>Links</span>
       </nav>
 
       <h1>Links</h1>
-      <p>6 audit rules in this category.</p>
+      <p>6 audit rules in this category. Click any rule to see the full description, examples, and an AI-agent fix snippet.</p>
+      <time datetime="2026-06-23" class="freshness-date">Last updated: 2026-06-23</time>
 
       <div class="rules-grid">
           <a href="links/internal_links_present.html" class="rule-card-link">
@@ -111,7 +116,7 @@
                 <code>internal_links_present</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>Page has internal links</h3>
+              <h2 class="rule-card-title">Page has internal links</h2>
               <p>Checks that the page has internal links.</p>
             </div>
           </a>
@@ -121,7 +126,7 @@
                 <code>internal_links_count</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Internal link count is reasonable</h3>
+              <h2 class="rule-card-title">Internal link count is reasonable</h2>
               <p>Checks that the internal link count is reasonable.</p>
             </div>
           </a>
@@ -131,7 +136,7 @@
                 <code>internal_links_anchor_text</code>
                 <span class="severity-badge sev-low">low</span>
               </div>
-              <h3>Internal links have descriptive anchor text</h3>
+              <h2 class="rule-card-title">Internal links have descriptive anchor text</h2>
               <p>Checks that internal links have descriptive anchor text.</p>
             </div>
           </a>
@@ -141,7 +146,7 @@
                 <code>external_links_rel</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>External links have rel attributes</h3>
+              <h2 class="rule-card-title">External links have rel attributes</h2>
               <p>Checks that external links have proper rel attributes.</p>
             </div>
           </a>
@@ -151,7 +156,7 @@
                 <code>broken_internal_links</code>
                 <span class="severity-badge sev-high">high</span>
               </div>
-              <h3>No broken internal links</h3>
+              <h2 class="rule-card-title">No broken internal links</h2>
               <p>Checks for broken internal links that return errors.</p>
             </div>
           </a>
@@ -161,14 +166,17 @@
                 <code>broken_external_links</code>
                 <span class="severity-badge sev-medium">medium</span>
               </div>
-              <h3>No broken external links</h3>
+              <h2 class="rule-card-title">No broken external links</h2>
               <p>Checks for broken external links that return errors.</p>
             </div>
           </a>
       </div>
-    </article>
+    </main>
   </div>
 
+  <footer class="docs-footer" role="contentinfo">
+    <p>&copy; 2026 Booltools. All rights reserved. Open-source under MIT License.</p>
+  </footer>
   <script>
     (function() {
       var toggle = document.getElementById('docs-menu-toggle');

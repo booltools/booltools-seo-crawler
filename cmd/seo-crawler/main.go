@@ -25,16 +25,16 @@ func main() {
 	formatFlag := flag.String("format", "", "Output format: text or json (default: text)")
 	outputFlag := flag.String("output", "", "Write JSON report to file")
 	maxPagesFlag := flag.Int("max-pages", 0, "Max pages to crawl in full mode (default: 1000)")
-	portFlag := flag.Int("port", 0, "Port to set as PORT env var for --start-cmd processes (default: 9999)")
+	portFlag := flag.Int("port", 0, "Port to set as PORT env var for --start-cmd processes (avoids port conflicts)")
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: seo-crawler [flags]\n\n")
 		fmt.Fprintf(os.Stderr, "Run SEO/GEO checks in CI/CD pipelines.\n\n")
 		fmt.Fprintf(os.Stderr, "Examples:\n")
 		fmt.Fprintf(os.Stderr, "  seo-crawler --mode=static --dir=./dist --fail-on=high\n")
-		fmt.Fprintf(os.Stderr, "  seo-crawler --mode=full --url=http://localhost:9999\n")
-		fmt.Fprintf(os.Stderr, "  seo-crawler --mode=full --start-cmd=\"npm run dev\" --wait-for=http://localhost:9999\n")
-		fmt.Fprintf(os.Stderr, "  seo-crawler --mode=full --start-cmd=\"go run ./cmd/server,npm run dev\" --wait-for=\"http://localhost:8080,http://localhost:9999\"\n\n")
+		fmt.Fprintf(os.Stderr, "  seo-crawler --mode=full --url=http://localhost:3000\n")
+		fmt.Fprintf(os.Stderr, "  seo-crawler --mode=full --start-cmd=\"npm run dev\" --wait-for=http://localhost:3000\n")
+		fmt.Fprintf(os.Stderr, "  seo-crawler --mode=full --start-cmd=\"go run ./cmd/server,npm run dev\" --wait-for=\"http://localhost:8080,http://localhost:3000\"\n\n")
 		fmt.Fprintf(os.Stderr, "Flags:\n")
 		flag.PrintDefaults()
 	}

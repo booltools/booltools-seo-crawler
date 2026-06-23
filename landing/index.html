@@ -219,14 +219,14 @@
             <span class="code-title">terminal</span>
           </div>
           <pre><code><span class="comment"># Scan a running server</span>
-seo-crawler --mode=full --url=http://localhost:9999
+seo-crawler --mode=full --url=http://localhost:3000
 
 <span class="comment"># Auto-start server, scan, then stop</span>
 seo-crawler \
   --mode=full \
   --start-cmd="npm run dev" \
-  --wait-for=http://localhost:9999 \
-  --url=http://localhost:9999 \
+  --wait-for=http://localhost:3000 \
+  --url=http://localhost:3000 \
   --fail-on=high
 
 <span class="comment"># Scan static HTML files</span>
