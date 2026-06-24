@@ -224,11 +224,16 @@ start_cmd: "npm run dev"
 wait_for: http://localhost:3000
 wait_timeout: 60s
 fail_on: high
-max_pages: 100
 format: text
 ignore:
   - uses_https
   - hsts_header
+# exclude_urls:
+#   - /admin/*
+#   - /api/*
+# only_urls:
+#   - /marketplace/*
+#   - /blog/*
 ```
 
 ### GitHub Actions (Marketplace Action)
@@ -305,20 +310,25 @@ jobs:
 
 ### CLI Flags
 
-| Flag             | Description                                              | Default |
-| ---------------- | -------------------------------------------------------- | ------- |
-| `--mode`         | `static` or `full`                                       | —       |
-| `--dir`          | HTML directory (static mode)                             | —       |
-| `--url`          | Server URL (full mode)                                   | —       |
-| `--fail-on`      | Severity threshold (`critical`, `high`, `medium`, `low`) | `high`  |
-| `--ignore`       | Comma-separated rule keys to skip                        | —       |
-| `--only`         | Comma-separated rule keys to run                         | —       |
-| `--start-cmd`    | Commands to start servers (comma-separated for multiple) | —       |
-| `--wait-for`     | URLs to poll until ready (comma-separated for multiple)  | —       |
-| `--wait-timeout` | Max wait time per URL (e.g. `30s`, `1m`)                 | `30s`   |
-| `--format`       | `text` or `json`                                         | `text`  |
-| `--output`       | Write JSON report to file                                | —       |
-| `--max-pages`    | Max pages to crawl (0 = unlimited)                       | `0`     |
+| Flag                 | Description                                                          | Default            |
+| -------------------- | -------------------------------------------------------------------- | ------------------ |
+| `--mode`             | `static` or `full`                                                   | —                  |
+| `--dir`              | HTML directory (static mode)                                         | —                  |
+| `--url`              | Server URL (full mode)                                               | —                  |
+| `--fail-on`          | Severity threshold (`critical`, `high`, `medium`, `low`)             | `high`             |
+| `--ignore`           | Comma-separated rule keys to skip                                    | —                  |
+| `--only`             | Comma-separated rule keys to run                                     | —                  |
+| `--start-cmd`        | Commands to start servers (comma-separated for multiple)             | —                  |
+| `--wait-for`         | URLs to poll until ready (comma-separated for multiple)              | —                  |
+| `--wait-timeout`     | Max wait time per URL (e.g. `30s`, `1m`)                             | `30s`              |
+| `--format`           | `text` or `json`                                                     | `text`             |
+| `--output`           | Write JSON report to file                                            | —                  |
+| `--max-pages`        | Max pages to crawl (0 = unlimited)                                   | `0`                |
+| `--port`             | Port to set as `PORT` env var for `--start-cmd` processes            | —                  |
+| `--exclude-urls`     | Comma-separated URL patterns to exclude (supports `*` wildcard)      | —                  |
+| `--only-urls`        | Comma-separated URL patterns to analyze exclusively (supports `*`)   | —                  |
+| `--exclude-noindex`  | Skip SEO rules on noindex pages                                      | `false`            |
+| `--config`           | Path to config file                                                  | `.seo-crawler.yml` |
 
 ### Exit Codes
 
