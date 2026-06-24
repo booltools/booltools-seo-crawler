@@ -53,6 +53,12 @@ inputs:
     description: 'Skip SEO rules on noindex pages (only technical/performance/security rules apply)'
     required: false
     default: 'false'
+  exclude-urls:
+    description: 'Comma-separated URL patterns to exclude from analysis (supports * wildcard, e.g. /admin/*,/api/*)'
+    required: false
+  only-urls:
+    description: 'Comma-separated URL patterns to analyze exclusively (supports * wildcard, e.g. /marketplace/*,/blog/*)'
+    required: false
   version:
     description: 'SDK version to download (e.g. v1.0.0). Defaults to latest.'
     required: false
@@ -121,6 +127,12 @@ runs:
         fi
         if [ "${{ inputs.exclude-noindex }}" = "true" ]; then
           ARGS="$ARGS --exclude-noindex"
+        fi
+        if [ -n "${{ inputs.exclude-urls }}" ]; then
+          ARGS="$ARGS --exclude-urls=${{ inputs.exclude-urls }}"
+        fi
+        if [ -n "${{ inputs.only-urls }}" ]; then
+          ARGS="$ARGS --only-urls=${{ inputs.only-urls }}"
         fi
         if [ -n "${{ inputs.format }}" ]; then
           ARGS="$ARGS --format=${{ inputs.format }}"

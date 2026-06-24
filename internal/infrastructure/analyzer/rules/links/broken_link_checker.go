@@ -2,11 +2,25 @@ package links
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
 	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/crawler"
 )
+
+var antiBotDomains = []string{
+	"linkedin.com",
+	"www.linkedin.com",
+	"facebook.com",
+	"www.facebook.com",
+	"instagram.com",
+	"www.instagram.com",
+	"twitter.com",
+	"x.com",
+	"pinterest.com",
+	"www.pinterest.com",
+}
 
 type BrokenLinkChecker struct{}
 
@@ -23,7 +37,7 @@ func (c *BrokenLinkChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 			}
 		}
 		for _, link := range page.ExternalLinks {
-			if isNonHTTPScheme(link.URL) {
+			if isNonHTTPScheme(link.URL) || isAntiBotDomain(link.URL) {
 				continue
 			}
 			if _, exists := uniqueExternalLinks[link.URL]; !exists {
@@ -85,6 +99,20 @@ func checkLinksWithCache(cache *crawler.URLStatusCache, links map[string]string,
 	}
 
 	return brokenCount, details
+}
+
+func isAntiBotDomain(targetURL string) bool {
+	parsed, err := url.Parse(targetURL)
+	if err != nil {
+		return false
+	}
+	hostname := strings.ToLower(parsed.Hostname())
+	for _, domain := range antiBotDomains {
+		if hostname == domain {
+			return true
+		}
+	}
+	return false
 }
 
 func isNonHTTPScheme(targetURL string) bool {

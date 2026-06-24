@@ -26,6 +26,7 @@ type PageData struct {
 	Scripts         []ResourceData
 	Stylesheets     []ResourceData
 	IsNoindex       bool
+	IsDevMode       bool
 }
 
 type LinkData struct {

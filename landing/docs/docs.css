@@ -104,6 +104,11 @@ body {
   gap: 8px;
 }
 
+.docs-header .logo svg {
+  color: var(--color-primary-hover);
+  flex-shrink: 0;
+}
+
 .docs-header .back-link {
   margin-left: auto;
   font-size: 0.82rem;

@@ -147,6 +147,7 @@ func (sc *SiteCrawler) Crawl(targetDomain string, maxPages int, onPage OnPageCal
 		}
 
 		pageData.IsNoindex = detectNoindex(document, response.Headers)
+		pageData.IsDevMode = detectDevMode(string(response.Body))
 
 		ExtractLinks(document, response.Request.URL, hostname, &pageData)
 		ExtractImages(document, response.Request.URL, &pageData)
@@ -193,6 +194,9 @@ func (sc *SiteCrawler) Crawl(targetDomain string, maxPages int, onPage OnPageCal
 	}
 
 	sitemapURLs := parseSitemapLocations(result.SitemapXML, targetDomain)
+	if isLocalhostHost(hostname) {
+		sitemapURLs = rewriteURLsToBase(sitemapURLs, result.BaseURL)
+	}
 	for _, sitemapURL := range sitemapURLs {
 		collector.Visit(sitemapURL)
 	}
@@ -349,6 +353,29 @@ func ExtractBodyText(document *goquery.Document) string {
 	return strings.TrimSpace(cloned.Find("body").Text())
 }
 
+var devModeIndicators = []string{
+	"__turbopack",
+	"__webpack_hmr",
+	"hot-update.js",
+	"webpack-dev-server",
+	"/@vite/client",
+	"/@react-refresh",
+	"_next/static/development",
+	"__next_error__",
+	"__NEXT_DATA__.*\"dev\":true",
+	"turbopack-chunk",
+}
+
+func detectDevMode(html string) bool {
+	lowered := strings.ToLower(html)
+	for _, indicator := range devModeIndicators {
+		if strings.Contains(lowered, strings.ToLower(indicator)) {
+			return true
+		}
+	}
+	return false
+}
+
 func detectNoindex(document *goquery.Document, headers *http.Header) bool {
 	robotsMeta := document.Find(`meta[name="robots"]`)
 	if robotsMeta.Length() > 0 {
@@ -420,4 +447,21 @@ func fetchSiteFiles(baseURL string, result *CrawlResult) {
 
 func isLocalhostHost(hostname string) bool {
 	return hostname == "localhost" || hostname == "127.0.0.1" || hostname == "0.0.0.0" || hostname == "::1"
+}
+
+func rewriteURLsToBase(urls []string, baseURL string) []string {
+	rewritten := make([]string, 0, len(urls))
+	for _, rawURL := range urls {
+		parsed, err := url.Parse(rawURL)
+		if err != nil {
+			rewritten = append(rewritten, rawURL)
+			continue
+		}
+		newURL := baseURL + parsed.Path
+		if parsed.RawQuery != "" {
+			newURL += "?" + parsed.RawQuery
+		}
+		rewritten = append(rewritten, newURL)
+	}
+	return rewritten
 }

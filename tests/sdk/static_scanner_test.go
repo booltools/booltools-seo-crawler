@@ -40,7 +40,7 @@ func TestStaticScanner_ValidDirectory(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -80,7 +80,7 @@ func TestStaticScanner_InvalidHTML(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -101,7 +101,7 @@ func TestStaticScanner_EmptyDirectory(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	_, err := scanner.Scan(tempDir)
+	_, err := scanner.Scan(tempDir, nil, nil)
 	if err == nil {
 		t.Error("expected error for empty directory")
 	}
@@ -111,7 +111,7 @@ func TestStaticScanner_NonexistentDirectory(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	_, err := scanner.Scan("/nonexistent/path/to/nowhere")
+	_, err := scanner.Scan("/nonexistent/path/to/nowhere", nil, nil)
 	if err == nil {
 		t.Error("expected error for nonexistent directory")
 	}
@@ -132,7 +132,7 @@ func TestStaticScanner_NestedHTMLFiles(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -164,7 +164,7 @@ func TestStaticScanner_MultiplePages(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -193,7 +193,7 @@ Sitemap: https://example.com/sitemap.xml`
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -226,7 +226,7 @@ func TestStaticScanner_DetectsMissingRobotsTxt(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -268,7 +268,7 @@ func TestStaticScanner_DetectsSitemapXml(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -311,7 +311,7 @@ func TestStaticScanner_DetectsLlmsTxt(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -344,7 +344,7 @@ func TestStaticScanner_DetectsMissingLlmsTxt(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -389,7 +389,7 @@ Sitemap: https://example.com/sitemap.xml`
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -416,7 +416,7 @@ func TestStaticScanner_NetworkRulesExcluded(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -456,7 +456,7 @@ Sitemap: https://example.com/sitemap.xml`
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}
@@ -492,7 +492,7 @@ func TestStaticScanner_SitemapValidXml(t *testing.T) {
 	siteAnalyzer := analyzer.NewSiteAnalyzer()
 	scanner := sdk.NewStaticScanner(siteAnalyzer)
 
-	result, err := scanner.Scan(tempDir)
+	result, err := scanner.Scan(tempDir, nil, nil)
 	if err != nil {
 		t.Fatalf("scan failed: %v", err)
 	}

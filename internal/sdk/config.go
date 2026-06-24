@@ -48,6 +48,8 @@ type Config struct {
 	MaxPages    int           `yaml:"max_pages"`
 	Port            int           `yaml:"port"`
 	ExcludeNoindex  bool          `yaml:"exclude_noindex"`
+	ExcludeURLs     []string      `yaml:"exclude_urls"`
+	OnlyURLs        []string      `yaml:"only_urls"`
 }
 
 func DefaultConfig() Config {
@@ -157,6 +159,10 @@ func (c *Config) MergeFlag(name string, value string) {
 		}
 	case "exclude-noindex":
 		c.ExcludeNoindex = value == "true" || value == "1" || value == "yes"
+	case "exclude-urls":
+		c.ExcludeURLs = splitAndTrim(value)
+	case "only-urls":
+		c.OnlyURLs = splitAndTrim(value)
 	}
 }
 

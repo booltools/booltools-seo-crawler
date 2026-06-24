@@ -161,9 +161,44 @@ port: 9999</code></pre>
       <tr><td><code>--output</code></td><td>Write JSON report to file path</td><td>—</td></tr>
       <tr><td><code>--max-pages</code></td><td>Max pages to crawl (0 = unlimited)</td><td><code>0</code></td></tr>
       <tr><td><code>--port</code></td><td>Port to set as <code>PORT</code> env var for <code>--start-cmd</code> processes</td><td>—</td></tr>
+      <tr><td><code>--exclude-urls</code></td><td>Comma-separated URL patterns to exclude (supports <code>*</code> wildcard)</td><td>—</td></tr>
+      <tr><td><code>--only-urls</code></td><td>Comma-separated URL patterns to analyze exclusively (supports <code>*</code> wildcard)</td><td>—</td></tr>
+      <tr><td><code>--exclude-noindex</code></td><td>Skip SEO rules on noindex pages</td><td><code>false</code></td></tr>
       <tr><td><code>--config</code></td><td>Path to config file</td><td><code>.seo-crawler.yml</code></td></tr>
     </tbody>
   </table>
+
+  <h2>URL Filtering</h2>
+  <p>Use <code>--only-urls</code> to analyze only specific pages, or <code>--exclude-urls</code> to skip pages. Both support <code>*</code> wildcard patterns.</p>
+
+  <h3>Only analyze specific pages</h3>
+  <pre><code># Only analyze marketplace pages
+seo-crawler --mode=full --url=http://localhost:3000 --only-urls="/marketplace/*"
+
+# Only analyze blog and product pages
+seo-crawler --mode=full --url=http://localhost:3000 --only-urls="/blog/*,/products/*"
+
+# Analyze a specific route
+seo-crawler --mode=full --url=http://localhost:3000 --only-urls="/pricing"</code></pre>
+
+  <h3>Exclude pages from analysis</h3>
+  <pre><code># Skip admin and API pages
+seo-crawler --mode=full --url=http://localhost:3000 --exclude-urls="/admin/*,/api/*"
+
+# Skip legal pages
+seo-crawler --mode=full --url=http://localhost:3000 --exclude-urls="/privacy,/terms"</code></pre>
+
+  <h3>YAML config</h3>
+  <pre><code>mode: full
+url: http://localhost:3000
+only_urls:
+  - /marketplace/*
+  - /blog/*
+
+# Or exclude specific paths:
+# exclude_urls:
+#   - /admin/*
+#   - /api/*</code></pre>
 
   <h2>Exit Codes</h2>
   <table>

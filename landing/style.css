@@ -70,8 +70,9 @@ body {
   font-size: 1.1rem;
 }
 
-.logo-icon {
-  font-size: 1.4rem;
+.logo svg {
+  color: var(--color-primary);
+  flex-shrink: 0;
 }
 
 .nav-links {

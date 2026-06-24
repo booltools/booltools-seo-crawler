@@ -81,6 +81,9 @@ func (scanner *LiveScanner) Scan(config Config) (*ScanResult, error) {
 	}
 
 	for _, page := range crawlResult.Pages {
+		if !ShouldAnalyzeURL(page.URL, config.ExcludeURLs, config.OnlyURLs) {
+			continue
+		}
 		rules := scanner.analyzer.AnalyzePage(page)
 		pageResult := buildPageScanResult(page.URL, rules)
 		result.Pages = append(result.Pages, pageResult)

@@ -16,7 +16,9 @@ func (c *ResourceChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 	jsCountRule := valueobject.NewAuditRule("js_file_count", valueobject.CategoryPerformance, valueobject.SeverityLow)
 	jsCountRule.AffectedURL = page.URL
 	jsCount := len(page.Scripts)
-	if jsCount > 30 {
+	if jsCount > 30 && page.IsDevMode {
+		jsCountRule.Pass(fmt.Sprintf("Page loads %d JavaScript files (dev mode detected — bundler splits are expected)", jsCount))
+	} else if jsCount > 30 {
 		jsCountRule.Warn(
 			fmt.Sprintf("Page loads %d JavaScript files", jsCount),
 			"Reduce the number of JavaScript files. While HTTP/2 multiplexing handles many requests efficiently, excessive scripts may still impact parse time.",
@@ -66,7 +68,9 @@ func (c *ResourceChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 	totalRequests := jsCount + cssCount + len(page.Images)
 	requestRule := valueobject.NewAuditRule("total_requests", valueobject.CategoryPerformance, valueobject.SeverityMedium)
 	requestRule.AffectedURL = page.URL
-	if totalRequests > 50 {
+	if totalRequests > 50 && page.IsDevMode {
+		requestRule.Pass(fmt.Sprintf("High HTTP requests (%d) — dev mode detected, production builds will be optimized", totalRequests))
+	} else if totalRequests > 50 {
 		requestRule.Warn(
 			fmt.Sprintf("High number of HTTP requests (%d)", totalRequests),
 			"Reduce the total number of HTTP requests by combining files, using sprites, and lazy-loading resources.",

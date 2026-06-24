@@ -63,9 +63,8 @@ func (c *CanonicalChecker) Check(page crawler.PageData) []valueobject.AuditRule 
 
 	selfRefRule := valueobject.NewAuditRule("canonical_self_ref", valueobject.CategoryTechnical, valueobject.SeverityLow)
 	selfRefRule.AffectedURL = page.URL
-	normalizedPageURL := normalizeURL(page.URL)
-	normalizedCanonical := normalizeURL(effectiveCanonical)
-	if normalizedCanonical != normalizedPageURL {
+	canonicalMatchesPage := canonicalMatchesPageURL(page.URL, effectiveCanonical)
+	if !canonicalMatchesPage {
 		selfRefRule.Warn(
 			"Canonical URL points to a different page",
 			"Verify that the canonical URL is intentional. If this is the preferred version of the page, use a self-referencing canonical.",
@@ -91,6 +90,41 @@ func (c *CanonicalChecker) Check(page crawler.PageData) []valueobject.AuditRule 
 	}
 
 	return rules
+}
+
+func canonicalMatchesPageURL(pageURL string, canonicalURL string) bool {
+	normalizedPage := normalizeURL(pageURL)
+	normalizedCanonical := normalizeURL(canonicalURL)
+
+	if normalizedCanonical == normalizedPage {
+		return true
+	}
+
+	parsedPage, pageErr := url.Parse(pageURL)
+	if pageErr != nil {
+		return false
+	}
+
+	hostname := parsedPage.Hostname()
+	if hostname == "localhost" || hostname == "127.0.0.1" || hostname == "0.0.0.0" || hostname == "::1" {
+		pagePath := normalizePath(parsedPage.Path)
+		parsedCanonical, canonicalErr := url.Parse(canonicalURL)
+		if canonicalErr != nil {
+			return false
+		}
+		canonicalPath := normalizePath(parsedCanonical.Path)
+		return pagePath == canonicalPath
+	}
+
+	return false
+}
+
+func normalizePath(path string) string {
+	result := strings.TrimSuffix(strings.ToLower(path), "/")
+	if result == "" {
+		return "/"
+	}
+	return result
 }
 
 func normalizeURL(rawURL string) string {

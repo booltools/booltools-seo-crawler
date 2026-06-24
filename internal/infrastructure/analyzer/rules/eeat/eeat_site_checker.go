@@ -13,6 +13,8 @@ func (c *EEATSiteChecker) Check(result crawler.CrawlResult) []valueobject.AuditR
 	var rules []valueobject.AuditRule
 
 	foundPages := make(map[string]bool)
+	foundAnchors := make(map[string]bool)
+
 	for _, page := range result.Pages {
 		loweredURL := strings.ToLower(page.URL)
 		for _, pattern := range []string{"/about", "/about-us", "/contact", "/contact-us", "/privacy", "/terms", "/tos"} {
@@ -20,27 +22,49 @@ func (c *EEATSiteChecker) Check(result crawler.CrawlResult) []valueobject.AuditR
 				foundPages[pattern] = true
 			}
 		}
+
+		for _, link := range page.InternalLinks {
+			loweredLink := strings.ToLower(link.URL)
+			for _, anchor := range []string{"#about", "#contact"} {
+				if strings.Contains(loweredLink, anchor) {
+					foundAnchors[anchor] = true
+				}
+			}
+		}
+
+		if page.Document != nil {
+			if page.Document.Find("#about, [id='about'], #about-us, [id='about-us']").Length() > 0 {
+				foundAnchors["#about"] = true
+			}
+			if page.Document.Find("#contact, [id='contact'], #contact-us, [id='contact-us']").Length() > 0 {
+				foundAnchors["#contact"] = true
+			}
+		}
 	}
 
 	aboutRule := valueobject.NewAuditRule("eeat_about_page", valueobject.CategoryEEAT, valueobject.SeverityLow)
-	if !foundPages["/about"] && !foundPages["/about-us"] {
-		aboutRule.Warn(
-			"No About page found",
-			"Create an About page (/about or /about-us) that describes your organization, mission, and team. Note: single-page sites may include this as a section on the homepage.",
-		)
-	} else {
+	if foundPages["/about"] || foundPages["/about-us"] {
 		aboutRule.Pass("About page exists")
+	} else if foundAnchors["#about"] {
+		aboutRule.Pass("About section found as anchor on page")
+	} else {
+		aboutRule.Warn(
+			"No About page or section found",
+			"Create an About page (/about or /about-us) or add an #about section to your homepage.",
+		)
 	}
 	rules = append(rules, aboutRule)
 
 	contactRule := valueobject.NewAuditRule("eeat_contact_page", valueobject.CategoryEEAT, valueobject.SeverityLow)
-	if !foundPages["/contact"] && !foundPages["/contact-us"] {
-		contactRule.Warn(
-			"No Contact page found",
-			"Create a Contact page (/contact or /contact-us) with contact information. Note: single-page sites may include this as a section on the homepage.",
-		)
-	} else {
+	if foundPages["/contact"] || foundPages["/contact-us"] {
 		contactRule.Pass("Contact page exists")
+	} else if foundAnchors["#contact"] {
+		contactRule.Pass("Contact section found as anchor on page")
+	} else {
+		contactRule.Warn(
+			"No Contact page or section found",
+			"Create a Contact page (/contact or /contact-us) or add a #contact section to your homepage.",
+		)
 	}
 	rules = append(rules, contactRule)
 

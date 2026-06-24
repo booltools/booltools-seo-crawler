@@ -34,7 +34,9 @@ func (c *PageSpeedChecker) Check(page crawler.PageData) []valueobject.AuditRule 
 	htmlSizeRule := valueobject.NewAuditRule("html_size", valueobject.CategoryPerformance, valueobject.SeverityLow)
 	htmlSizeRule.AffectedURL = page.URL
 	htmlSizeKB := len(page.HTML) / 1024
-	if htmlSizeKB > 150 {
+	if htmlSizeKB > 150 && page.IsDevMode {
+		htmlSizeRule.Pass(fmt.Sprintf("HTML document is large (%d KB) — dev mode detected, production builds will be smaller", htmlSizeKB))
+	} else if htmlSizeKB > 150 {
 		htmlSizeRule.Warn(
 			fmt.Sprintf("HTML document is large (%d KB)", htmlSizeKB),
 			"Reduce HTML document size to under 150KB. Remove inline scripts/styles and use external files. Note: i18n pages or apps with inline data may exceed this threshold acceptably.",

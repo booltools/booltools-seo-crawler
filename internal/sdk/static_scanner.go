@@ -21,7 +21,7 @@ func NewStaticScanner(siteAnalyzer *analyzer.SiteAnalyzer) *StaticScanner {
 	return &StaticScanner{analyzer: siteAnalyzer}
 }
 
-func (scanner *StaticScanner) Scan(directory string) (*ScanResult, error) {
+func (scanner *StaticScanner) Scan(directory string, excludeURLs []string, onlyURLs []string) (*ScanResult, error) {
 	absDirectory, err := filepath.Abs(directory)
 	if err != nil {
 		return nil, fmt.Errorf("failed to resolve directory: %w", err)
@@ -63,12 +63,17 @@ func (scanner *StaticScanner) Scan(directory string) (*ScanResult, error) {
 			continue
 		}
 
+		allPages = append(allPages, pageData)
+
+		if !ShouldAnalyzeURL(pageData.URL, excludeURLs, onlyURLs) {
+			continue
+		}
+
 		rules := scanner.analyzer.AnalyzePage(pageData)
 		rules = filterNetworkDependentRules(rules)
 		pageResult := buildPageScanResult(pageData.URL, rules)
 		result.Pages = append(result.Pages, pageResult)
 		result.AllRules = append(result.AllRules, rules...)
-		allPages = append(allPages, pageData)
 	}
 	fmt.Fprintln(os.Stderr)
 

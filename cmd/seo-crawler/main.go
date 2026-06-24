@@ -27,6 +27,8 @@ func main() {
 	maxPagesFlag := flag.Int("max-pages", 0, "Max pages to crawl in full mode (0 = unlimited)")
 	portFlag := flag.Int("port", 0, "Port to set as PORT env var for --start-cmd processes (avoids port conflicts)")
 	excludeNoindexFlag := flag.Bool("exclude-noindex", false, "Skip SEO rules on noindex pages (only technical/performance/security rules apply)")
+	excludeURLsFlag := flag.String("exclude-urls", "", "Comma-separated URL patterns to exclude from analysis (supports * wildcard, e.g. /admin/*,/api/*)")
+	onlyURLsFlag := flag.String("only-urls", "", "Comma-separated URL patterns to analyze exclusively (supports * wildcard, e.g. /marketplace/*,/blog/*)")
 
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: seo-crawler [flags]\n\n")
@@ -49,7 +51,8 @@ func main() {
 	}
 
 	applyFlagOverrides(&config, modeFlag, dirFlag, urlFlag, failOnFlag, ignoreFlag,
-		onlyFlag, startCmdFlag, waitForFlag, waitTimeoutFlag, formatFlag, outputFlag, maxPagesFlag, portFlag, excludeNoindexFlag)
+		onlyFlag, startCmdFlag, waitForFlag, waitTimeoutFlag, formatFlag, outputFlag, maxPagesFlag, portFlag,
+		excludeNoindexFlag, excludeURLsFlag, onlyURLsFlag)
 
 	if err := config.Validate(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
@@ -66,7 +69,7 @@ func main() {
 	switch config.Mode {
 	case "static":
 		scanner := sdk.NewStaticScanner(siteAnalyzer)
-		result, err = scanner.Scan(config.Dir)
+		result, err = scanner.Scan(config.Dir, config.ExcludeURLs, config.OnlyURLs)
 	case "full":
 		siteCrawler := crawler.NewSiteCrawler()
 		scanner := sdk.NewLiveScanner(siteAnalyzer, siteCrawler)
@@ -88,6 +91,7 @@ func applyFlagOverrides(
 	startCmdFlag, waitForFlag, waitTimeoutFlag, formatFlag, outputFlag *string,
 	maxPagesFlag, portFlag *int,
 	excludeNoindexFlag *bool,
+	excludeURLsFlag, onlyURLsFlag *string,
 ) {
 	flagWasSet := make(map[string]bool)
 	flag.Visit(func(f *flag.Flag) {
@@ -138,5 +142,11 @@ func applyFlagOverrides(
 	}
 	if flagWasSet["exclude-noindex"] {
 		config.ExcludeNoindex = *excludeNoindexFlag
+	}
+	if flagWasSet["exclude-urls"] {
+		config.MergeFlag("exclude-urls", *excludeURLsFlag)
+	}
+	if flagWasSet["only-urls"] {
+		config.MergeFlag("only-urls", *onlyURLsFlag)
 	}
 }
