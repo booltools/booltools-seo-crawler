@@ -65,45 +65,9 @@ jobs:
             dist/seo-crawler-darwin-amd64
             dist/seo-crawler-darwin-arm64
 
-  sign-windows:
-    name: Sign Windows Binary
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download unsigned Windows binary
-        uses: actions/download-artifact@v4
-        with:
-          name: unsigned-windows-binary
-          path: unsigned
-
-      - name: Upload artifact for SignPath
-        id: upload-for-signing
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-binary-for-signing
-          path: unsigned/seo-crawler-windows-amd64.exe
-
-      - name: Submit signing request to SignPath
-        uses: signpath/github-action-submit-signing-request@v2
-        with:
-          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
-          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
-          project-slug: ${{ secrets.SIGNPATH_PROJECT_SLUG }}
-          signing-policy-slug: ${{ secrets.SIGNPATH_SIGNING_POLICY_SLUG }}
-          github-artifact-id: ${{ steps.upload-for-signing.outputs.artifact-id }}
-          wait-for-completion: true
-          wait-for-completion-timeout-in-seconds: 600
-          output-artifact-directory: signed
-
-      - name: Upload signed Windows binary
-        uses: actions/upload-artifact@v4
-        with:
-          name: signed-windows-binary
-          path: signed/seo-crawler-windows-amd64.exe
-
   release:
     name: Create GitHub Release
-    needs: [build, sign-windows]
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
