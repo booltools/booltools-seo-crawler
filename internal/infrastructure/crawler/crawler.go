@@ -53,21 +53,14 @@ func NewSiteCrawler() *SiteCrawler {
 type OnPageCallback func(page PageData, pagesCompleted int, totalDiscovered int)
 
 func (sc *SiteCrawler) Crawl(targetDomain string, maxPages int, onPage OnPageCallback) (*CrawlResult, error) {
+	targetDomain = normalizeURL(targetDomain)
+
 	parsedURL, err := url.Parse(targetDomain)
 	if err != nil {
 		return nil, fmt.Errorf("invalid domain URL: %w", err)
 	}
 
 	hostname := parsedURL.Hostname()
-
-	if parsedURL.Scheme == "" {
-		if isLocalhostHost(hostname) {
-			parsedURL.Scheme = "http"
-		} else {
-			parsedURL.Scheme = "https"
-		}
-		targetDomain = parsedURL.String()
-	}
 
 	result := &CrawlResult{
 		Pages:          make([]PageData, 0),
@@ -443,6 +436,28 @@ func fetchSiteFiles(baseURL string, result *CrawlResult) {
 	}
 
 	waitGroup.Wait()
+}
+
+func normalizeURL(rawURL string) string {
+	rawURL = strings.TrimSpace(rawURL)
+	if rawURL == "" {
+		return rawURL
+	}
+
+	if strings.Contains(rawURL, "://") {
+		return rawURL
+	}
+
+	host := rawURL
+	if slashIndex := strings.Index(rawURL, "/"); slashIndex > 0 {
+		host = rawURL[:slashIndex]
+	}
+
+	if isLocalhostHost(strings.Split(host, ":")[0]) {
+		return "http://" + rawURL
+	}
+
+	return "https://" + rawURL
 }
 
 func isLocalhostHost(hostname string) bool {
