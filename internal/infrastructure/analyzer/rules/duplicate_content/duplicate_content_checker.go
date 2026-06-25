@@ -3,6 +3,7 @@ package duplicate_content
 import (
 	"crypto/sha256"
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/booltools/booltools-seo-crawler/internal/domain/valueobject"
@@ -14,26 +15,33 @@ type DuplicateContentChecker struct{}
 func (c *DuplicateContentChecker) Check(result crawler.CrawlResult) []valueobject.AuditRule {
 	var rules []valueobject.AuditRule
 
+	seenBaseURLs := make(map[string]bool)
 	contentHashes := make(map[string][]string)
 	titleMap := make(map[string][]string)
 	descriptionMap := make(map[string][]string)
 
 	for _, page := range result.Pages {
+		baseURL := stripFragment(page.URL)
+		if seenBaseURLs[baseURL] {
+			continue
+		}
+		seenBaseURLs[baseURL] = true
+
 		bodyText := strings.TrimSpace(page.BodyText)
 		if bodyText != "" {
 			hash := fmt.Sprintf("%x", sha256.Sum256([]byte(bodyText)))
-			contentHashes[hash] = append(contentHashes[hash], page.URL)
+			contentHashes[hash] = append(contentHashes[hash], baseURL)
 		}
 
 		title := strings.TrimSpace(page.Document.Find("title").Text())
 		if title != "" {
-			titleMap[title] = append(titleMap[title], page.URL)
+			titleMap[title] = append(titleMap[title], baseURL)
 		}
 
 		desc, _ := page.Document.Find(`meta[name="description"]`).Attr("content")
 		desc = strings.TrimSpace(desc)
 		if desc != "" {
-			descriptionMap[desc] = append(descriptionMap[desc], page.URL)
+			descriptionMap[desc] = append(descriptionMap[desc], baseURL)
 		}
 	}
 
@@ -132,4 +140,13 @@ func (c *DuplicateContentChecker) Check(result crawler.CrawlResult) []valueobjec
 	rules = append(rules, descRule)
 
 	return rules
+}
+
+func stripFragment(rawURL string) string {
+	parsed, err := url.Parse(rawURL)
+	if err != nil {
+		return rawURL
+	}
+	parsed.Fragment = ""
+	return parsed.String()
 }

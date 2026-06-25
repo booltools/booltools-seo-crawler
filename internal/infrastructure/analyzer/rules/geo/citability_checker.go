@@ -18,7 +18,7 @@ var questionPattern = regexp.MustCompile(`(?i)(what|how|why|when|where|which|who
 func (c *CitabilityChecker) Check(result crawler.CrawlResult) []valueobject.AuditRule {
 	var rules []valueobject.AuditRule
 
-	totalPages := 0
+	contentPages := 0
 	pagesWithStats := 0
 	pagesWithFAQ := 0
 	pagesWithTables := 0
@@ -26,7 +26,10 @@ func (c *CitabilityChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 	pagesWithQuestionHeadings := 0
 
 	for _, page := range result.Pages {
-		totalPages++
+		if crawler.IsNonEditorialPage(page.URL) || page.IsNoindex {
+			continue
+		}
+		contentPages++
 
 		if numberPattern.MatchString(page.BodyText) {
 			pagesWithStats++
@@ -52,12 +55,12 @@ func (c *CitabilityChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 		})
 	}
 
-	if totalPages == 0 {
+	if contentPages == 0 {
 		return rules
 	}
 
 	statsRule := valueobject.NewAuditRule("geo_citability_statistics", valueobject.CategoryGEO, valueobject.SeverityLow)
-	statsRatio := float64(pagesWithStats) / float64(totalPages) * 100
+	statsRatio := float64(pagesWithStats) / float64(contentPages) * 100
 	if statsRatio < 30 {
 		statsRule.Warn(
 			fmt.Sprintf("Only %.0f%% of pages contain specific data points or statistics", statsRatio),

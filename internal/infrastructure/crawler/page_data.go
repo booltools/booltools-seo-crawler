@@ -39,12 +39,14 @@ type LinkData struct {
 }
 
 type ImageData struct {
-	URL    string
-	Alt    string
-	Width  string
-	Height string
-	Loading string
-	Size   int64
+	URL              string
+	Alt              string
+	Width            string
+	Height           string
+	Loading          string
+	Size             int64
+	FetchPriority    string
+	HasPictureSource bool
 }
 
 type ResourceData struct {

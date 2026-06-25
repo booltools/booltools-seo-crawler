@@ -1,186 +1,408 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Getting Started — Booltools SEO Crawler</title>
-  <meta name="description" content="Install and run the Booltools SEO Crawler locally in a few minutes. Prerequisites, setup guide, Docker deployment, and development commands." />
-  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html" />
-  <meta name="author" content="Booltools" />
-  <meta property="og:title" content="Getting Started — Booltools SEO Crawler" />
-  <meta property="og:description" content="Install and run the Booltools SEO Crawler locally in a few minutes. Prerequisites, setup guide, Docker deployment, and development commands." />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html" />
-  <meta property="og:locale" content="en_US" />
-  <meta property="og:site_name" content="Booltools SEO Crawler" />
-  <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@booltools" />
-  <meta name="twitter:title" content="Getting Started — Booltools SEO Crawler" />
-  <meta name="twitter:description" content="Install and run the Booltools SEO Crawler locally in a few minutes." />
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="docs.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Getting Started — Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html","description":"Install and run the Booltools SEO Crawler locally in a few minutes.","dateModified":"2026-06-22","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/"},"author":{"@type":"Organization","name":"Booltools","url":"https://github.com/booltools"}}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://booltools.github.io/booltools-seo-crawler/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://booltools.github.io/booltools-seo-crawler/docs/"},{"@type":"ListItem","position":3,"name":"Getting Started","item":"https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html"}]}</script>
-</head>
-<body>
-  <header class="docs-header">
-    <a href="../" class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Booltools SEO Crawler</span></a>
-    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Getting Started — Booltools SEO Crawler</title>
+    <meta
+      name="description"
+      content="Install and run the Booltools SEO Crawler locally in a few minutes. Prerequisites, setup guide, Docker deployment, and development commands."
+    />
+    <link
+      rel="canonical"
+      href="https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html"
+    />
+    <meta name="author" content="Booltools" />
+    <meta
+      property="og:title"
+      content="Getting Started — Booltools SEO Crawler"
+    />
+    <meta
+      property="og:description"
+      content="Install and run the Booltools SEO Crawler locally in a few minutes. Prerequisites, setup guide, Docker deployment, and development commands."
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Booltools SEO Crawler" />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@booltools" />
+    <meta
+      name="twitter:title"
+      content="Getting Started — Booltools SEO Crawler"
+    />
+    <meta
+      name="twitter:description"
+      content="Install and run the Booltools SEO Crawler locally in a few minutes."
+    />
+    <meta
+      name="twitter:image"
+      content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="docs.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Getting Started — Booltools SEO Crawler",
+        "url": "https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html",
+        "description": "Install and run the Booltools SEO Crawler locally in a few minutes.",
+        "dateModified": "2026-06-22",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "Booltools SEO Crawler",
+          "url": "https://booltools.github.io/booltools-seo-crawler/"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "Booltools",
+          "url": "https://github.com/booltools"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://booltools.github.io/booltools-seo-crawler/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Docs",
+            "item": "https://booltools.github.io/booltools-seo-crawler/docs/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Getting Started",
+            "item": "https://booltools.github.io/booltools-seo-crawler/docs/getting-started.html"
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="docs-header">
+      <a href="../" class="logo"
+        ><svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <span>Booltools SEO Crawler</span></a
+      >
+      <a
+        href="https://github.com/booltools/booltools-seo-crawler"
+        class="back-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        >GitHub</a
+      >
+    </header>
 
-  <div class="docs-page">
-    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </svg>
-      <span>Menu</span>
-    </button>
-    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+    <div class="docs-page">
+      <button
+        id="docs-menu-toggle"
+        class="docs-menu-toggle"
+        aria-label="Toggle menu"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+        <span>Menu</span>
+      </button>
+      <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
 
-    <aside class="docs-sidebar">
-      <nav aria-label="Documentation navigation">
+      <aside class="docs-sidebar">
+        <nav aria-label="Documentation navigation">
+          <ul>
+            <li><a href="./">Overview</a></li>
+            <li>
+              <a href="getting-started.html" class="active">Getting Started</a>
+            </li>
+            <li><a href="web-ui.html">Web UI Guide</a></li>
+            <li><a href="sdk.html">CI/CD SDK</a></li>
+            <li><a href="rules.html">Rules Reference</a></li>
+            <li><a href="presets.html">Rule Presets</a></li>
+            <li><a href="localhost.html">Localhost Crawling</a></li>
+            <li><a href="api.html">API Reference</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <article class="docs-content">
+        <h1>Getting Started</h1>
+        <p>
+          Set up and run the Booltools SEO Crawler locally in a few minutes.
+        </p>
+
+        <h2>Prerequisites</h2>
         <ul>
-          <li><a href="./">Overview</a></li>
-          <li><a href="getting-started.html" class="active">Getting Started</a></li>
-          <li><a href="web-ui.html">Web UI Guide</a></li>
-          <li><a href="sdk.html">CI/CD SDK</a></li>
-          <li><a href="rules.html">Rules Reference</a></li>
-          <li><a href="presets.html">Rule Presets</a></li>
-          <li><a href="localhost.html">Localhost Crawling</a></li>
-          <li><a href="api.html">API Reference</a></li>
+          <li><strong>Go</strong> 1.21 or later</li>
+          <li><strong>Node.js</strong> 22 or later (for the frontend)</li>
+          <li><strong>npm</strong> (comes with Node.js)</li>
         </ul>
-      </nav>
-    </aside>
 
-    <article class="docs-content">
-      <h1>Getting Started</h1>
-      <p>Set up and run the Booltools SEO Crawler locally in a few minutes.</p>
+        <h2>Installation</h2>
 
-      <h2>Prerequisites</h2>
-      <ul>
-        <li><strong>Go</strong> 1.21 or later</li>
-        <li><strong>Node.js</strong> 22 or later (for the frontend)</li>
-        <li><strong>npm</strong> (comes with Node.js)</li>
-      </ul>
-
-      <h2>Installation</h2>
-
-      <h3>1. Clone the repository</h3>
-      <pre><code>git clone https://github.com/booltools/booltools-seo-crawler.git
+        <h3>1. Clone the repository</h3>
+        <pre><code>git clone https://github.com/booltools/booltools-seo-crawler.git
 cd booltools-seo-crawler</code></pre>
 
-      <h3>2. Install Go dependencies</h3>
-      <pre><code>go mod tidy</code></pre>
+        <h3>2. Install Go dependencies</h3>
+        <pre><code>go mod tidy</code></pre>
 
-      <h3>3. Install frontend dependencies</h3>
-      <pre><code>cd web
+        <h3>3. Install frontend dependencies</h3>
+        <pre><code>cd web
 npm install
 cd ..</code></pre>
 
-      <h2>Running in Development</h2>
+        <h2>Running in Development</h2>
 
-      <h3>Start the backend</h3>
-      <pre><code>make dev
+        <h3>Start the backend</h3>
+        <pre><code>make dev
 # or: go run ./cmd/server</code></pre>
-      <p>The API server starts at <code>http://localhost:8080</code>.</p>
+        <p>The API server starts at <code>http://localhost:8080</code>.</p>
 
-      <h3>Start the frontend</h3>
-      <pre><code>cd web
+        <h3>Start the frontend</h3>
+        <pre><code>cd web
 npm run dev</code></pre>
-      <p>The web interface is available at <code>http://localhost:4321</code>.</p>
+        <p>
+          The web interface is available at <code>http://localhost:4321</code>.
+        </p>
 
-      <h2>Building for Production</h2>
+        <h2>Building for Production</h2>
 
-      <h3>Build the backend</h3>
-      <pre><code>make build
+        <h3>Build the backend</h3>
+        <pre><code>make build
 # Binary output: bin/booltools-seo-crawler</code></pre>
 
-      <h3>Build the SDK CLI</h3>
-      <pre><code>make build-sdk
+        <h3>Build the SDK CLI</h3>
+        <pre><code>make build-sdk
 # Binary output: bin/seo-crawler</code></pre>
 
-      <h3>Build the frontend</h3>
-      <pre><code>cd web
+        <h3>Build the frontend</h3>
+        <pre><code>cd web
 npm run build</code></pre>
 
-      <h2>Docker Deployment</h2>
-      <pre><code>docker compose up --build</code></pre>
-      <p>The app will be available at <code>http://localhost:4321</code> with the API at <code>http://localhost:8080</code>.</p>
+        <h2>Docker Deployment</h2>
+        <pre><code>docker compose up --build</code></pre>
+        <p>
+          The app will be available at <code>http://localhost:4321</code> with
+          the API at <code>http://localhost:8080</code>.
+        </p>
 
-      <h2>Running Tests</h2>
-      <pre><code>make test
+        <h2>Running Tests</h2>
+        <pre><code>make test
 # or: go test ./... -v -count=1</code></pre>
 
-      <h2>Development Commands</h2>
-      <table>
-        <thead><tr><th>Command</th><th>Description</th></tr></thead>
-        <tbody>
-          <tr><td><code>make build</code></td><td>Build backend binary</td></tr>
-          <tr><td><code>make build-sdk</code></td><td>Build SDK CLI</td></tr>
-          <tr><td><code>make build-all</code></td><td>Build both</td></tr>
-          <tr><td><code>make dev</code></td><td>Run backend (dev mode)</td></tr>
-          <tr><td><code>make test</code></td><td>Run all tests</td></tr>
-          <tr><td><code>make lint</code></td><td>Run go vet</td></tr>
-          <tr><td><code>make tidy</code></td><td>Run go mod tidy</td></tr>
-          <tr><td><code>make web-dev</code></td><td>Start frontend dev server</td></tr>
-          <tr><td><code>make web-build</code></td><td>Build frontend for production</td></tr>
-          <tr><td><code>make clean</code></td><td>Remove build artifacts</td></tr>
-        </tbody>
-      </table>
+        <h2>Development Commands</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>make build</code></td>
+              <td>Build backend binary</td>
+            </tr>
+            <tr>
+              <td><code>make build-sdk</code></td>
+              <td>Build SDK CLI</td>
+            </tr>
+            <tr>
+              <td><code>make build-all</code></td>
+              <td>Build both</td>
+            </tr>
+            <tr>
+              <td><code>make dev</code></td>
+              <td>Run backend (dev mode)</td>
+            </tr>
+            <tr>
+              <td><code>make test</code></td>
+              <td>Run all tests</td>
+            </tr>
+            <tr>
+              <td><code>make lint</code></td>
+              <td>Run go vet</td>
+            </tr>
+            <tr>
+              <td><code>make tidy</code></td>
+              <td>Run go mod tidy</td>
+            </tr>
+            <tr>
+              <td><code>make web-dev</code></td>
+              <td>Start frontend dev server</td>
+            </tr>
+            <tr>
+              <td><code>make web-build</code></td>
+              <td>Build frontend for production</td>
+            </tr>
+            <tr>
+              <td><code>make clean</code></td>
+              <td>Remove build artifacts</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <blockquote>
-        <p><strong>Windows:</strong> install Make with <code>winget install GnuWin32.Make</code></p>
-      </blockquote>
+        <blockquote>
+          <p>
+            <strong>Windows:</strong> install Make with
+            <code>winget install GnuWin32.Make</code>
+          </p>
+        </blockquote>
 
-      <h2>Troubleshooting</h2>
-      <dl>
-        <dt>Port 8080 already in use</dt>
-        <dd>Another process is using port 8080. Stop it or set the <code>PORT</code> environment variable to use a different port.</dd>
-        <dt>Node.js version error during frontend build</dt>
-        <dd>Astro requires Node.js 22 or later. Run <code>node --version</code> to check and update if needed using <code>nvm install 22</code>.</dd>
-        <dt>Go module download fails</dt>
-        <dd>Ensure you have internet access and Go 1.21+ installed. Run <code>go version</code> to verify. If behind a proxy, set <code>GOPROXY</code> appropriately.</dd>
-      </dl>
+        <h2>Troubleshooting</h2>
+        <dl>
+          <dt>Port 8080 already in use</dt>
+          <dd>
+            Another process is using port 8080. Stop it or set the
+            <code>PORT</code> environment variable to use a different port.
+          </dd>
+          <dt>Node.js version error during frontend build</dt>
+          <dd>
+            Astro requires Node.js 22 or later. Run
+            <code>node --version</code> to check and update if needed using
+            <code>nvm install 22</code>.
+          </dd>
+          <dt>Go module download fails</dt>
+          <dd>
+            Ensure you have internet access and Go 1.21+ installed. Run
+            <code>go version</code> to verify. If behind a proxy, set
+            <code>GOPROXY</code> appropriately.
+          </dd>
+        </dl>
 
-      <h2>What You'll See</h2>
-      <p>After running an analysis, you'll get a comprehensive report like this:</p>
-      <div style="margin:1.5rem 0;border:1px solid #2a2a3a;border-radius:12px;overflow:hidden;background:#1a1a2e;">
-        <img src="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/report.png" alt="Audit report example" loading="lazy" width="1280" height="800" style="width:100%;height:auto;display:block;" />
-        <p style="padding:0.5rem 0.75rem;font-size:0.78rem;color:#9494a8;text-align:center;margin:0;">Full audit report with SEO and GEO scores, issues by category, and export options.</p>
-      </div>
+        <h2>What You'll See</h2>
+        <p>
+          After running an analysis, you'll get a comprehensive report like
+          this:
+        </p>
+        <div
+          style="
+            margin: 1.5rem 0;
+            border: 1px solid #2a2a3a;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #1a1a2e;
+          "
+        >
+          <img
+            src="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/report.png"
+            alt="Audit report example"
+            loading="lazy"
+            width="1280"
+            height="800"
+            style="width: 100%; height: auto; display: block"
+          />
+          <p
+            style="
+              padding: 0.5rem 0.75rem;
+              font-size: 0.78rem;
+              color: #9494a8;
+              text-align: center;
+              margin: 0;
+            "
+          >
+            Full audit report with SEO and GEO scores, issues by category, and
+            export options.
+          </p>
+        </div>
 
-      <h2>Next Steps</h2>
-      <p>Once running, try analyzing <code>localhost:4321</code> from the web interface to audit the crawler's own frontend. Then explore the <a href="sdk.html">CI/CD SDK documentation</a> to integrate SEO checks into your deployment pipeline, or browse the <a href="rules.html">Rules Reference</a> to understand what each of the 130+ rules checks.</p>
-    </article>
-  </div>
-  <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">
-    <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:none;">Booltools</a> &bull; MIT License</p>
-  </footer>
-  <script>
-    (function() {
-      var toggle = document.getElementById('docs-menu-toggle');
-      var sidebar = document.querySelector('.docs-sidebar');
-      var overlay = document.getElementById('docs-drawer-overlay');
-      function toggleDrawer() {
-        var isOpen = sidebar.classList.contains('open');
-        sidebar.classList.toggle('open', !isOpen);
-        overlay.classList.toggle('visible', !isOpen);
-        document.body.style.overflow = !isOpen ? 'hidden' : '';
-      }
-      toggle.addEventListener('click', toggleDrawer);
-      overlay.addEventListener('click', toggleDrawer);
-      sidebar.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', function() {
-          if (sidebar.classList.contains('open')) toggleDrawer();
+        <h2>Next Steps</h2>
+        <p>
+          Once running, try analyzing <code>localhost:4321</code> from the web
+          interface to audit the crawler's own frontend. Then explore the
+          <a href="sdk.html">CI/CD SDK documentation</a> to integrate SEO checks
+          into your deployment pipeline, or browse the
+          <a href="rules.html">Rules Reference</a> to understand what each of
+          the 130+ rules checks.
+        </p>
+      </article>
+    </div>
+    <footer
+      style="
+        text-align: center;
+        padding: 2rem;
+        color: #9494a8;
+        font-size: 0.82rem;
+        border-top: 1px solid #2a2a3a;
+        margin-top: 3rem;
+      "
+    >
+      <p>
+        Copyright &copy; 2026
+        <a
+          href="https://github.com/booltools"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="color: #818cf8; text-decoration: none"
+          >Booltools</a
+        >
+        &bull; MIT License
+      </p>
+    </footer>
+    <script>
+      (function () {
+        var toggle = document.getElementById("docs-menu-toggle");
+        var sidebar = document.querySelector(".docs-sidebar");
+        var overlay = document.getElementById("docs-drawer-overlay");
+        function toggleDrawer() {
+          var isOpen = sidebar.classList.contains("open");
+          sidebar.classList.toggle("open", !isOpen);
+          overlay.classList.toggle("visible", !isOpen);
+          document.body.style.overflow = !isOpen ? "hidden" : "";
+        }
+        toggle.addEventListener("click", toggleDrawer);
+        overlay.addEventListener("click", toggleDrawer);
+        sidebar.querySelectorAll("a").forEach(function (link) {
+          link.addEventListener("click", function () {
+            if (sidebar.classList.contains("open")) toggleDrawer();
+          });
         });
-      });
-    })();
-  </script>
-</body>
+      })();
+    </script>
+  </body>
 </html>

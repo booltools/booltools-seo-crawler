@@ -1,106 +1,247 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Localhost Crawling — Booltools SEO Crawler</title>
-  <meta name="description" content="Analyze localhost applications for SEO before deployment. Supports Next.js, Astro, Nuxt, Vite, and static site generators with framework-specific examples." />
-  <link rel="canonical" href="https://booltools.github.io/booltools-seo-crawler/docs/localhost.html" />
-  <meta name="author" content="Booltools" />
-  <meta property="og:title" content="Localhost Crawling — Booltools SEO Crawler" />
-  <meta property="og:description" content="Analyze localhost applications for SEO before deployment. Framework-specific examples for Next.js, Astro, Nuxt, and static site generators." />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://booltools.github.io/booltools-seo-crawler/docs/localhost.html" />
-  <meta property="og:locale" content="en_US" />
-  <meta property="og:site_name" content="Booltools SEO Crawler" />
-  <meta property="og:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:site" content="@booltools" />
-  <meta name="twitter:title" content="Localhost Crawling — Booltools SEO Crawler" />
-  <meta name="twitter:description" content="Analyze localhost applications for SEO before deployment." />
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="docs.css" />
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Localhost Crawling — Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/docs/localhost.html","description":"Analyze localhost applications for SEO before deployment.","dateModified":"2026-06-22","isPartOf":{"@type":"WebSite","name":"Booltools SEO Crawler","url":"https://booltools.github.io/booltools-seo-crawler/"},"author":{"@type":"Organization","name":"Booltools","url":"https://github.com/booltools"}}</script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://booltools.github.io/booltools-seo-crawler/"},{"@type":"ListItem","position":2,"name":"Docs","item":"https://booltools.github.io/booltools-seo-crawler/docs/"},{"@type":"ListItem","position":3,"name":"Localhost Crawling","item":"https://booltools.github.io/booltools-seo-crawler/docs/localhost.html"}]}</script>
-</head>
-<body>
-  <header class="docs-header">
-    <a href="../" class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> <span>Booltools SEO Crawler</span></a>
-    <a href="https://github.com/booltools/booltools-seo-crawler" class="back-link" target="_blank" rel="noopener noreferrer">GitHub</a>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Localhost Crawling — Booltools SEO Crawler</title>
+    <meta
+      name="description"
+      content="Analyze localhost applications for SEO before deployment. Supports Next.js, Astro, Nuxt, Vite, and static site generators with framework-specific examples."
+    />
+    <link
+      rel="canonical"
+      href="https://booltools.github.io/booltools-seo-crawler/docs/localhost.html"
+    />
+    <meta name="author" content="Booltools" />
+    <meta
+      property="og:title"
+      content="Localhost Crawling — Booltools SEO Crawler"
+    />
+    <meta
+      property="og:description"
+      content="Analyze localhost applications for SEO before deployment. Framework-specific examples for Next.js, Astro, Nuxt, and static site generators."
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://booltools.github.io/booltools-seo-crawler/docs/localhost.html"
+    />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Booltools SEO Crawler" />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@booltools" />
+    <meta
+      name="twitter:title"
+      content="Localhost Crawling — Booltools SEO Crawler"
+    />
+    <meta
+      name="twitter:description"
+      content="Analyze localhost applications for SEO before deployment."
+    />
+    <meta
+      name="twitter:image"
+      content="https://raw.githubusercontent.com/booltools/booltools-seo-crawler/master/web/public/screenshots/home.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="docs.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Localhost Crawling — Booltools SEO Crawler",
+        "url": "https://booltools.github.io/booltools-seo-crawler/docs/localhost.html",
+        "description": "Analyze localhost applications for SEO before deployment.",
+        "dateModified": "2026-06-22",
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": "Booltools SEO Crawler",
+          "url": "https://booltools.github.io/booltools-seo-crawler/"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "Booltools",
+          "url": "https://github.com/booltools"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://booltools.github.io/booltools-seo-crawler/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Docs",
+            "item": "https://booltools.github.io/booltools-seo-crawler/docs/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Localhost Crawling",
+            "item": "https://booltools.github.io/booltools-seo-crawler/docs/localhost.html"
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="docs-header">
+      <a href="../" class="logo"
+        ><svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <span>Booltools SEO Crawler</span></a
+      >
+      <a
+        href="https://github.com/booltools/booltools-seo-crawler"
+        class="back-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        >GitHub</a
+      >
+    </header>
 
-  <div class="docs-page">
-    <button id="docs-menu-toggle" class="docs-menu-toggle" aria-label="Toggle menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </svg>
-      <span>Menu</span>
-    </button>
-    <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
+    <div class="docs-page">
+      <button
+        id="docs-menu-toggle"
+        class="docs-menu-toggle"
+        aria-label="Toggle menu"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+        <span>Menu</span>
+      </button>
+      <div id="docs-drawer-overlay" class="docs-drawer-overlay"></div>
 
-    <aside class="docs-sidebar">
-      <nav aria-label="Documentation navigation">
+      <aside class="docs-sidebar">
+        <nav aria-label="Documentation navigation">
+          <ul>
+            <li><a href="./">Overview</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="web-ui.html">Web UI Guide</a></li>
+            <li><a href="sdk.html">CI/CD SDK</a></li>
+            <li><a href="rules.html">Rules Reference</a></li>
+            <li><a href="presets.html">Rule Presets</a></li>
+            <li>
+              <a href="localhost.html" class="active">Localhost Crawling</a>
+            </li>
+            <li><a href="api.html">API Reference</a></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <article class="docs-content">
+        <h1>Localhost Crawling</h1>
+        <p>
+          The SEO Crawler can analyze applications running on your local
+          machine. This is useful for testing SEO before deployment.
+        </p>
+
+        <h2>Web UI</h2>
+        <p>Simply enter your localhost URL in the domain input:</p>
+        <pre><code>localhost:3000</code></pre>
+        <p>
+          The crawler automatically uses <code>http://</code> for localhost
+          addresses. You can also use:
+        </p>
         <ul>
-          <li><a href="./">Overview</a></li>
-          <li><a href="getting-started.html">Getting Started</a></li>
-          <li><a href="web-ui.html">Web UI Guide</a></li>
-          <li><a href="sdk.html">CI/CD SDK</a></li>
-          <li><a href="rules.html">Rules Reference</a></li>
-          <li><a href="presets.html">Rule Presets</a></li>
-          <li><a href="localhost.html" class="active">Localhost Crawling</a></li>
-          <li><a href="api.html">API Reference</a></li>
+          <li><code>localhost:3000</code></li>
+          <li><code>http://localhost:3000</code></li>
+          <li><code>127.0.0.1:3000</code></li>
+          <li><code>http://127.0.0.1:8080</code></li>
         </ul>
-      </nav>
-    </aside>
 
-    <article class="docs-content">
-      <h1>Localhost Crawling</h1>
-      <p>The SEO Crawler can analyze applications running on your local machine. This is useful for testing SEO before deployment.</p>
+        <h2>SDK CLI</h2>
+        <p>Use the <code>--url</code> flag with a localhost address:</p>
+        <pre><code>seo-crawler --mode=full --url=http://localhost:3000</code></pre>
 
-      <h2>Web UI</h2>
-      <p>Simply enter your localhost URL in the domain input:</p>
-      <pre><code>localhost:3000</code></pre>
-      <p>The crawler automatically uses <code>http://</code> for localhost addresses. You can also use:</p>
-      <ul>
-        <li><code>localhost:3000</code></li>
-        <li><code>http://localhost:3000</code></li>
-        <li><code>127.0.0.1:3000</code></li>
-        <li><code>http://127.0.0.1:8080</code></li>
-      </ul>
-
-      <h2>SDK CLI</h2>
-      <p>Use the <code>--url</code> flag with a localhost address:</p>
-      <pre><code>seo-crawler --mode=full --url=http://localhost:3000</code></pre>
-
-      <h3>With auto-start</h3>
-      <p>The SDK can start your dev server before crawling:</p>
-      <pre><code>seo-crawler --mode=full \
+        <h3>With auto-start</h3>
+        <p>The SDK can start your dev server before crawling:</p>
+        <pre><code>seo-crawler --mode=full \
   --start-cmd="npm run dev" \
   --wait-for=http://localhost:3000 \
   --url=http://localhost:3000 \
   --wait-timeout=60s</code></pre>
 
-      <h2>Rules to Ignore for Localhost</h2>
-      <p>Some rules will always fail on localhost because they check for production requirements. Add these to your <code>.seo-crawler.yml</code> ignore list:</p>
+        <h2>Rules to Ignore for Localhost</h2>
+        <p>
+          Some rules will always fail on localhost because they check for
+          production requirements. Add these to your
+          <code>.seo-crawler.yml</code> ignore list:
+        </p>
 
-      <table>
-        <thead><tr><th>Rule</th><th>Why it fails on localhost</th></tr></thead>
-        <tbody>
-          <tr><td><code>uses_https</code></td><td>Localhost typically runs on HTTP</td></tr>
-          <tr><td><code>hsts_header</code></td><td>HSTS is a production HTTPS feature</td></tr>
-          <tr><td><code>mixed_content</code></td><td>Mixed content warnings are HTTP vs HTTPS</td></tr>
-          <tr><td><code>security_csp</code></td><td>CSP headers are usually set at the CDN/proxy level</td></tr>
-          <tr><td><code>security_permissions</code></td><td>Permissions-Policy is a production header</td></tr>
-        </tbody>
-      </table>
+        <table>
+          <thead>
+            <tr>
+              <th>Rule</th>
+              <th>Why it fails on localhost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>uses_https</code></td>
+              <td>Localhost typically runs on HTTP</td>
+            </tr>
+            <tr>
+              <td><code>hsts_header</code></td>
+              <td>HSTS is a production HTTPS feature</td>
+            </tr>
+            <tr>
+              <td><code>mixed_content</code></td>
+              <td>Mixed content warnings are HTTP vs HTTPS</td>
+            </tr>
+            <tr>
+              <td><code>security_csp</code></td>
+              <td>CSP headers are usually set at the CDN/proxy level</td>
+            </tr>
+            <tr>
+              <td><code>security_permissions</code></td>
+              <td>Permissions-Policy is a production header</td>
+            </tr>
+          </tbody>
+        </table>
 
-      <h3>Example config for localhost testing</h3>
-      <pre><code># .seo-crawler.yml
+        <h3>Example config for localhost testing</h3>
+        <pre><code># .seo-crawler.yml
 mode: full
 url: http://localhost:3000
 start_cmd: "npm run dev"
@@ -117,57 +258,78 @@ ignore:
   - security_xcto
   - security_xfo</code></pre>
 
-      <h2>Frameworks</h2>
+        <h2>Frameworks</h2>
 
-      <h3>Next.js</h3>
-      <pre><code>seo-crawler --mode=full \
+        <h3>Next.js</h3>
+        <pre><code>seo-crawler --mode=full \
   --start-cmd="npm run dev" \
   --wait-for=http://localhost:3000 \
   --url=http://localhost:3000</code></pre>
 
-      <h3>Astro</h3>
-      <pre><code>seo-crawler --mode=full \
+        <h3>Astro</h3>
+        <pre><code>seo-crawler --mode=full \
   --start-cmd="npm run dev" \
   --wait-for=http://localhost:4321 \
   --url=http://localhost:4321</code></pre>
 
-      <h3>Nuxt</h3>
-      <pre><code>seo-crawler --mode=full \
+        <h3>Nuxt</h3>
+        <pre><code>seo-crawler --mode=full \
   --start-cmd="npm run dev" \
   --wait-for=http://localhost:3000 \
   --url=http://localhost:3000</code></pre>
 
-      <h3>Static sites (Vite, Gatsby, Hugo)</h3>
-      <p>For static site generators, use static mode with the output directory:</p>
-      <pre><code># Build first
+        <h3>Static sites (Vite, Gatsby, Hugo)</h3>
+        <p>
+          For static site generators, use static mode with the output directory:
+        </p>
+        <pre><code># Build first
 npm run build
 
 # Then scan
 seo-crawler --mode=static --dir=./dist</code></pre>
-    </article>
-  </div>
-  <footer style="text-align:center;padding:2rem;color:#9494a8;font-size:0.82rem;border-top:1px solid #2a2a3a;margin-top:3rem;">
-    <p>Copyright &copy; 2026 <a href="https://github.com/booltools" target="_blank" rel="noopener noreferrer" style="color:#818cf8;text-decoration:none;">Booltools</a> &bull; MIT License</p>
-  </footer>
-  <script>
-    (function() {
-      var toggle = document.getElementById('docs-menu-toggle');
-      var sidebar = document.querySelector('.docs-sidebar');
-      var overlay = document.getElementById('docs-drawer-overlay');
-      function toggleDrawer() {
-        var isOpen = sidebar.classList.contains('open');
-        sidebar.classList.toggle('open', !isOpen);
-        overlay.classList.toggle('visible', !isOpen);
-        document.body.style.overflow = !isOpen ? 'hidden' : '';
-      }
-      toggle.addEventListener('click', toggleDrawer);
-      overlay.addEventListener('click', toggleDrawer);
-      sidebar.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', function() {
-          if (sidebar.classList.contains('open')) toggleDrawer();
+      </article>
+    </div>
+    <footer
+      style="
+        text-align: center;
+        padding: 2rem;
+        color: #9494a8;
+        font-size: 0.82rem;
+        border-top: 1px solid #2a2a3a;
+        margin-top: 3rem;
+      "
+    >
+      <p>
+        Copyright &copy; 2026
+        <a
+          href="https://github.com/booltools"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="color: #818cf8; text-decoration: none"
+          >Booltools</a
+        >
+        &bull; MIT License
+      </p>
+    </footer>
+    <script>
+      (function () {
+        var toggle = document.getElementById("docs-menu-toggle");
+        var sidebar = document.querySelector(".docs-sidebar");
+        var overlay = document.getElementById("docs-drawer-overlay");
+        function toggleDrawer() {
+          var isOpen = sidebar.classList.contains("open");
+          sidebar.classList.toggle("open", !isOpen);
+          overlay.classList.toggle("visible", !isOpen);
+          document.body.style.overflow = !isOpen ? "hidden" : "";
+        }
+        toggle.addEventListener("click", toggleDrawer);
+        overlay.addEventListener("click", toggleDrawer);
+        sidebar.querySelectorAll("a").forEach(function (link) {
+          link.addEventListener("click", function () {
+            if (sidebar.classList.contains("open")) toggleDrawer();
+          });
         });
-      });
-    })();
-  </script>
-</body>
+      })();
+    </script>
+  </body>
 </html>

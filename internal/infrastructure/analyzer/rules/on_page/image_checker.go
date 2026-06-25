@@ -42,11 +42,12 @@ func (c *ImageChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 			missingDimensionURLs = append(missingDimensionURLs, image.URL)
 		}
 
-		if image.URL != "" && !isModernImageFormat(image.URL) {
+		if image.URL != "" && !isModernImageFormat(image.URL) && !image.HasPictureSource {
 			nonModernFormatURLs = append(nonModernFormatURLs, image.URL)
 		}
 
-		if image.Loading != "lazy" {
+		isAboveFold := image.FetchPriority == "high" || image.Loading == "eager"
+		if image.Loading != "lazy" && !isAboveFold {
 			missingLazyLoadURLs = append(missingLazyLoadURLs, image.URL)
 		}
 	}

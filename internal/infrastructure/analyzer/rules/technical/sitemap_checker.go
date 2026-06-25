@@ -61,7 +61,7 @@ func (c *SitemapChecker) Check(result crawler.CrawlResult) []valueobject.AuditRu
 	c.checkSitemapURLsReachable(allURLs, result, &rules)
 	c.checkSitemapURLsNotBlocked(allURLs, result, &rules)
 	c.checkImageSitemap(result.SitemapXML, &rules)
-	c.checkVideoSitemap(result.SitemapXML, &rules)
+	c.checkVideoSitemap(result.SitemapXML, result, &rules)
 
 	return rules
 }
@@ -325,15 +325,30 @@ func (c *SitemapChecker) checkImageSitemap(content string, rules *[]valueobject.
 	*rules = append(*rules, imageRule)
 }
 
-func (c *SitemapChecker) checkVideoSitemap(content string, rules *[]valueobject.AuditRule) {
+func (c *SitemapChecker) checkVideoSitemap(content string, result crawler.CrawlResult, rules *[]valueobject.AuditRule) {
 	videoRule := valueobject.NewAuditRule("sitemap_video", valueobject.CategoryTechnical, valueobject.SeverityInfo)
 	if strings.Contains(content, "video:video") || strings.Contains(content, "video:content_loc") {
 		videoRule.Pass("Sitemap includes video entries for better video indexing")
-	} else {
+		*rules = append(*rules, videoRule)
+		return
+	}
+
+	siteHasVideos := false
+	for _, page := range result.Pages {
+		loweredHTML := strings.ToLower(page.HTML)
+		if strings.Contains(loweredHTML, "<video") || strings.Contains(loweredHTML, "youtube.com/embed") || strings.Contains(loweredHTML, "vimeo.com") || strings.Contains(loweredHTML, "wistia.com") {
+			siteHasVideos = true
+			break
+		}
+	}
+
+	if siteHasVideos {
 		videoRule.Warn(
-			"Sitemap does not include video entries (if applicable)",
-			"If your site has videos, add <video:video> tags to your sitemap for better video discovery in search results.",
+			"Site has video content but sitemap does not include video entries",
+			"Add <video:video> tags to your sitemap for better video discovery in search results.",
 		)
+	} else {
+		videoRule.Skip("No video content detected — video sitemap entries not applicable")
 	}
 	*rules = append(*rules, videoRule)
 }
@@ -367,10 +382,23 @@ func parseDisallowedPaths(robotsTxt string) []string {
 	var paths []string
 	lines := strings.Split(robotsTxt, "\n")
 
+	inWildcardGroup := false
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		if strings.HasPrefix(strings.ToLower(line), "disallow:") {
-			path := strings.TrimSpace(strings.TrimPrefix(line, strings.SplitN(line, ":", 2)[0]+":"))
+		lowered := strings.ToLower(line)
+
+		if strings.HasPrefix(lowered, "user-agent:") {
+			agent := strings.TrimSpace(strings.TrimPrefix(line, line[:len("user-agent:")]))
+			inWildcardGroup = agent == "*"
+			continue
+		}
+
+		if !inWildcardGroup {
+			continue
+		}
+
+		if strings.HasPrefix(lowered, "disallow:") {
+			path := strings.TrimSpace(line[len("disallow:"):])
 			if path != "" && path != "/" {
 				paths = append(paths, path)
 			}

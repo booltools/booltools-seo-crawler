@@ -23,9 +23,9 @@ func (c *ContentQualityChecker) Check(page crawler.PageData) []valueobject.Audit
 	wordCountRule.AffectedURL = page.URL
 	minWords := 300
 	thinWords := 50
-	if isLegalPage(page.URL) {
+	if isLegalPage(page.URL) || crawler.IsAuthPage(page.URL) {
 		minWords = 100
-		thinWords = 30
+		thinWords = 20
 	}
 	if wordCount < thinWords {
 		wordCountRule.Fail(

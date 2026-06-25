@@ -22,22 +22,31 @@ export interface CategoryNavItem {
   rules: { href: string; label: string; key: string }[];
 }
 
-const apiUrl = import.meta.env.PUBLIC_API_URL || 'http://localhost:8080';
+const apiUrl = import.meta.env.PUBLIC_API_URL || "http://localhost:8080";
 
-export async function fetchRuleCategories(): Promise<{ categories: RuleCategory[]; error: string }> {
+export async function fetchRuleCategories(): Promise<{
+  categories: RuleCategory[];
+  error: string;
+}> {
   try {
     const response = await fetch(`${apiUrl}/api/rules`);
     if (response.ok) {
       const data: RulesApiResponse = await response.json();
-      return { categories: data.categories, error: '' };
+      return { categories: data.categories, error: "" };
     }
     return { categories: [], error: `API returned ${response.status}` };
   } catch {
-    return { categories: [], error: 'Could not connect to the API server. Start the backend with `make dev` to see rules.' };
+    return {
+      categories: [],
+      error:
+        "Could not connect to the API server. Start the backend with `make dev` to see rules.",
+    };
   }
 }
 
-export function buildCategoryNav(categories: RuleCategory[]): CategoryNavItem[] {
+export function buildCategoryNav(
+  categories: RuleCategory[],
+): CategoryNavItem[] {
   return categories.map((cat) => ({
     href: `/docs/rules/${cat.key}`,
     label: cat.label,

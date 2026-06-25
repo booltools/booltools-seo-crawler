@@ -7,6 +7,24 @@ import (
 	"github.com/booltools/booltools-seo-crawler/internal/infrastructure/crawler"
 )
 
+var expectedNoindexPatterns = []string{
+	"/login", "/signin", "/sign-in", "/signup", "/sign-up",
+	"/register", "/auth/", "/forgot-password", "/reset-password",
+	"/verify", "/confirm", "/logout", "/sign-out",
+	"/admin", "/dashboard", "/account", "/settings",
+	"/cart", "/checkout",
+}
+
+func isExpectedNoindex(pageURL string) bool {
+	lowered := strings.ToLower(pageURL)
+	for _, pattern := range expectedNoindexPatterns {
+		if strings.Contains(lowered, pattern) {
+			return true
+		}
+	}
+	return false
+}
+
 type MetaRobotsChecker struct{}
 
 func (c *MetaRobotsChecker) Check(page crawler.PageData) []valueobject.AuditRule {
@@ -22,10 +40,14 @@ func (c *MetaRobotsChecker) Check(page crawler.PageData) []valueobject.AuditRule
 
 	hasNoindex := strings.Contains(metaRobots, "noindex") || strings.Contains(xRobotsTag, "noindex")
 	if hasNoindex {
-		noindexRule.Warn(
-			"Page has a noindex directive — it will not appear in search results",
-			"This page is intentionally excluded from search engine indexing. If this is unintentional, remove the noindex directive from the meta robots tag or X-Robots-Tag header.",
-		)
+		if isExpectedNoindex(page.URL) {
+			noindexRule.Pass("Page has noindex (expected for auth/utility pages)")
+		} else {
+			noindexRule.Warn(
+				"Page has a noindex directive — it will not appear in search results",
+				"This page is intentionally excluded from search engine indexing. If this is unintentional, remove the noindex directive from the meta robots tag or X-Robots-Tag header.",
+			)
+		}
 	} else {
 		noindexRule.Pass("Page is indexable (no noindex directive)")
 	}

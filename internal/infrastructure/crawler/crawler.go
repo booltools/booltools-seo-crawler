@@ -288,12 +288,25 @@ func ExtractImages(document *goquery.Document, baseURL *url.URL, pageData *PageD
 			}
 		}
 
+		hasPictureSource := false
+		pictureParent := selection.ParentsFiltered("picture")
+		if pictureParent.Length() > 0 {
+			pictureParent.Find("source[srcset]").Each(func(_ int, source *goquery.Selection) {
+				srcset := strings.ToLower(source.AttrOr("srcset", ""))
+				if strings.Contains(srcset, ".webp") || strings.Contains(srcset, ".avif") {
+					hasPictureSource = true
+				}
+			})
+		}
+
 		imageData := ImageData{
-			URL:     src,
-			Alt:     selection.AttrOr("alt", ""),
-			Width:   selection.AttrOr("width", ""),
-			Height:  selection.AttrOr("height", ""),
-			Loading: selection.AttrOr("loading", ""),
+			URL:              src,
+			Alt:              selection.AttrOr("alt", ""),
+			Width:            selection.AttrOr("width", ""),
+			Height:           selection.AttrOr("height", ""),
+			Loading:          selection.AttrOr("loading", ""),
+			FetchPriority:    selection.AttrOr("fetchpriority", ""),
+			HasPictureSource: hasPictureSource,
 		}
 
 		pageData.Images = append(pageData.Images, imageData)

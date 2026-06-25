@@ -14,30 +14,43 @@ func (c *EEATPageChecker) Check(page crawler.PageData) []valueobject.AuditRule {
 
 	authorRule := valueobject.NewAuditRule("eeat_author", valueobject.CategoryEEAT, valueobject.SeverityMedium)
 	authorRule.AffectedURL = page.URL
-	hasAuthor := false
 
-	authorSelectors := []string{
-		`[rel="author"]`,
-		`[class*="author"]`,
-		`[itemprop="author"]`,
-		`meta[name="author"]`,
-	}
-	for _, selector := range authorSelectors {
-		if page.Document.Find(selector).Length() > 0 {
-			hasAuthor = true
-			break
-		}
-	}
-
-	if !hasAuthor {
-		authorRule.Warn(
-			"No author attribution found",
-			"Add author information to content pages. Include author name, bio, and credentials for better E-E-A-T signals.",
-		)
+	if crawler.IsNonEditorialPage(page.URL) || page.IsNoindex {
+		authorRule.Skip("Non-editorial page — author attribution not applicable")
+		rules = append(rules, authorRule)
 	} else {
-		authorRule.Pass("Author attribution is present")
+		hasAuthor := false
+
+		authorSelectors := []string{
+			`[rel="author"]`,
+			`[class*="author"]`,
+			`[itemprop="author"]`,
+			`meta[name="author"]`,
+		}
+		for _, selector := range authorSelectors {
+			if page.Document.Find(selector).Length() > 0 {
+				hasAuthor = true
+				break
+			}
+		}
+
+		if !hasAuthor {
+			hasAuthorInJSONLD := strings.Contains(strings.ToLower(page.HTML), `"author"`)
+			if hasAuthorInJSONLD {
+				hasAuthor = true
+			}
+		}
+
+		if !hasAuthor {
+			authorRule.Warn(
+				"No author attribution found",
+				"Add author information to content pages. Include author name, bio, and credentials for better E-E-A-T signals.",
+			)
+		} else {
+			authorRule.Pass("Author attribution is present")
+		}
+		rules = append(rules, authorRule)
 	}
-	rules = append(rules, authorRule)
 
 	copyrightRule := valueobject.NewAuditRule("eeat_copyright", valueobject.CategoryEEAT, valueobject.SeverityLow)
 	copyrightRule.AffectedURL = page.URL

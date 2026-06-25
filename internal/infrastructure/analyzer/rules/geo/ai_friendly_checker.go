@@ -14,33 +14,41 @@ type AIFriendlyChecker struct{}
 func (c *AIFriendlyChecker) Check(result crawler.CrawlResult) []valueobject.AuditRule {
 	var rules []valueobject.AuditRule
 
-	totalPages := len(result.Pages)
-	if totalPages == 0 {
+	if len(result.Pages) == 0 {
 		return rules
 	}
 
+	contentPages := 0
 	pagesWithDescriptiveHeadings := 0
 	pagesWithFreshnessSignals := 0
+	totalPages := len(result.Pages)
 	pagesWithSemanticHTML := 0
 
 	for _, page := range result.Pages {
-		hasDescriptiveH2 := false
-		page.Document.Find("h2").Each(func(_ int, selection *goquery.Selection) {
-			text := strings.TrimSpace(selection.Text())
-			if len(text) > 10 {
-				hasDescriptiveH2 = true
-			}
-		})
-		if hasDescriptiveH2 {
-			pagesWithDescriptiveHeadings++
-		}
+		isContent := !crawler.IsNonEditorialPage(page.URL) && !page.IsNoindex
 
-		html := page.HTML
-		loweredHTML := strings.ToLower(html)
-		hasDateModified := strings.Contains(loweredHTML, "datemodified") || strings.Contains(loweredHTML, "date_modified")
-		hasLastUpdated := strings.Contains(loweredHTML, "last updated") || strings.Contains(loweredHTML, "updated on") || strings.Contains(loweredHTML, "modified:")
-		if hasDateModified || hasLastUpdated {
-			pagesWithFreshnessSignals++
+		if isContent {
+			contentPages++
+
+			hasDescriptiveH2 := false
+			page.Document.Find("h2").Each(func(_ int, selection *goquery.Selection) {
+				text := strings.TrimSpace(selection.Text())
+				if len(text) > 10 {
+					hasDescriptiveH2 = true
+				}
+			})
+			if hasDescriptiveH2 {
+				pagesWithDescriptiveHeadings++
+			}
+
+			loweredHTML := strings.ToLower(page.HTML)
+			hasDateModified := strings.Contains(loweredHTML, "datemodified") || strings.Contains(loweredHTML, "date_modified")
+			hasDatePublished := strings.Contains(loweredHTML, "datepublished") || strings.Contains(loweredHTML, "date_published")
+			hasLastUpdated := strings.Contains(loweredHTML, "last updated") || strings.Contains(loweredHTML, "updated on") || strings.Contains(loweredHTML, "modified:")
+			hasPublishedTime := strings.Contains(loweredHTML, `"article:published_time"`) || strings.Contains(loweredHTML, `"article:modified_time"`)
+			if hasDateModified || hasDatePublished || hasLastUpdated || hasPublishedTime {
+				pagesWithFreshnessSignals++
+			}
 		}
 
 		hasArticle := page.Document.Find("article").Length() > 0
@@ -65,8 +73,12 @@ func (c *AIFriendlyChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 		}
 	}
 
+	if contentPages == 0 {
+		contentPages = 1
+	}
+
 	headingsRule := valueobject.NewAuditRule("geo_ai_descriptive_headings", valueobject.CategoryGEO, valueobject.SeverityMedium)
-	headingsRatio := float64(pagesWithDescriptiveHeadings) / float64(totalPages) * 100
+	headingsRatio := float64(pagesWithDescriptiveHeadings) / float64(contentPages) * 100
 	if headingsRatio < 50 {
 		headingsRule.Warn(
 			fmt.Sprintf("Only %.0f%% of pages have descriptive H2 headings", headingsRatio),
@@ -78,7 +90,7 @@ func (c *AIFriendlyChecker) Check(result crawler.CrawlResult) []valueobject.Audi
 	rules = append(rules, headingsRule)
 
 	freshnessRule := valueobject.NewAuditRule("geo_ai_freshness", valueobject.CategoryGEO, valueobject.SeverityMedium)
-	freshnessRatio := float64(pagesWithFreshnessSignals) / float64(totalPages) * 100
+	freshnessRatio := float64(pagesWithFreshnessSignals) / float64(contentPages) * 100
 	if freshnessRatio < 20 {
 		freshnessRule.Warn(
 			fmt.Sprintf("Only %.0f%% of pages have content freshness signals", freshnessRatio),
