@@ -133,10 +133,10 @@ ignore:
   <h3>Avoiding port conflicts</h3>
   <p>If port 3000 is already in use on your machine, use <code>--port</code> to inject a <code>PORT</code> environment variable into the <code>--start-cmd</code> process. Make sure <code>--url</code> and <code>--wait-for</code> match the chosen port:</p>
   <pre><code>mode: full
-url: http://localhost:9999
+url: http://localhost:3000
 start_cmd: "npm run dev"
-wait_for: http://localhost:9999
-port: 9999</code></pre>
+wait_for: http://localhost:3000
+port: 3000</code></pre>
 
   <h2>CLI Flags</h2>
   <table>
