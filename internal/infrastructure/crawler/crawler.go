@@ -84,7 +84,7 @@ func (sc *SiteCrawler) Crawl(targetDomain string, maxPages int, onPage OnPageCal
 		colly.AllowedDomains(hostname, "www."+hostname),
 		colly.MaxDepth(10),
 		colly.Async(true),
-		colly.UserAgent("Mozilla/5.0 (compatible; FreeSEOCrawler/1.0; +https://github.com/booltools/booltools-seo-crawler)"),
+		colly.UserAgent(userAgent),
 	)
 
 
